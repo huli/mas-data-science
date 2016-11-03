@@ -37,3 +37,6 @@ class(cbind(y,z))
 
 x.sub <- x[x<11 | x >91]
 x.sub
+
+as.character(c(1,2,3,4))
+
