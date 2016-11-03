@@ -1,3 +1,3 @@
 # mas-data-science
 
-Excercises and experiments of the course.
+Exercises and experiments of the course.

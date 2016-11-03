@@ -40,3 +40,23 @@ x.sub
 
 as.character(c(1,2,3,4))
 
+obst <- factor(c(rep(0,3),rep(1,2)), labels=c("Aepfel", "Orange"))
+obst
+
+gemuese <- factor(c(rep(2, 4),rep(3,2)), labels = c("Brokkoli", "Birnen"))
+gemuese
+
+gemuesekorb <- c(obst, gemuese)
+gemuesekorb
+
+gemuese.liste <- list(obst, gemuese)
+gemuese.liste
+
+# Eine Liste erzeugen:
+kursteilnehmer <- list(Kursleiter= "Rudi", 
+                       Maenner = c("Simon", "Peter", "usw."),
+                       Frauen = c("Daniela","Johanna"))
+kursteilnehmer
+
+
+
