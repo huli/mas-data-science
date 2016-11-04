@@ -44,14 +44,30 @@ options(options.old)
 colors.gradient <- gray(seq(0, .9, length.out = 18))
 
 # Balkendiagramm
-barplot(composition.freq, col = colors.gradient, xlab = "composition", ylab = "number of painters")
+barplot(composition.freq, col = colors.gradient, main = "Frequency distribution of composition",
+        xlab = "composition", ylab = "number of painters")
 
 
 #Aufgabe: Kuchendiagramm
 # ----------------------------------------------------------------------------------------------------
 
+# Farben des Regenbogens
+colors.rainbow <- rainbow(18)
+
+# Kuchendiagramm
+pie(composition.freq, col = colors.rainbow, main =  "Frequency distribution of composition")
+
+
 #Aufgabe 1: Gruppenstatistik
 # ----------------------------------------------------------------------------------------------------
+
+# Schule(n) mit höchstem Wert Composition
+painters[painters$Composition == max(painters$Composition),]$School
+
+# Schule mit durchschnittlich höchstem Wert Composition 
+addmargins(table(painters$Composition, painters$School))
+sort(tapply(painters$Composition, painters$School, mean), decreasing = TRUE)[1]
+
 
 #Aufgabe 2: Gruppenstatistik
 # ----------------------------------------------------------------------------------------------------
