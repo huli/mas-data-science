@@ -1,3 +1,8 @@
+# ----------------------------------------------------------------------------------------------------
+# Author:     Christoph Hilty
+# Date:       04.11.2016
+# Questions:  CAS_DA_R_QualiDaten_Aufgaben.pdf
+# ----------------------------------------------------------------------------------------------------
 
 # MASS-Paket laden
 library(MASS)
@@ -90,4 +95,4 @@ painters.extended["High Color"] <- as.numeric(painters.extended$Colour >= 14)
 painters.color.table <- table(rownames(painters.extended), painters.extended$`High Color`)
 addmargins(prop.table(painters.color.table)) * 100
 
-
+# ----------------------------------------------------------------------------------------------------
