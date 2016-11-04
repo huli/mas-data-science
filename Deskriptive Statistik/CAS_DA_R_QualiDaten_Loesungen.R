@@ -27,7 +27,7 @@ school.membercount[school.membercount == school.max]
 options.old <- options(digits = 3) 
 
 # Haeufigkeitsverteilung in Prozenten
-composition.percentage = prop.table(composition.freq) * 100 
+composition.percentage <- prop.table(composition.freq) * 100 
 composition.percentage
 
 # noch mit Totalisierung
@@ -62,12 +62,30 @@ pie(composition.freq, col = colors.rainbow, main =  "Frequency distribution of c
 # ----------------------------------------------------------------------------------------------------
 
 # Schule(n) mit höchstem Wert Composition
-painters[painters$Composition == max(painters$Composition),]$School
+composition.max <- painters[painters$Composition == max(painters$Composition),]$School
+composition.max
 
 # Schule mit durchschnittlich höchstem Wert Composition 
-addmargins(table(painters$Composition, painters$School))
-sort(tapply(painters$Composition, painters$School, mean), decreasing = TRUE)[1]
+composition.max.mean <- sort(tapply(painters$Composition, painters$School, mean), decreasing = TRUE)[1]
+composition.max.mean
 
 
 #Aufgabe 2: Gruppenstatistik
 # ----------------------------------------------------------------------------------------------------
+
+# Maler mit Color groesser oder gleich 14
+painters.color.high <- painters[painters$Colour >= 14,]
+painters.color.high
+
+# Maler mit Color kleiner als 14
+painters.color.low <- painters[painters$Colour < 14, ]
+painters.color.low
+
+# Anteil von Malern mit Color >= 14
+options.old <- options(digits = 4)
+
+painters.color.high.percentage <- 100 * nrow(painters.color.high) / nrow(painters)
+painters.color.high.percentage
+
+
+
