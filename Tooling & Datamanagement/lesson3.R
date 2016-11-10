@@ -159,3 +159,111 @@ apply(swiss[,2:6],2,mean)
 mean(titanic$age2[titanic$sex == "man"])
 mean(titanic$age2[titanic$sex == "women"])
 
+# 13.2 Übung
+
+# 1
+x <- 60
+if(x < -50 | x > 50){
+  y <- 10
+} else {
+  y <- 0
+}
+
+
+# 2
+for (x in 1:10){
+   werte <- rnorm(100)
+   print(paste("Mittelwert", round(mean(werte), digits = 2)))
+   print(paste("Standartabweichung", round(sd(werte), digits = 2)))
+}
+
+showMean <- function(){
+  observations <- rnorm(100)
+  m <- mean(observations)
+  s <- sd(observations)
+  print(paste("mean: ", m, " std: ", s))
+}
+
+rep(showMean(), 10)
+
+
+# 3
+x = 1
+y = 1
+while(y < 1000){
+  x <- x+1
+  y <- x^3
+  print(paste("x:", x, " x^3: ", y))
+}
+
+x <- matrix(rnorm(1000), ncol = 10)
+# E.g., for a matrix 1 indicates rows, 2 indicates columns,
+apply(x, 2, mean)
+
+test <- matrix(c(1,2,3,4,5,6,7,8,9), ncol = 3)
+apply(test, 2, max)
+apply(test, 1, max)
+
+
+# 14.2
+
+# 1
+add2AndSquare <- function(x){
+  (x+2)^2
+}
+
+add2AndSquare(1:10)
+
+# 2
+weightedMean <- function(x, y){
+  sum(x*y)/ sum(y)
+}
+
+# Scripts laden
+#source("C:\pfad\script.R")
+
+weightedMean(c(1,2,3,4,5), c(2,4,5,6,7))
+weighted.mean(c(1,2,3,4,5), c(2,4,5,6,7))
+
+# help.search("mean")
+# ??mean
+
+# zwei fiktive Vektoren erstellen
+x <- c(10,20,30,40,30,10,20,30,40,30,10,20,10)
+y <- c(2,5,3,5,3,5,1,6,3,4,5,1,1)
+
+# Tabelle
+table(x)
+table(x,y)
+
+# Chi2-Test
+chisq.test(table(x,y))
+
+# Tabelle in Prozent
+100*prop.table(table(x))
+100*prop.table(table(x,y))
+round(100*prop.table(table(x,y)), 2) # gerundete Werte
+
+
+# Mean
+mean(x)
+
+# Median
+median(x) 
+sort(x)
+
+# mehrere Statistiken in einem Vektor
+c(mean=mean(x), median=median(x), stddev=sd(x), min=min(x), max=max(x))
+
+# gibt es verkürzt über die generische Funktion summary
+summary(x)
+
+# Korrelation zwischen Vektoren
+cor(x,y)
+cor(x,y, method="spearman") #Rangkorrelation
+cov(x,y)
+
+# Mittelwertvergleich
+t.test(x,y)
+
+
