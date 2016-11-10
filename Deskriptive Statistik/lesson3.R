@@ -44,4 +44,60 @@ hist(duration, right = FALSE)
 # Vektoren mitliefern
 hist(duration, right = FALSE, breaks = seq(1.5, 5.5, by=.2))
 
+# Farben
+farben <- rainbow(8)
+hist(duration, right = FALSE, col = farben)
+
+# Heat
+hist(duration, right = FALSE, col = heat.colors(8))
+
+# Tabelle speichern
+duration.freq <- table(duration.cut)
+
+# Prozente bestimmen
+duration.relfreq <- duration.freq/nrow(faithful)
+
+# Option zwischenspeichern
+old = options(digits = 3)
+
+duration.percentage <- duration.relfreq * 100
+
+# Options zurücksetzen
+options(old)
+
+# Oder ohne Options
+round(duration.relfreq * 100, digits = 1)
+
+# Summenhäufigkeit
+duration.cum <- cumsum(duration.percentage)
+
+# Plot machen nachem beide Spalten gleich
+plot(breaks, c(0, duration.cum))
+
+# Linien hinzufügen
+lines(breaks, c(0, duration.cum))
+
+plot(breaks, c(0,duration.cum), xlab = "Eruptionsdauer", 
+      ylab = "Kummulierte Häufigkeiten", main = "Eruptionen von Old Faithful")
+
+lines(breaks, c(0, duration.cum))
+
+cumfreq0 <- c(0, duration.cum)
+
+# Das Ganze in Prozenten anzeigen
+# Exercise
+
+# Empirical Cumulative Distribution Function
+fn <- ecdf(duration)
+plot(fn)
+
+# Dauer der Eruptionen mit Wartedauer gegenüberstellen
+waiting <- faithful$waiting
+
+plot(duration, waiting) # Gleichsinnig gerichtete, lineare Abhängigkeit
+
+# Lineares Modell erzeugen
+abline(lm(waiting ~ duration))
+
+
 
