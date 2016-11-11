@@ -1,15 +1,13 @@
 # ----------------------------------------------------------------------------------------------------
 # Modul:      Deskriptive Statistik
 # Author:     Christoph Hilty
-# Datum:      04.11.2016
-# Aufgaben:   CAS_DA_R_QualiDaten_Aufgaben.pdf
+# Datum:      11.11.2016
+# Aufgaben:   CAS_DA_R_2dimVerteilungen_Aufgaben.pdf
 # ----------------------------------------------------------------------------------------------------
 
 
 # Daten laden
 load("C:\\Users\\ch0125\\Dropbox\\BFH\\Deskriptive Statistik\\Daten_WachstumX.RData")
-
-# View(Daten_Wachstum)
 
 attach(Daten_Wachstum)
 
@@ -27,3 +25,7 @@ gender.motiv.relfreq
 
 # Aufgabe: Bedingte Verteilung 1
 addmargins(prop.table(gender.motiv.freq, 1))
+
+# Aufgabe: Bedingte Verteilung 2
+addmargins(prop.table(gender.motiv.freq, 2))
+
