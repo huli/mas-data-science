@@ -20,6 +20,7 @@ gender.motiv.freq
 
 # Aufgabe: Randverteilungen
 # ----------------------------------------------------------------------------------------------------
+
 addmargins(gender.motiv.freq)
 
 
