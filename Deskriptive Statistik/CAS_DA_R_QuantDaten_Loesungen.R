@@ -113,7 +113,7 @@ lines(waiting.breaks, waitings.relfreq.cum0)
 
 
 
-# Variation der beiden Kurven ohne Gruppierung
+# Variation der beiden Kurven ohne Gruppierung, resp. implizite Gruppierung auf Sekunden
 # ----------------------------------------------------------------------------------------------------
 
 # absolut
