@@ -45,17 +45,5 @@ titanic$class <-droplevels(titanic$class)
 # Welche Klassen sind abgekratzt
 addmargins(round(prop.table(table(titanic$class, titanic$survived), 1), 4))
 
-# Uebung 16.2.2 - dplyr
-
-library(foreign)
-
-# Daten laden
-input.data <- read.dta("http://www.farys.org/daten/allbus2008.dta")
-
-# Aufraeumen
-clean.data <- 
-  input.data %>% 
-    select("Geschlecht" = v151, "Alter" = v154, "Einkommen" = v386)
-
 
 
