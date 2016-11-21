@@ -33,6 +33,7 @@ cramerV.test <- function(x){
   chisq.val <- chisq.test(x)$statistic
   cramerV.val <- sqrt(chisq.val /
               (sum(x) * min(dim(x) -1)))
+  
   stopifnot(0 <= cramerV.val &  cramerV.val <= 1)
   if(cramerV.val > .6){
     intpretation = "strong"
@@ -44,23 +45,53 @@ cramerV.test <- function(x){
   }
   cat("\n", "Cramer's v", "\n\n")
   cat("data:", deparse(substitute(x)), "\n")
+  cat("V = ", cramerV.val, "\n")
   cat("Statistical dependency:", intpretation, "\n")
-  return(cramerV.val)
+  names(cramerV.val) <- "V"
+  result <- list("statistic"= cramerV.val)
+  return(result)
 }
  
 # Cramer V bestimmen
-cramerV.test(absatzwachstum)
-
-chisq.test(absatzwachstum)$statistic
+cramerV.test(absatzwachstum)$statistic
 
 # Cramer's v 
 # 
 # data: absatzwachstum 
+# V =  0.3544671 
 # Statistical dependency: medium 
-# X-squared 
-# 0.3544671 
 
 # Intpretation
 # Die Faustregel besagt, dass dieser Wert (da > 0.2) einem mittleren, 
-# statistischem Zusammenhang entspricht
+# statistischem Zusammenhang entspricht und wir bestaetigen somit unsere
+# Aussage von dem Chiquadrat-Test
+
+
+# Aufgabe: Statistischer Zusammenhang: Metrische Merkmale#
+# ----------------------------------------------------------------------------------------------------
+
+load("C:\\temp\\StorchBabies.RData")
+
+# Berechnung des Korrelationskoeffizienten nach Pearson
+cor(StorchBabies$Storchenpaare, StorchBabies$Geburtenrate, method = "pearson")
+
+# Interpretation
+# Der Wert 0.6088695 ist zu intpretieren als einen starken, gleichsinnig gerichteten 
+# statistischen Zusammenhang
+# (Gleichsinnig da > 0 und stark, da > .6)
+
+
+# Aufgabe: Statistischer Zusammenhang: Ordinale Merkmale
+# ----------------------------------------------------------------------------------------------------
+ 
+# Daten in das richtige Format bringen (Beobachtungseinheiten auf Y-Achse und Merkmale auf X-Achse)
+tasting <- matrix(c(9, 1, 10, 6, 5, 8,
+                    7, 5, 12, 10, 8, 3), ncol = 2, byrow = FALSE)
+colnames(tasting) <- c("Tasting-Master", "Whisky-Friend")
+rownames(tasting) <- c("Whisky 1", "Whisky 2", "Whisky 3", "Whisky 4", "Whisky 5", "Whisky 6")
+
+cor(tasting[,1], tasting[,2], method = "spearman")
+
+# Interpretation
+# Der Wert 0.3714286 ist zu interpretieren als einen mittleren, gleichsinnig gerichteten Zusammenhang
 
