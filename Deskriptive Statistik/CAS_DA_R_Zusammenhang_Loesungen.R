@@ -95,3 +95,15 @@ cor(tasting[,1], tasting[,2], method = "spearman")
 # Interpretation
 # Der Wert 0.3714286 ist zu interpretieren als einen mittleren, gleichsinnig gerichteten Zusammenhang
 
+# Das ganze noch als data frame
+tasting.frame <- data.frame(
+  whiskys = c(1,2,3,4,5,6),
+  "Tasting-Master" = c(9, 1, 10, 6, 5, 8),
+  "Whisky-Friend" = c(7, 5, 12, 10, 8, 3)
+)
+
+cor(tasting.frame$Tasting.Master, tasting.frame$Whisky.Friend, method = "spearman")
+
+# Interpretation bleibt wie der Wert auch die gleiche ;)
+
+
