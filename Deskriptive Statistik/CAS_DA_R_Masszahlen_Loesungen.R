@@ -97,11 +97,10 @@ sd.pop(faithful$waiting)
 # Aufgabe: Korrelationskoeffizient
 # ----------------------------------------------------------------------------------------------------
 
-# Korrelationskoeffizient nach Pearson (wäre auch der Default)
+# Korrelationskoeffizient nach Pearson (waere auch der Default)
 cor(swiss$Fertility, swiss$Education, 
     method = "pearson")
 
 # Interpretation: Das heisst, die Korrelation ist stark und gegensinnig
 # (Siehe plot(swiss$Fertility, swiss$Education))
-
 

@@ -34,6 +34,8 @@ cramerV.test <- function(x){
   cramerV.val <- sqrt(chisq.val /
               (sum(x) * min(dim(x) -1)))
   
+  # Wir ergaenzen die Funktion gerade noch mit 
+  # etwas Interpretationshilfe
   stopifnot(0 <= cramerV.val &  cramerV.val <= 1)
   if(cramerV.val > .6){
     intpretation = "strong"
@@ -76,9 +78,8 @@ load("C:\\temp\\StorchBabies.RData")
 cor(StorchBabies$Storchenpaare, StorchBabies$Geburtenrate, method = "pearson")
 
 # Interpretation
-# Der Wert 0.6088695 ist zu intpretieren als einen starken, gleichsinnig gerichteten 
-# statistischen Zusammenhang
-# (Gleichsinnig da > 0 und stark, da > .6)
+# Der Wert 0.6088695 ist zu intpretieren als einen (knapp) starken, gleichsinnig gerichteten 
+# statistischen Zusammenhang (gleichsinnig da > 0 und stark, da > .6)
 
 
 # Aufgabe: Statistischer Zusammenhang: Ordinale Merkmale
@@ -104,6 +105,6 @@ tasting.frame <- data.frame(
 
 cor(tasting.frame$Tasting.Master, tasting.frame$Whisky.Friend, method = "spearman")
 
-# Interpretation bleibt wie der Wert auch die gleiche ;)
+# Interpretation bleibt wie der Wert auch gleich ;)
 
 
