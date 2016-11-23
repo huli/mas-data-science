@@ -69,7 +69,7 @@ cramerV.test(absatzwachstum)$statistic
 # Aussage von dem Chiquadrat-Test
 
 
-# Aufgabe: Statistischer Zusammenhang: Metrische Merkmale#
+# Aufgabe: Statistischer Zusammenhang: Metrische Merkmale
 # ----------------------------------------------------------------------------------------------------
 
 load("C:\\temp\\StorchBabies.RData")
