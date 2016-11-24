@@ -74,3 +74,4 @@ plot(xwerte, dbinom(xwerte, size = 12, prob = .2), type = "b")
 
 ppois(16, lambda = 7, lower.tail = FALSE)
 plot(1:17, dpois(1:17, lambda = 7), type = "b")
+
