@@ -11,7 +11,7 @@ population.xls <- read.xlsx("C:\\temp\\population_ch.xls", 1, sheetName = "2014"
                               colIndex = c(1,2), as.data.frame = TRUE,
                               encoding = "UTF-8")
 
-colnames(population.xls) <- c("Kanton", "Bev?lkerung")
+colnames(population.xls) <- c("Kanton", "Bevoelkerung")
 
 download.file("https://www.bfs.admin.ch/bfsstatic/dam/assets/81048/master",
                             destfile = "C:\\temp\\forests_ch.xls",
