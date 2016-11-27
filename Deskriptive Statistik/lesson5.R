@@ -16,6 +16,8 @@ perm <- function(n, k){
   factorial(n) / (factorial(n-k))
 }
 
+perm(4,2)
+
 # oder ueber das Package 'combinat'
 install.packages("combinat")
 require(combinat)
@@ -40,6 +42,7 @@ format(1234567.891011, digits=15, decimal.mark=",",
 
 # Genau 4 Fragen richtig
 dbinom(4, size = 12, prob = 0.2)
+
 
 # Maximal 4 Fragen richtig
 dbinom(4, size = 12, prob = 0.2) +

@@ -40,3 +40,4 @@ population.tidy <- as.data.table(population.xls)
 result <- merge(population.tidy, forests.tidy, by = "Kanton")
 
 
+
