@@ -23,8 +23,18 @@ marketshares.lc <- Lc(marketshares)
 # Lorenzkurve plotten
 plot(marketshares.lc,
      main = "Lorenzkurve",
+     lty = 3,
+     lwd = 1,
+     col = "red",
+     sub = "Verteilung der Marktanteile unter den 5 stärksten TV-Sender",
      xlab = expression(u[i]),
      ylab = expression(v[i]))
+
+legend("topleft", 
+       c("Nullkonzentration", "effektive Konzentration"),
+       lty=c(1,3),
+       col = c("black", "red"),
+       lwd=1)
 
 # Ginikoeffizienten bestimmen
 Gini(marketshares)
