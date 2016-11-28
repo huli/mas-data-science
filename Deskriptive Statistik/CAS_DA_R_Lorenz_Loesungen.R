@@ -34,6 +34,12 @@ plot(marketshares.lc,
      xlab = expression(u[i]),
      ylab = expression(v[i]))
 
+legend("topleft", 
+       c("Nullkonzentration", "effektive Konzentration"),
+       lty=c(1,3),
+       col = c("black", "red"),
+       lwd=1)
+
 grid()
 
 # Ginikoeffizienten bestimmen
