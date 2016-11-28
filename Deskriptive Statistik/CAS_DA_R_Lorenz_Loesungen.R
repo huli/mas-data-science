@@ -7,15 +7,19 @@
 
 # Frage: 
 # Ist nicht der Ginikoeffizient immer schon normiert? Müsste man da nicht eher von korrigieren 
-# sprechen? Und hat das nicht mehr mit der kleinen Anzahl Stichproben zu tun?
+# sprechen - wie es im Script teilweise auch wird? 
 
 # Aufgabe Lorenzkurve und Ginikoeffizient
 # ----------------------------------------------------------------------------------------------------
 
-library(ineq)
+if(!require("ineq")) install.packages("ineq")
 
 # Marktanteile sortiert erfassen
-marketshares <- sort(c(13.5, 13.4, 12.9, 12.4, 9.6))
+marketshares <- sort(c("ARD-Dritte" = 13.5, 
+                       "ARD" = 13.4, 
+                       "ZDF" = 12.9, 
+                       "RTL" = 12.4, 
+                       "Sat.1" = 9.6))
 
 # Lorenzkurve bestimmen
 marketshares.lc <- Lc(marketshares)
@@ -26,18 +30,15 @@ plot(marketshares.lc,
      lty = 3,
      lwd = 1,
      col = "red",
-     sub = "Verteilung der Marktanteile unter den 5 stärksten TV-Sender",
+     sub = "Verteilung der Marktanteile unter den 5 marktstärksten TV-Sender in Deutschland",
      xlab = expression(u[i]),
      ylab = expression(v[i]))
 
-legend("topleft", 
-       c("Nullkonzentration", "effektive Konzentration"),
-       lty=c(1,3),
-       col = c("black", "red"),
-       lwd=1)
+grid()
 
 # Ginikoeffizienten bestimmen
-Gini(marketshares)
+round(Gini(marketshares), 3)
+
 
 # Funktion für korrigierten Ginikoeffizienten
 Gini.korr <- function(x){
@@ -52,5 +53,10 @@ Gini.korr <- function(x){
 }
 
 # Korrigierter Ginikoeffizient
-Gini.korr(marketshares)
+round(Gini.korr(marketshares), 3)
+
+# Oder neu auch über die bestehende Funktion mit
+# entsprechender Parameterisierung
+round(Gini(marketshares, corr = T), 3)
+
 
