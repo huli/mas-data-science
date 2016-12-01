@@ -170,3 +170,10 @@ legend("topright", inset=.05, title="Verteilungen",
 # Grösserer degree of freedom führt zu grösserer Unsicherheit
 # (sd ist ja unklar und wird auch geschätzt)
 # Bei t-Verteilung ist Freiheitsgrad die Stichprobengrösse -1
+
+# Problem: Bestimmen Sie das 2.5%- und das 97.5%-Perzentil der
+# Studentschen t-Verteilung mit Freiheitsgrad 5.
+
+qt(c(.025, .975), df = 5)
+# Interpretation Man muss weiter in die Breite gehen um auch 95% von der
+# Bevölkerung abzudecken
