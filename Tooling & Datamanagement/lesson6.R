@@ -53,3 +53,9 @@ htmlreg(list(fit1, fit2), file = "meinetabelle.doc") # fake doc file
 htmlreg(list(fit1, fit2), file = "meinetabelle.html") # html
 texreg(list(fit1, fit2), booktabs = FALSE, dcolumn= FALSE) # tex
 
+
+# Regressionsanalyse
+install.packages("car")
+library(car)
+scatter3d(Prestige$income,Prestige$prestige,Prestige$education, fit="linear") 
+
