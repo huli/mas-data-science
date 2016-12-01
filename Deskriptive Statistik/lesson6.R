@@ -121,9 +121,52 @@ qexp(.5, rate = 1/3)
 xv <- seq(-5,5, length = 200)
 plot(xv, dnorm(xv), type = "l")
 
+# Problem: Die Ergebnisse eines Abschlusstestes folgen einer
+# Normalverteilung mit µ = 72 und σ = 15.2. Welcher Anteil der
+# Studierenden erreicht mindestens 84 Punkte?
 
+pnorm(84, mean = 72, sd = 15.2, lower.tail = FALSE)
 
+# Faustregel +/- 1 sd 
+pnorm(1) - pnorm(-1)
 
+# Faustregel für minus 2 sd und plus 2 sd
+pnorm(2) - pnorm(-2)
 
+# Faustregel für minus 3 sd und plus 3 sd
+pnorm(3) - pnorm(-3)
 
+# Chi-Quadrat-Verteilung
+# Fuer die Auswertung von Kontingenztabellen
+# (Normalverteilung ohne negative Seite, da die Abweichungen quadriert wurden)
 
+xv <- seq(0,50,length=100)
+degf <- c(5, 10, 20,40)
+colors <- c("red", "blue", "darkgreen", "gold")
+
+plot(xv, dchisq(xv, df=1), type = "l", ylab = "Chi2(x)", xlab = "x")
+# Degree of freedom (df)
+for (i in 1:4){lines(xv, dchisq(xv,degf[i]), lwd=2, col=colors[i])}
+
+# Problem: Bestimmen Sie das 95%-Perzentil der Chi-Verteilung mit
+# Freiheitsgrad 7. 
+qchisq(.95, df=7)
+
+# Studentsche t-Verteilung
+# Brauchen wir dann, wenn die Standardabweichung unbekannt ist und auch
+# geschätzt werden muss
+
+x <- seq(-4, 4, length=100)
+hx <- dnorm(x)
+degf <- sort(c(1, 3, 8, 30), decreasing = TRUE)
+colors <- c("red", "blue", "darkgreen", "gold", "black")
+labels <- c("df=1", "df=3", "df=8", "df=30", "normal")
+
+plot(x, hx, type="l", lty=2, xlab="t-Verteilungen", ylab="Dichte")
+for (i in 1:4){lines(x, dt(x,degf[i]), lwd=1, col=colors[i])}
+legend("topright", inset=.05, title="Verteilungen",
+       labels, lwd=1, lty=c(1, 1, 1, 1, 2), col=colors)
+
+# Grösserer degree of freedom führt zu grösserer Unsicherheit
+# (sd ist ja unklar und wird auch geschätzt)
+# Bei t-Verteilung ist Freiheitsgrad die Stichprobengrösse -1
