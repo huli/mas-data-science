@@ -34,7 +34,7 @@ boxplot(price ~ geraetetyp, data = ebay_clean,
 
 boxplot(price ~ geraetetyp, data = ebay_clean,
         boxwex = 0.25,
-        at = 1:7 -.3,
+        at = 1:7 + 0.3,
         notch = TRUE,
         frame = FALSE,
         add = TRUE,
