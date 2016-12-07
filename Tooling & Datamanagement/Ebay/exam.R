@@ -5,11 +5,15 @@ library(stringr)
 
 ebay_data <- read.dta("http://www.farys.org/daten/ebay.dta")
 
+ebay_data$subcat
+
 ebay_data %>% 
     filter(sepos >= 12) %>% 
     mutate(rating = sepos/(sepos + seneg)) %>% 
     mutate(makellos = rating > .98) %>% 
     mutate(geraetetyp = str_match(subcat, "\\w+")[,1]) -> ebay_clean
+
+str_match("Nokia 6230 (3)", "[A-Za-z0-9]*\\s[A-Za-z0-9]*")
 
 
 boxplot(price ~ geraetetyp, data = ebay_clean,
@@ -27,7 +31,6 @@ boxplot(price ~ geraetetyp, data = ebay_clean,
         notch = TRUE,
         add = TRUE,
         subset = !makellos, col = "darkgreen", names = c(""))
-
 
 legend("topleft", c("makellos", "nicht makellos"),
        inset = .01,
