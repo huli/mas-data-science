@@ -26,7 +26,9 @@ boxplot(price ~ geraetetyp, data = ebay_clean,
         at = 1:4 + .1,
         notch = TRUE,
         add = TRUE,
-        subset = !makellos, col = "darkgreen", names = c("","",""))
+        subset = !makellos, col = "darkgreen", names = c(""))
 
-legend(2, 9, c("makellos", "nicht makellos"),
+
+legend("topleft", c("makellos", "nicht makellos"),
+       inset = .01,
        fill = c("gold", "darkgreen"))
