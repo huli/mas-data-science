@@ -57,5 +57,5 @@ texreg(list(fit1, fit2), booktabs = FALSE, dcolumn= FALSE) # tex
 # Regressionsanalyse
 install.packages("car")
 library(car)
-scatter3d(Prestige$income,Prestige$prestige,Prestige$education, fit="linear") 
+scatter3d(Prestige$income,Prestige$prestige,Prestige$education, fit="linear")
 
