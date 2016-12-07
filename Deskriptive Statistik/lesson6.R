@@ -1,8 +1,8 @@
 
 # Binominalverteilung
 # -------------------------------------------------------------------------------------------
-
 # Wahrscheinlichkeit bleibt immer gleich
+
 yprob <- dbinom(0:12, size=length(0:12)-1, prob = 1/5)
 names(yprob)  <- 0:12
 barplot(yprob)
@@ -11,7 +11,7 @@ barplot(yprob)
 # Hypergeometrische Verteilung
 # -------------------------------------------------------------------------------------------
 # Wahrscheinlichkeit verändert sich 
-# (Befrage Person wird nicht mehr befragt, M&M's wird gegessen, Lotto)
+# (Befragte Person wird nicht mehr befragt, M&M's wird gegessen, Lotto)
 # Problem: Beim Schweizer Zahlenlotto sind 6 Zahlen aus 42 zu ziehen.
 # Wir bezeichnen mit x die Anzahl der richtig angekreutzten Zahlen.
 # Bestimmen Sie die Wahrscheinlichkeitsverteilung und stellen Sie diese
@@ -21,6 +21,10 @@ barplot(yprob)
 yprob <-dhyper(0:6, m=6, n=36, k=6) 
 names(yprob) <- 0:6
 barplot(yprob)
+
+# Achtung lower.tail = T -> P[X <= x] ! 
+# phyper(5, m=6, n=36, k=6, lower.tail = FALSE) 
+
 
 # Fall aus den Folien (Beispiel 18: Rechnen mit Wahrscheinlichkeiten (Urnenmodell ohne Z.))
 yprob <- dhyper(0:3, m=4, n=6, k=3)
@@ -101,12 +105,16 @@ xv <- seq(0,5,length=100)
 plot(xv, dexp(xv, rate=1), type = "l", ylab = "Exp(x)",
      xlab = "x")
 
+# dexp(0, rate = 1)
+# [1] 1
+
 # Problem: Die durchschnittliche Abfertigungszeit an der Kasse eines
 # Supermarktes betrage 3 Minuten. Mit welcher Wahrscheinlichkeit wird
 # ein Kunde in weniger als 2 Minuten bedient?
 
 # Zeit die vergeht bis -> Exontentialverteilung
-pexp(2, rate = 1/3)
+dexp(2, rate = 1/3)
+
 
 # Wie lange müssten wir warten, bis die Wahrscheinlichkeit 50 % ist
 # Wert auf x-Achse suchen ist immer q..
