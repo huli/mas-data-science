@@ -25,3 +25,9 @@ long_table <- melt(clean_table, id.vars = c("X1"))
 
 # Die beiden Messungen als Spalten abbilden
 tidy_table <- dcast(long_table, variable ~ X1)
+
+# Bezeichnungen von Spalten und Zeilen bereinigen
+colnames(tidy_table) <- c("Monat", "Max","Min")
+tidy_table[, 1] <- as.character(temp_table[2, 2:13])
+  
+
