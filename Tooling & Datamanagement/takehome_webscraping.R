@@ -16,17 +16,12 @@ temp_table <- url %>%
   html_table(fill = TRUE) %>% 
   as.data.table()
 
-head(temp_table)
+# Ueberfluessige Zeilen und Spalten entfernen
+clean_table <- 
+    temp_table[3:4, 1:13]
 
+# Langes Format machen
+long_table <- melt(clean_table, id.vars = c("X1"))
 
-# Wie geht dieser Code nicht?
-# temp_table <- url %>% 
-#   read_html() %>% 
-#   html_node(xpath = 
-#               "//*[@id='mw-content-text']/table[4]/tbody/tr/td/table[1]") %>%
-#   html_table(fill = TRUE) %>% 
-#   as.data.table()
-
-# Und wieso geht mein super Xpath-Quer nicht
-# "//*/b[text() = 'Monatliche Durchschnittstemperaturen und -niederschläge für Bern 1981–2010']/ancestor::td/*[2]"
-
+# Die beiden Messungen als Spalten abbilden
+tidy_table <- dcast(long_table, variable ~ X1)
