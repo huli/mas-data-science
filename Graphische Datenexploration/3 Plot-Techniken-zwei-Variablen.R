@@ -24,21 +24,28 @@ library(dplyr)
 # Daten- BOD > Biochemical Oxygen Demand
 # Schauen Sie sich den Datensatz an. Was wurde mit dem Datensatz untersucht? Was wurde gemessen?
 help(BOD)
+head(BOD)
 
 # Wir untersuchen, wie sich die Variable "demand" über die Zeit entwickelt
 # Wie entwickelt sich die biochemische Sauerstoff-Nachfrage von Wasser über die Zeit?
 # Erstellen Sie ein Liniendiagram mit der Zeit (Time) auf der x-Achse und der Sauerstoff-Nachfrage (demand) auf der y-Achse
-
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_line()
 
 # Standardmässig verwendet ggplot eine Wertebereich für die Y-Achsen, 
 # die gerade ausreichend ist um alle Punkte anzuzeigen. 
 # Wie sieht das Bild aus, wenn die Y-Achse bei Null startet? +ylim(0,max(BOD$demand))
-
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_line() +
+  ylim(0, max(BOD$demand))
 
 # Fügen Sie der Grafik ebenfalls die Messpunkte hinzu (mit +geom_point)
 # Nur so wird ersichtlich, für welche Zeitpunkte tatsächlich Messungen vorliegen.
 # Sind für alle Zeitpunkte Messdaten vorhanden?
-
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_line() +
+  ylim(0, max(BOD$demand)) +
+  geom_point(data = BOD)
 
 
 
@@ -50,10 +57,12 @@ help(BOD)
 # und ein metrisches Merkmal auf der y-Achse (Bpsw. Gruppenvergleiche für wenig Beobachtungen)
 
 # Wie sieht der BOD-Plot von oben (x=Time, y=demand) mit Balken aus?
+ggplot(BOD, aes(x = Time, y = demand)) +
+  geom_bar(stat = "identity")
 
 
-
-# Achtung: Die Standardeinstellung von geom_bar() ist stat="count", d.h. die Höhe der Balken wird entsprechend der Anzahl Ausprägungen je Kategorie gezeichnet. 
+# Achtung: Die Standardeinstellung von geom_bar() ist stat="count", d.h. die Höhe der Balken wird entsprechend der Anzahl 
+# Ausprägungen je Kategorie gezeichnet. 
 help(geom_bar)
 # Das passt prima für eine Häufigkeitsauszählung, nicht jedoch für die Anwendung hier.
 # Im vorliegenden Fall soll die Länge der Balken entsprechend der beobachtet Werte gezeichnet werden. 
@@ -63,7 +72,8 @@ help(geom_bar)
 ############
 # EXTRA zu Balkendiagramme 
 # Eine elegante Alternative zum Bar Charts ist der Cleveland Dot Plot
-# Er ist übersichtichler, weil weniger "Tinte" verwendet wird (Edward Tufte, Daten-Design-Guru, empfiehlt möglichst auf Grafik-Junk zu verzichten, d.h. überflüssige "Tinte" zu entfernen)
+# Er ist übersichtichler, weil weniger "Tinte" verwendet wird (Edward Tufte, Daten-Design-Guru, 
+# empfiehlt möglichst auf Grafik-Junk zu verzichten, d.h. überflüssige "Tinte" zu entfernen)
 # Der Cleveland-Dot-Plot eignet sich daher für den Vergleich vieler Gruppen/Objekte 
 # (nominale Variablen mit vielen Ausprägungen) weil er übersichtlicher ist
 
@@ -119,13 +129,10 @@ ggplot(tophit, aes(x=avg,y=reorder(name,avg))) +
 # Sind besonders für Gruppenvergleiche von metrischen Variablen mit vielen Beobachtungen geeignet
 # Nutzen Sie erneut den Auto-Datensatz (mtcars)
 # Übergeben Sie die Zahl der Zylinder(cyl) als x-Wert und die PS(hp) als Y-Wert
-
+ggplot(mtcars, aes(x = cyl, y = hp)) +
+  geom_boxplot()
 
 # Beeinflusst die Zahl der Zylinder die PS?
-
-
-
-
 
 
 
@@ -141,23 +148,22 @@ library(gcookbook)
 
 # Daten (heightweight): Height and weight of schoolchildren
 # Machen Sie sich mit den Daten vertraut. Welche Informationen beinhaltet der Datensatz?
-
+str(heightweight)
 
 # Erstellen Sie einen Scatterplot mit dem Alter der Schulkinder(ageYear) auf der X-Achse 
 # und dem Grösse (heightIn) auf der Y-Achse
+ggplot(heightweight, aes(x = ageYear, y = heightIn)) +
+  geom_point() +
+  geom_smooth()
 
 # Frage: Gibt es einen Zusammenhang zwischen dem Alter und der Grösse der Schulkinder?
 
 # Der Zusammenhang kann  mit einer Regressionslinie veranschauchlicht werden
 # Die Regressionslinie zeigt den linearen mittlere Veränderung der Grösse in Abhängigkeit des Alters
 # +stat_smooth(method=lm, se=FALSE)
-
-
-
-
-
-
-
+ggplot(heightweight, aes(x = ageYear, y = heightIn)) +
+  geom_point() +
+  stat_smooth(method=lm, se=FALSE)
 
 ##### 
 # EXTRA zu Scatterplot
@@ -195,8 +201,9 @@ ggplot(diamonds, aes(x=carat,y=price))+
 
 # Lineare Regression ist nicht die einzige Methode zur graphischen Beschreibung des Zusammenhanges
 # Default für stat_smooth ist auch nicht lm, sondern loess
-# loess sind locally weighted polynomiale Kurven, d.h. es wird nicht ein linearer Zusammenhang über alle Daten abzubilden versucht.
-# Vielmehr werden die Daten in kleine Abschnitte zerlegt und eine Linie mit lokaler Anpassung an die Daten erzeugt
+# loess sind locally weighted polynomiale Kurven, d.h. es wird nicht ein linearer Zusammenhang 
+# über alle Daten abzubilden versucht. Vielmehr werden die Daten in kleine Abschnitte zerlegt und 
+# eine Linie mit lokaler Anpassung an die Daten erzeugt
 # Das ist ein guter Weg, um die Linearität eines Zusammenhanges zu überprüfen
 ggplot(diamonds, aes(x=carat,y=price))+
   stat_bin2d(bins=50)+
