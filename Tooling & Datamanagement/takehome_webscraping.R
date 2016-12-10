@@ -20,14 +20,16 @@ temp_table <- url %>%
 clean_table <- 
     temp_table[3:4, 1:13]
 
+# Und Spalten bereinigen
+colnames(clean_table) <- c("Temp", as.character(temp_table[2, 2:13]))
+
 # Langes Format machen
-long_table <- melt(clean_table, id.vars = c("X1"))
+long_table <- melt(clean_table, id.vars = c("Temp"))
 
 # Die beiden Messungen als Spalten abbilden
-tidy_table <- dcast(long_table, variable ~ X1)
+tidy_table <- dcast(long_table, variable ~ Temp)
 
 # Bezeichnungen von Spalten und Zeilen bereinigen
 colnames(tidy_table) <- c("Monat", "Max","Min")
-tidy_table[, 1] <- as.character(temp_table[2, 2:13])
-  
+
 
