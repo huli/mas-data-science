@@ -2,6 +2,7 @@
 
 library(rvest)
 library(data.table)
+library(stargazer)
 
 # Url definieren
 url <- "https://de.wikipedia.org/wiki/Bern"
@@ -41,7 +42,8 @@ char_to_numeric <- function(number_as_char)
 tidy_table[, Min:=char_to_numeric(Min)][
               , Max:=char_to_numeric(Max)]
 
-
+# Die Tabelle anständig ausgeben
+stargazer(tidy_table, type = "text", summary = FALSE)
 
 
 
