@@ -32,4 +32,18 @@ tidy_table <- dcast(long_table, variable ~ Temp)
 # Bezeichnungen von Spalten und Zeilen bereinigen
 colnames(tidy_table) <- c("Monat", "Max","Min")
 
+# Und nun noch korrekte Datentypen und gemäss Vorgabe mit 3 Nachkommastellen
+char_to_numeric <- function(number_as_char)
+{
+  format(as.numeric(sub(",", ".", number_as_char, fixed = TRUE)), nsmall = 3)
+}
+
+tidy_table[, Min:=char_to_numeric(Min)][
+              , Max:=char_to_numeric(Max)]
+
+
+
+
+
+
 
