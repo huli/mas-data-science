@@ -1,5 +1,5 @@
 ---
-title: "Ebay-Auktionen"
+title: "Take-Home-Exam"
 author: "Christoph Hilty"
 date: "12 Dezember 2016"
 output: html_document
@@ -11,9 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Ebay-Auktionen
 
-todo
-
-```{r cars, echo=TRUE, warning=FALSE, message=FALSE}
+```{r code, echo=TRUE, warning=FALSE, message=FALSE}
 
 library(rvest)
 library(data.table)
@@ -57,10 +55,9 @@ char_to_numeric <- function(number_as_char)
 tidy_table[, Min:=char_to_numeric(Min)][
               , Max:=char_to_numeric(Max)]
 
-# Die Tabelle anständig ausgeben
-#stargazer(tidy_table, type = "latex", summary = FALSE)
-
 ```
+
+Oder als Ansicht wie sie etwas mehr den Vorgaben entspricht:
 
 ```{r cars2, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
 stargazer(tidy_table, type = "html", summary = FALSE)
