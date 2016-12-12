@@ -5,19 +5,6 @@
 # Aufgaben:   CAS_DA_R_Verteilungen_Aufgaben.pdf
 # ----------------------------------------------------------------------------------------------------
 
-# Fragen: 
-# Runden?
-# Poissionverteilung geht niemand heraus?
-  # Wieso ist die Formulierung plötzlich anwesend?
-  # Hinweis korrekt?
-# Gleichverteilung!
-#   Kann man diese wirklich so Zusammenrechnen? Vermmutlich nicht, es müssten sich die 
-#   Wahrscheinlichkeiten ja mal rechnen, resp. verkleinern
-#   Aber es gibt ja verschiedene Varianten
-# Normalverteilung, letzte Frage
-# Chi-Quadrat, fehlt da nicht noch irgend eine Mittelwert oder so? Wie kann ich das intuitiv deuten
-
-
 
 # Aufgabe: Binomialverteilung
 # ----------------------------------------------------------------------------------------------------
@@ -32,13 +19,11 @@ pbinom(2, size = 5, prob = 18/37, lower.tail = FALSE)
 # erreicht?
 
 qbinom(.9, size = 5, prob = 18/ 37)
-# 4
+# 4 (Gewinne)
 
 
 # Aufgabe: Poissonverteilung
 # ----------------------------------------------------------------------------------------------------
-
-# Hinweis: wir gehen hier davon aus, dass niemand das Restaurant auch verlässt?
 
 # Kurze Darstellung zur Vereinfachung
 
@@ -79,27 +64,6 @@ plot(s, dunif(s, 6+10, 6+5+15), type = "l")
 punif(20, 6+10, 6+5+15)
 # 0.4
 
-# Problem:
-# Es kann nicht 2 mal 0.4 gerechnet werden, weil es ja kummuliert ist und
-# die Fälle < als 4min ja dann zu einem längeren möglichen Warten beim andern führen würde.
-
-# oder anders, resp. die Wahrscheinlichkeiten müssten ja addiert werden
-# Er hat 14 Minuten für ins Büro und hat mind. 10 Minunten, resp. er
-# kann maximal 4 Minuten warten. Diese 4 min können sich verschieden auf
-# die beiden Situation 'Warten auf Bus' und 'Warten in Bus' verteilen
-# Beispiel 1: max 2min auf Bus warten, max 2 min in Bus warten
-punif(2, 0, 5) * punif(2, 0, 5)
-# 0.16
-# Beispiel 2: max 3min auf Bus warten, max 1 min im Bus warten
-punif(3, 0, 5) * punif(1, 0, 5)
-# Beispiel 3: max 3min auf Bus warten, max 1 min im Bus warten
-punif(2.5, 0, 5) * punif(2.5, 0, 5)
-# 0.25
-
-max_wartezeit <- 4
-moegliche_wartezeiten <- seq(0, max_wartezeit, length = 10)
-plot(wartezeiten_bus, punif(moegliche_wartezeiten, 0, 5) * punif(max_wartezeit-moegliche_wartezeiten, 0, 5))
-
 
 # Aufgabe: Exponentialverteilung
 # ----------------------------------------------------------------------------------------------------
@@ -108,6 +72,7 @@ plot(wartezeiten_bus, punif(moegliche_wartezeiten, 0, 5) * punif(max_wartezeit-m
 # Telefongespräche in Minuten beschreibt?
 
 # Eine Exponentialverteilung
+plot(0:30, pexp(0:30, rate = 1/3), type = "l")
 
 
 # Das Telefon klingelt. Wie gross ist die Wahrscheinlichkeit, dass
@@ -133,7 +98,7 @@ pexp(3, rate = 1/3) - pexp(1, rate = 1/3)
 
 qexp(.25, rate = 1/3)
 # 0.8630462
-# Interpretation: 25% der Gespräche sind kürzer als 0.86 Minuten (ca 51 Sekunden) 
+# Interpretation: 25% der Gespräche sind kürzer als 0.86 Minuten (ca 52 Sekunden) 
 
 
 # Aufgabe: Normalverteilung
@@ -155,7 +120,7 @@ pnorm(205, mean = mean_chips, sd = sd_chips, lower.tail = FALSE)
 # Welches Gewicht wird von 95% der Tüten überschritten?
 
 qnorm(.05, mean = mean_chips, sd = sd_chips)
-# 193.4206 (g)
+# 193.4206 (Gramm)
 
 
 # Aufgabe: Chi-Quadrat-Verteilung
