@@ -7,8 +7,6 @@
 ####################################
 
 
-
-
 ## Libraries
 library(ggplot2)
 library(dplyr)
@@ -129,11 +127,12 @@ ggplot(tophit, aes(x=avg,y=reorder(name,avg))) +
 # Sind besonders für Gruppenvergleiche von metrischen Variablen mit vielen Beobachtungen geeignet
 # Nutzen Sie erneut den Auto-Datensatz (mtcars)
 # Übergeben Sie die Zahl der Zylinder(cyl) als x-Wert und die PS(hp) als Y-Wert
-ggplot(mtcars, aes(x = cyl, y = hp)) +
+ggplot(mtcars, aes(x = factor(cyl), y = hp)) +
   geom_boxplot()
 
-# Beeinflusst die Zahl der Zylinder die PS?
 
+# Beeinflusst die Zahl der Zylinder die PS?
+# Ja
 
 
 ###################

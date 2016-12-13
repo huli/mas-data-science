@@ -83,6 +83,7 @@ hist(mtcars$mpg, breaks = seq(0,35, 2.5))
 ggplot(mtcars, aes(cyl)) +
   geom_histogram()
 
+
 # Mit ggplot lässt sich die Breite der Klassen über "binwidth" steuern 
 # Justieren Sie die Intervallbreite so, dass sie ungefähr der Einteilung von breaks=10 mit der konvetionellen Plot-Funktion entspricht.
 ggplot(mtcars, aes(mpg)) +
@@ -130,6 +131,45 @@ ggplot(mtcars, aes(x="", y=hp)) +
 
 
 # Gibt es ein Auto, dass Aufgrund der Daten als Ausreiser bezeichnet werden kann? Um welches Auto handelt es sich?
+
+########
+# Wrap-Up: Funktionsweise von ggplot2
+######
+# ggplot benötigt im Minimum 
+# (1) Daten(data), 
+# (2) eine Definition der zu visualisierenden Variablen (aes)
+# und (3) eine Anweisung zur visuellen Repräsentation der Daten (geom_)
+# Die Grafik wird Komponentenweise aufgebaut (+)
+
+# Es gibt unterschiedliche Schreibweisen und Möglichkeiten zur Spezifikation der Parameter
+# Untenstehende Varianten führen alle zum selben Ergebnis
+# Im Rahmen des Kurses wird in der Regel die erste Schreibweise verwendet
+
+
+# Variante 1
+ggplot(data=mtcars, aes(x=factor(""),y=hp))+
+  geom_boxplot()
+
+# Variante 2
+ggplot(data=mtcars)+
+  aes(x=factor(""),y=hp)+
+  geom_boxplot()
+
+# Variante 3
+ggplot()+
+  geom_boxplot(data=mtcars,aes(x=factor(""),y=hp))
+
+# ggplot-Graphiken können als eigene Objekte gespeichert (und erweitert) werden
+
+boxplot<-ggplot()
+boxplot<-boxplot+geom_boxplot(data=mtcars,aes(x=factor(""),y=hp))
+boxplot
+
+# Was passiert hier?
+ggplot(data=mtcars, aes(x=factor(""),y=disp))+
+  geom_boxplot(aes(x=factor(""),y=hp))
+
+# Einmal definierte Parameter werden "nach unten" vererbt... bis sie überschrieben werden
 
 
 
