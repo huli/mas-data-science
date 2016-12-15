@@ -147,6 +147,7 @@ library(TeachingDemos)
 z.test(9900, mu = 10000, stdev = 120, n = 30, alternative = "less" )
 
 # Rechtsseitiger Test
+
 # Problem: Ein Produzent von Keksen behauptet, dass seine Produkte
 # ein Höchstanteil an gesättigten Fettsäuren von 2 g pro Keks enthalten.
 # In einer Stichprobe von 35 Keksen wurde ein Mittelwert von 2:1 g
@@ -154,4 +155,34 @@ z.test(9900, mu = 10000, stdev = 120, n = 30, alternative = "less" )
 # Kann die Behauptung bei einem Signifikanzniveau von 5% verworfen
 # werden?
 
+# direkt
+qnorm(.95, mean = 2, sd = .25/(sqrt(35)))
+# 2.069508 
 
+# Es kann bis 2.07g gehen, dass es noch mit der Hypothese verträglich ist
+# Nullhypothese muss verworfen werden
+
+# Wenn Mittelwerte, dann Wurzel aus Anzahl Stichproben
+
+# Lange Variante mit Standardisieren
+xbar <- 2.1
+mu0 <- 2
+sigma <- 0.25
+n <- 35
+z <- (xbar-mu0)/(sigma/sqrt(n))
+
+## [1] 2.366432
+
+alpha <- 0.05
+z.critical <- qnorm(1-alpha)
+z.critical
+## [1] 1.644854
+z > z.critical # H0 wird verworfen
+## [1] TRUE
+
+# oder über p-Wert
+pnorm(2.1, mean = 2, sd = .25/sqrt(35), lower.tail = FALSE)
+# p-Wert ist unter 5% (0.008980239)
+
+z.test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
+# p-value = 0.00898
