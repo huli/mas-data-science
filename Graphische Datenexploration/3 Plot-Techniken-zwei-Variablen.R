@@ -108,9 +108,10 @@ ggplot(tophit, aes(x=avg,y=reorder(name,avg))) +
   geom_point()
 
 
+
 # Und noch ein bisschen Zusatzästhetik.
 # Voilà ein Cleveland-Dot-Plot 
-ggplot(tophit, aes(x=avg,y=reorder(name,avg))) +
+ggplot(tophit, aes(x=avg,y=reorder(name, avg))) +
   geom_segment(aes(yend=name),xend=0, colour="grey50")+
   geom_point(size=4)+
   xlab("Mittlere Trefferquote je Versuch")+
@@ -182,6 +183,11 @@ str(diamonds)
 # den Preis in US-Dollars (price) auf der y-Achse
 ggplot(diamonds, aes(x=carat,y=price))+
   geom_point()
+
+# Wir logarithmen damit es linear wird
+ggplot(diamonds, aes(x=log(carat),y=log(price)))+
+  geom_point()
+
 
 # Einige Muster werden kenntlich, Grenzen bei 1, 1.5 und 2 carat
 # Insbesondere im Bereich von 0 bis 2 carat bleibt die Sache  obskur
