@@ -186,3 +186,45 @@ pnorm(2.1, mean = 2, sd = .25/sqrt(35), lower.tail = FALSE)
 
 z.test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
 # p-value = 0.00898
+
+# Zweiseitigen Test
+# Achtung: Hier muss ich wieder alpha/2
+
+# Problem: Das durchschnittliche Gewicht von antarktischen
+# Königspinguinen einer bestimmten Kolonie betrug im letzten Jahr
+# 15:4 kg. Eine Stichprobe von 35 Pinguinen derselben Kolonie zeigte
+# ein Durchschnittsgewicht von 14:6 kg. Die Standardabweichung der
+# Population beträgt 2:5 kg. Lässt sich die Behauptung, dass sich das
+# Durchschnittsgewicht nicht verändert hat, bei einem Signifikanzniveau
+# von 5% verwerfen?
+
+# H0: mu=15.4; Ha: mu\not = 15.4
+
+# ohne Standardisierung
+qnorm(c(.025, .975), mean = 15.4, sd = 2.5/sqrt(35))
+# [1] 14.57176 16.22824 -> Nullhypothese kann beibehalten werden
+
+# über Bestimmung p-Wert
+pnorm(14.6, 15.4, 2.5/(sqrt(35))) * 2 # da zwei Seiten
+# [1] 0.05833852
+
+xbar = 14.6
+mu0 = 15.4
+sigma = 2.5
+n = 35
+z = (xbar-mu0)/(sigma/sqrt(n))
+z
+## [1] -1.893146
+
+alpha = .05
+z.alpha = qnorm(1-alpha/2)
+c(-z.alpha, z.alpha)
+## [1] -1.959964 1.959964
+
+
+# mit z-Test
+z.test(14.6, 15.4, 2.5, n = 35)
+# (Berechnet Konfidenzintervall von Messung, deshalb muss der
+# Wert auch drin sein und wir können auch beibehalten)
+
+
