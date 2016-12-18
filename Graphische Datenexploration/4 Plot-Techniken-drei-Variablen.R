@@ -53,7 +53,6 @@ mosaic(~Admit+Gender, UCBAdmissions)
 ## Was sagt Ihnen der Mosaik-Plot in Bezug auf die Zulassungspraktiken nach Geschlecht?
 mosaic(~Admit+Gender+Dept, UCBAdmissions)
 
-
 ## Was wird ersichtlich, wenn wir die Daten anders splitten: Dept+Gender+Admit
 mosaic(~Dept+Gender+Admit, UCBAdmissions)
 

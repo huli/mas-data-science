@@ -197,28 +197,28 @@ z > z.critical # H0 wird verworfen
 pnorm(2.1, mean = 2, sd = .25/sqrt(35), lower.tail = FALSE)
 # p-Wert ist unter 5% (0.008980239)
 
-z# oder über den p-Wert mit z (Standartisierte Testgrösse)
+# oder über den p-Wert mit z (Standartisierte Testgrösse)
 pnorm(z, lower.tail = FALSE)
 # [1] 0.008980239
 
-pval <- .test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
+pval <- z.test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
 # p-value = 0.00898
 
-#pval < alpha
+pval < alpha
 # [1] TRUE -> wird verworfen
 
- Zweiseitigen Test
+# Zweiseitigen Test
 # Achtung: Hier muss ich wieder alpha/2
 
 # Problem: Das durchschnittliche Gewicht von antarktischen
 # Königspinguinen einer bestimmten Kolonie betrug im letzten Jahr
-# 15:4 kg. Eine Stichprobe von 35 Pinguinen derselben Kolonie zeigte
-# ein Durchschnittsgewicht von 14:6 kg. Die Standardabweichung der
-# Population beträgt 2:5 kg. Lässt sich die Behauptung, dass sich das
+# 15.4 kg. Eine Stichprobe von 35 Pinguinen derselben Kolonie zeigte
+# ein Durchschnittsgewicht von 14.6 kg. Die Standardabweichung der
+# Population beträgt 2.5 kg. Lässt sich die Behauptung, dass sich das
 # Durchschnittsgewicht nicht verändert hat, bei einem Signifikanzniveau
 # von 5% verwerfen?
 
-# H0: mu=15.4; Ha: mu\not = 15.4
+# H0: mu=15.4; Ha: mu> 15.4 | mu< 15.4 = 15.4
 
 # ohne Standardisierung
 qnorm(c(.025, .975), mean = 15.4, sd = 2.5/sqrt(35))
@@ -227,6 +227,7 @@ qnorm(c(.025, .975), mean = 15.4, sd = 2.5/sqrt(35))
 # über Bestimmung p-Wert
 pnorm(14.6, 15.4, 2.5/(sqrt(35))) * 2 # da zwei Seiten
 # [1] 0.05833852
+
 
 xbar = 14.6
 mu0 = 15.4
@@ -243,7 +244,7 @@ c(-z.alpha, z.alpha)
 
 
 # mit z-Test
-z.test(14.6, 15.4, 2.5, n = 35)
+z.test(14.6, 15.4, sd = 2.5, n = 35)
 # (Berechnet Konfidenzintervall von Messung, deshalb muss der
 # Wert auch drin sein und wir können auch beibehalten)
 

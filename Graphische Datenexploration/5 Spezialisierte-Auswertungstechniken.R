@@ -138,6 +138,7 @@ library(scales)
 library(reshape2)
 library(tibble)
 
+
 profil_cars <- mtcars %>%
   rownames_to_column( var = "car" ) %>% # Zeilennamen werden als Variable gespeichert
   mutate_each(funs(rescale), -car) %>%  # Reskalieren der Variablen zwecks Vergleichbarkeit
