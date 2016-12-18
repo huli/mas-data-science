@@ -14,26 +14,27 @@ library(ggplot2)
 ## Visualisation von Korrelationsmatrizen mit einem Correlogram
 ## Mittels Correlogram lässt sich ein schneller Überblick zu Zusammenhängen in den Daten erhalten
 
-
 # Daten - mtcars: Motor Trend Car Road Tests
 help(mtcars)
 
 # Eine Korrleationsmatrize gibt alle paarweise möglichen Korrelation wieder
 # Packen Sie den ganzen Datensatz in die Funktion cor(). Erkennen Sie Korrelationsstrukturen?
-
+cor(mtcars)
 
 # Es ist schwierig zu erkennen, wo die Musik spielt
 # Ein Korrelations-Plot kann Abhilfe schaffen 
 # Speichern Sie das Resultat im Objekt mcor
 # und plotten Sie dieses Objekt mit corrplot()
 library(corrplot)
-
+mcar <- cor(mtcars)
+corrplot(mcar)
 
 # corrplot verfügt über verschiedene nützliche Optionen. 
 # Ergänzen Sie die corrplot mit der Option addCoef.col = "black"
+corrplot(mcar, addCoef.col = "black")
 
 # Mit "number.cex" justiert die Textgrösse 
-
+corrplot(mcar, addCoef.col = "black", number.cex = .7)
 
 ##################
 # Scatterplot-Matrix
@@ -57,20 +58,32 @@ c2009<-countries %>%
 # Die Funktion ggpairs() ist ausgezeichnet für Scatterplot-Matrizen
 # Erstellen Sie eine Scatterplot/Korrelations-Matrix aller Variablen des reduzierten 
 # Datensatzes c2009 (Achtung: schliessen Sie die Variable "Name" aus)
-
+ggpairs(c2009, columns = 2:5)
+ggpairs(c2009[,2:5])
 
 # Der Plot unterscheidet drei Bereiche: Die Diagonale (diag), den Bereich oberhalb der 
 # Diagonale (upper) und den Bereich unterhalb der Diagonale (lower)
 # Varieren Sie die Standardeinstellung wie folgt:
 # (1) Ersetzen Sie die Dichtfunktion in der Diagonalen mit Bar-Plots
 # (2) Ergänzen Sie die Scatterplots mit einer linearen Kurve 
-
+ggpairs(c2009[,2:5], 
+        diag = list(continuous="barDiag"),
+        lower = list(continuous="smooth"))
 
 # Zwischen welchen Variablen ist der Zusammenhang am stärksten?
 # ist der Zusammenhang überall linear?
 
+# Ein Modell, dass die Kindersterblichkeit untersucht, sollte diese Terme 
+# entsprechend in quadrierter Form mit ins Modell aufnehmen
 
+M1<-lm(data=c2009, infmortality~GDP+laborrate+healthexp)
+summary(M1)
 
+c2009$GDP2<-c2009$GDP^2
+c2009$healthexp2<-c2009$healthexp^2
+
+M2<-lm(data=c2009, infmortality~GDP+GDP2+laborrate+healthexp+healthexp2)
+summary(M2)
 
 
 ###############################################
@@ -85,15 +98,32 @@ c2009<-countries %>%
 help(mpg)
 
 # Ausgangsplot ein Scatterplot mit Hubraum (displ) auf der x-Achse und Benzinverbrauch (hwy) auf der y-Achse
+ggplot(mpg) +
+  aes(x=displ, y=hwy) +
+  geom_point()
 
 # Nutzen Sie die Facets-Funktion indem Sie obige Scatterplots unterschieden nach Antriebssystem darstellen (drv) 
 # Stellen die Subplots vertikal dar (+facet_grid(var~.))
+ggplot(mpg) +
+  aes(x=displ, y=hwy) +
+  geom_point() +
+  facet_grid(drv~.)
 
 # Stellen Sie die Subplots mit horizontaler Anordnung dar (+facet_grid(.~var))
-
+ggplot(mpg, aes(x=displ, y=hwy))+
+  geom_point()+
+  facet_grid(.~drv )
 
 ### Nehmen Sie einen zweifache Facet-Splits vor (Zylinderzahl (cyl), + Antriebssystem (drv))
+ggplot(mpg, aes(x=displ, y=hwy))+
+  geom_point()+
+  facet_grid(drv~cyl)
 
+# The thing on the right of <- is a formula object. 
+# It is often used to denote a statistical model, where the thing on the 
+# left of the ~ is the response and the things on the 
+# right of the ~ are the explanatory variables. So in English you'd say 
+# something like "Species depends on Sepal Length, Sepal Width, Petal Length and Petal Width".
 
 
 ###############################################
@@ -106,6 +136,7 @@ help(mpg)
 ###
 library(scales)
 library(reshape2)
+library(tibble)
 
 profil_cars <- mtcars %>%
   rownames_to_column( var = "car" ) %>% # Zeilennamen werden als Variable gespeichert
@@ -114,7 +145,7 @@ profil_cars <- mtcars %>%
   arrange(car)
 
 # Schauen Sie sich den neuen Datensatz an, damit sie verstehen, wie er umgeformt ist
-
+str(profil_cars)
 
 # Zeichne wir aber zuerst nur ein Profil für den "Ferrari Dino"
 ferrari<-profil_cars %>%
@@ -122,28 +153,56 @@ ferrari<-profil_cars %>%
 
 # Zeichnen Sie die Werte für den Ferrari als Linienplot
 # Achtung: es braucht group=1 bei den aesthetics, damit ggplot weiss, dass die Werte zusammengehören
-
+ggplot(ferrari)+
+  aes(x=variable,y=value,group=1)+
+  geom_line()
 
 
 # Jetzt transformieren wir das xy-Koordinatensystem einfach in ein polares Koordinatensystem
 # coord_polar()
-
+ggplot(ferrari)+
+  aes(x=variable,y=value,group=1)+
+  geom_line()+
+  coord_polar()
 
 
 # Fast, die Lücke ist unschön
 # wenn wir stattdessen die Linie als Fläche zeichnen (geom_polygon()), sieht es besser aus.
 # Wenn wir die Füllfläche leer lassen fill=NA und nur die Linie einfäbren color="black"
 # sieht es aus wie eine Linie
-
-
+ggplot(ferrari)+
+  aes(x=variable,y=value,group=1)+
+  geom_polygon(color="black", fill=NA)+
+  coord_polar()
 
 
 # Probieren Sie nun die Systemmatik auf den Datensatz mit allen Autos (profil_cars) zu übertragen
 # Damit je Auto ein eigenes Profil gezeichnet wird, bietet sich ein facet_wrap an
 # Hinweis: mit theme(legend.position = "none") entfernen sie die Legende, die hier überflüssig ist
 
+ggplot(profil_cars)+
+  aes(x=variable, y=value,group=car,color=car) +
+  geom_polygon(fill=NA) + 
+  coord_polar() + facet_wrap(~ car) + 
+  theme(axis.text.x = element_text(size = 5))+
+  theme(legend.position = "none")
 
+# Oder ohne Bogen
 
+library(devtools)
+install_github("ricardo-bion/ggradar")
+
+library(ggplot2)
+library(ggradar)
+suppressPackageStartupMessages(library(dplyr))
+library(scales)
+
+mtcars %>%
+  add_rownames( var = "group" ) %>%
+  mutate_each(funs(rescale), -group) %>%
+  tail(4) %>% select(1:10) -> mtcars_radar
+
+ggradar(mtcars_radar)
 
 ##
 # vgl. auch http://www.r-chart.com/2016/10/the-grammar-of-graphics-and-radar-charts.html

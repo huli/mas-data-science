@@ -99,20 +99,22 @@ ggplot() +
   geom_line(data = subset(tg,tg$supp == "VC"), color="green")
  
 ggplot(tg) +
-  aes(x=dose, y=length, group = supp, color=supp) +
+  aes(x=dose, y=length, color=supp) +
   geom_line()
 
 # Erstellen Sie  den selben Linien-Plot, der die Verabreichungsmethode über unterschiedliche Linientypen darstellt (linetype) anstatt über Farben
 # Zeichnen Sie zusätzlich zu den Linien alle Messpunkte in die Grafik ein
 
 ggplot(tg) +
-  aes(x=dose, y=length, group = supp, linetype=supp) +
+  aes(x=dose, y=length, linetype=supp) +
+  geom_point() +
   geom_line()
 
 ######
 # Barplots
 # eignen sich für 2 nominale Variablen und eine metrische Variable
-# Wenn theoretische begründete Vorstellungen zu Ursache und Wirkungszusammenhängen bestehen, bietet sich folgende Anordnung an: x-Achse (erklärende Variable), Y-Achse (zu erklärende Variable), 
+# Wenn theoretische begründete Vorstellungen zu Ursache und Wirkungszusammenhängen bestehen, 
+# bietet sich folgende Anordnung an: x-Achse (erklärende Variable), Y-Achse (zu erklärende Variable), 
 # Farb-Unterschiede für Gruppen (Drittvariablen)
 
 # Daten: cabbage_exp - Data from a cabbage field trial (Summary)
@@ -125,8 +127,13 @@ help("cabbage_exp")
 # sowie die unterschiedlichen Kultivierungsmethoden (cultivar) farblich aufzeigt (fill=)
 # Hat die Kultivierungsmethode einen Einfluss auf das mittlere Gewicht der untersuchten Kohle?
 
+ggplot(cabbage_exp) +
+  aes(x=Date, y=Weight, fill=Cultivar) +
+  geom_bar(position="dodge",stat="identity")
 
 
+# Error: stat_count() must not be used with a y aesthetic.
+# (Er will auszählen, das verhindern wir mit stat="identity")
 
 
 #########
@@ -147,12 +154,16 @@ ggplot(heightweight, aes(x=ageYear,y=heightIn)) +
 
 # Wie sieht der Plot aus, wenn Geschlechterunterschiede (sex) farblich abgebildet werden (colour=)? 
 # Ist der Zusammenhang von Alter und Grösse für Mädchen und Jungs anders?
+ggplot(heightweight, aes(x=ageYear,y=heightIn,colour=sex)) +
+  geom_point()
 
 
 # Ergänzen Sie den Plot mit Loess-Linien (), 
 # die Linien mit lokaler Anpassung an die Daten vornehmen 
 # und den Zusammenhang von Alter und Grösse für Mädchen und Jungs unterschieden aufzeigen.
-
+ggplot(heightweight, aes(x=ageYear,y=heightIn,colour=sex)) +
+  geom_point()+
+  geom_smooth(method=loess)
 
 
 
@@ -180,11 +191,19 @@ countsub<-countsub %>%
 # mit den Gesundheitsausgaben auf der x-Achse, der Kindersterblichkeit 
 # auf der y-Achse und dem Bruttosozialprodukt visualisiert über die Grösse der Punkte
 # über aes(x=,y=,size=)
+ggplot(countsub, aes(x=healthexp, y=infmortality, size=GDP))+
+  geom_point()
 
-# Grenzen Sie die Daten zuerst auf das Jahr 2009 ein,
-# löschen sie fehlenden Werte na.omit() und die Variable laborrate
 
 # Wenn man die Kreise etwas grösser zeichen will, braucht es scale_size_area(max_size=)
+ggplot(countsub, aes(x=healthexp, y=infmortality, size=GDP))+
+  geom_point() +
+  scale_size_area(max_size=10)
+
+# Alternative-Darstellung
+ggplot(countsub, aes(x=GDP, y=healthexp, size=infmortality))+
+  geom_point() +
+  scale_size_area(max_size=15)
 
 
 

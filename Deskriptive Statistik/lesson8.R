@@ -8,8 +8,9 @@ t.test(survey$Height)
 # 95 percent confidence interval:
 #   171.0380 173.7237
 
+
 # Problem: Bestimmen Sie benötigte Stichprobengrösse für die
-# durchschnittliche Körpergrösse bei einem Fehlerbereich von 1:2 cm
+# durchschnittliche Körpergrösse bei einem Fehlerbereich von 1.2 cm
 # und einem Konfidenzniveau von 95%.
 
 # NA's herausfiltern
@@ -54,7 +55,7 @@ pbar <- k/n
 # Unterscheidet -> Konfidenzintervall angeben
 
 # Intervallschätzung eines Populationsanteils p
-# Für die Stichprobengrösse gilt np > 10 und n(1 􀀀 p) > 10.
+# Für die Stichprobengrösse gilt np > 10 und n(1-􀀀 p) > 10.
 # -> Sollte mindestens 10 Frauen und 10 Männer befragen
 
 # Problem: Bestimmen Sie den Fehlerbereich und die Intervallschätzung
@@ -67,7 +68,7 @@ SE <- sqrt(pbar * (1-pbar)/n)
 # Quantil
 zstar <- qnorm(.975)
 
-# Fehler(Standarfehler und Quantil)
+# Fehlerbereich (Standarfehler und Quantil)
 E <- SE * zstar
 
 pbar + c(-E,E)
@@ -76,7 +77,7 @@ pbar + c(-E,E)
 # Oder einfach mit der entsprechenden Methode
 prop.test(k, n, conf.level = .95, correct = FALSE)
 
-# Der wahre Anteil der weiblichen Studenten liegt zwischen 46.7 und 56.3 Prozent
+# Der wahre Anteil der weiblichen Studenten liegt zwischen 43.7 und 56.3 Prozent
 # (Bei einem Konfidenzintervall von 95%)
 
 # Stichprobengrösse beim Populationsanteil p
@@ -84,7 +85,7 @@ prop.test(k, n, conf.level = .95, correct = FALSE)
 # Problem: Bestimmen Sie die Stichprobengrösse einer Umfrage zur
 # Bestimmung des Anteils der weiblichen Studierenden. Der
 # Fehlerbereich soll 5% betragen. Sie vermuten aus früheren Umfragen
-# eine Anteil in der Grösse von p = 0:5. Das Konfidenzniveau ist 95%.
+# eine Anteil in der Grösse von p = 0.5. Das Konfidenzniveau ist 95%.
 
 zstar <- qnorm(.975)
 p <- .5 # Worst-Case
@@ -115,25 +116,38 @@ plot(dbinom(treffer, 12, .5), type = "l")
 # der Grenze
 
 # Problem: Ein Hersteller von Glühbirnen behauptet eine
-# Mindestlebensdauer von 100000 Stunden für seine Glühbirnen. Der
+# Mindestlebensdauer von 10'000 Stunden für seine Glühbirnen. Der
 # Mittelwert einer Stichprobe aus 30 Glühbirnen ergab einen
-# Stichprobenmittelwert von 90900 Stunden. Die Standardabweichung
+# Stichprobenmittelwert von 9'900 Stunden. Die Standardabweichung
 # der Population beträgt 120 Stunden. Können wir bei einem
 # Signifikanzniveau von 5% die Behauptung des Herstellers verwerfen?
 
-xbar <- 9900
-mu0 <- 10000
-sigma <- 120
-n <- 30
-z <- (xbar - mu0)/(sigma/sqrt(n))
+xbar <- 9900  # Stichprobenmittelwert
+mu0 <- 10000  # Mittelwert in Grundgesammtheit
+sigma <- 120  # Standardabweichung
+n <- 30       # Stichprobengrösse
+z <- (xbar - mu0)/(sigma/sqrt(n))  # Testgrösse
 
+
+# Variante 1 - Ueber Quantil 
+# (Kritischer Wert bestimmen und Wert mit Testgrösse vergleichen)
 # Wo muss ich den Wert setzten, damit nur noch 5% enthalten sind
+# (Wir vergleichen den Wert mit dem maximal erwarteten Wert
+# bei Normalverteilung und einem Signifikantsniveau von 5%)
 alpha <- .05 # Signifikanzniveau 5%
 z.alpha <- qnorm(alpha)
 
-# anderer Weg
+z < z.alpha
+# [1] TRUE -> Nullhypothese (H0) wird verworfen
+
+# Variante 2 - Ueber Wahrscheinlichkeit 
+# (Wahrscheinlichkeit von Testgrösse bestimmen und diese mit signifikanzniveau vergleichen)
 # Wie gross müsste das Signifikanzniveau sein damit der Wert möglich ist
 pval <- pnorm(z)
+
+# p-Wert entspricht Wahrscheinlichkeit für die Messung
+pval < alpha
+# [1] TRUE -> Nullhypothese (H0) wird verworfen
 
 # Diese Fläche ist deutlich kleiner als 5% und Nullhypothese kann auch
 # verworfen werden
