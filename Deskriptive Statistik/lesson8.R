@@ -148,14 +148,13 @@ pval <- pnorm(z)
 # p-Wert entspricht Wahrscheinlichkeit für die Messung
 pval < alpha
 # [1] TRUE -> Nullhypothese (H0) wird verworfen
-
 # Diese Fläche ist deutlich kleiner als 5% und Nullhypothese kann auch
 # verworfen werden
 
 # Überprüfung den andern weg (Standardfehler von Mittelwerten)
-# Standardabweichung wird durch Wurzel-n geteilt -> deshalb können wir it
+# Standardabweichung wird durch Wurzel-n geteilt -> deshalb können wir mit
 # der Stichprobengrösse die Genauigkeit verbessern
-qnorm(.05, 10000, 120/sqrt(30))
+qnorm(.05, 10000, sd = 120/sqrt(30))
 
 library(TeachingDemos)
 z.test(9900, mu = 10000, stdev = 120, n = 30, alternative = "less" )
@@ -164,8 +163,8 @@ z.test(9900, mu = 10000, stdev = 120, n = 30, alternative = "less" )
 
 # Problem: Ein Produzent von Keksen behauptet, dass seine Produkte
 # ein Höchstanteil an gesättigten Fettsäuren von 2 g pro Keks enthalten.
-# In einer Stichprobe von 35 Keksen wurde ein Mittelwert von 2:1 g
-# gemessen. Nehmen Sie eine Standardabweichung von 0:25 g an.
+# In einer Stichprobe von 35 Keksen wurde ein Mittelwert von 2.1 g
+# gemessen. Nehmen Sie eine Standardabweichung von 0.25 g an.
 # Kann die Behauptung bei einem Signifikanzniveau von 5% verworfen
 # werden?
 
@@ -198,10 +197,17 @@ z > z.critical # H0 wird verworfen
 pnorm(2.1, mean = 2, sd = .25/sqrt(35), lower.tail = FALSE)
 # p-Wert ist unter 5% (0.008980239)
 
-z.test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
+z# oder über den p-Wert mit z (Standartisierte Testgrösse)
+pnorm(z, lower.tail = FALSE)
+# [1] 0.008980239
+
+pval <- .test(2.1, mu = 2, stdev = .25, alternative = "greater", n = 35)
 # p-value = 0.00898
 
-# Zweiseitigen Test
+#pval < alpha
+# [1] TRUE -> wird verworfen
+
+ Zweiseitigen Test
 # Achtung: Hier muss ich wieder alpha/2
 
 # Problem: Das durchschnittliche Gewicht von antarktischen
