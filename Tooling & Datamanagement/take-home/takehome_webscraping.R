@@ -1,5 +1,6 @@
 
 
+# Noetige Bibliotheken laden
 library(rvest)
 library(data.table)
 library(stargazer)
