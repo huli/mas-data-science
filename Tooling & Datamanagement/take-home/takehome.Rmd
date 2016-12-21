@@ -9,9 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Ebay-Auktionen
+***
+#### Ebay-Auktionen
 
-```{r code, echo=TRUE, warning=FALSE, message=FALSE}
+
+```{r code-ebay-auktionen, echo=TRUE, warning=FALSE, message=FALSE}
+
+# todo
+
+```
+***
+#### Webscraping / Tidying
+
+```{r code-webscraping, echo=TRUE, warning=FALSE, message=FALSE}
 
 library(rvest)
 library(data.table)
@@ -21,7 +31,7 @@ library(stargazer)
 url <- "https://de.wikipedia.org/wiki/Bern"
 
 # Tabelle von Site holen und in data.table umwandeln
-# (Dabei gehen wir von letzen Element mit ID aus um den Code robuster zu machen)
+# (Dabei gehen wir von letzen Element mit ID aus, um den Code robuster zu machen)
 
 temp_table <- url %>% 
   read_html() %>% 
@@ -61,18 +71,7 @@ Oder als Ansicht wie sie etwas mehr den Vorgaben entspricht:
 
 ```{r cars2, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
 stargazer(tidy_table, type = "html", summary = FALSE)
-```
+```  
 
-## Webscraping / Tidying
-
-todo
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+***
+Anmerkung: Obwohl in den Vorgaben in der Tabelle die Min-Messung mit 3 ausgegeben ist, habe ich entschieden dies nicht zu machen. Aus meiner Sicht macht es keinen Sinn, bei dieser Messung dann die Dezimalstellen nicht auszugeben (Einheitlichkeit mit 7.400 etc.).
