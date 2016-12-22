@@ -130,7 +130,6 @@ ggplot(cabbage_exp) +
   aes(x=Date, y=Weight, fill=Cultivar) +
   geom_bar(position="dodge",stat="identity")
 
-
 # Error: stat_count() must not be used with a y aesthetic.
 # (Er will auszählen, das verhindern wir mit stat="identity")
 
