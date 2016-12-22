@@ -63,7 +63,7 @@ char_to_numeric <- function(number_as_char)
 }
 
 tidy_table[, Min:=char_to_numeric(Min)][
-              , Max:=char_to_numeric(Max)]
+              , Max:=char_to_numeric(Max)] %>% knitr::kable(.)
 
 ```
 

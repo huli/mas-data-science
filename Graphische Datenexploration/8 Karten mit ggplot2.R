@@ -11,12 +11,17 @@
 library(ggplot2)  # Für die Darstellung von Karten
 library(rgdal)    # Damit shapefile Daten geladen werden können
 library(dplyr)    # Für die Datenaufbereitung
+library(rgeos)    # Für fortify
+library(maptools) # Für fortify
+
+# if (!require(gpclib)) install.packages("gpclib", type="source") ohne rgeos
+# gpclibPermit()
 
 
 
 ############
 # Geodaten laden (shapefile)
-setwd("/Users/huembelin/Desktop/Arbeit/Lehre/CAS DA/Modul Datenvisualisierung/Unterrichtsunterlagen/CAS Datenanalyse HS 16/Ubungsdaten Regionale Portraets der Schweiz/Daten Durchführung 16_17/")
+setwd("PfadzudenDaten")
 schweiz<-readOGR("Geodaten/gd-b-00.03-876-gg15/GGG_15_V161025/shp",layer="g1g15")
 
 
@@ -35,7 +40,7 @@ str(schweiz)
 ############
 # Karten mit ggplot
 
-# Zeichen sie die Schweiz mit Punkten
+# Zeichnen Sie die Schweiz mit Punkten
 ggplot(schweiz)+
   geom_point(aes(x=long,y=lat))
 
@@ -96,7 +101,7 @@ ggplot(schweiz) +
 
 ##
 # Gemeindedaten Regionalporträit der Schweiz laden
-gemeindedaten<-read.csv("~/Desktop/Arbeit/Lehre/CAS DA/Modul Datenvisualisierung/Unterrichtsunterlagen/CAS Datenanalyse HS 16/Ubungsdaten Regionale Portraets der Schweiz/Daten Durchführung 16_17/gemeindedaten.csv")
+gemeindedaten<-read.csv("~/gemeindedaten.csv")
 
 
 ##

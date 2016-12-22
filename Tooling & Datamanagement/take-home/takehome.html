@@ -171,20 +171,78 @@ char_to_numeric &lt;- function(number_as_char)
 }
 
 tidy_table[, Min:=char_to_numeric(Min)][
-              , Max:=char_to_numeric(Max)]</code></pre>
-<pre><code>##     Monat    Max    Min
-##  1:   Jan  2.800 -3.600
-##  2:   Feb  4.700 -3.100
-##  3:   Mär  9.500  0.200
-##  4:   Apr 13.400  3.000
-##  5:   Mai 18.200  7.400
-##  6:   Jun 21.600 10.500
-##  7:   Jul 24.300 12.500
-##  8:   Aug 23.700 12.300
-##  9:   Sep 19.100  8.900
-## 10:   Okt 13.800  5.400
-## 11:   Nov  7.300  0.400
-## 12:   Dez  3.500 -2.300</code></pre>
+              , Max:=char_to_numeric(Max)] %&gt;% knitr::kable(.)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Monat</th>
+<th align="left">Max</th>
+<th align="left">Min</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Jan</td>
+<td align="left">2.800</td>
+<td align="left">-3.600</td>
+</tr>
+<tr class="even">
+<td align="left">Feb</td>
+<td align="left">4.700</td>
+<td align="left">-3.100</td>
+</tr>
+<tr class="odd">
+<td align="left">Mär</td>
+<td align="left">9.500</td>
+<td align="left">0.200</td>
+</tr>
+<tr class="even">
+<td align="left">Apr</td>
+<td align="left">13.400</td>
+<td align="left">3.000</td>
+</tr>
+<tr class="odd">
+<td align="left">Mai</td>
+<td align="left">18.200</td>
+<td align="left">7.400</td>
+</tr>
+<tr class="even">
+<td align="left">Jun</td>
+<td align="left">21.600</td>
+<td align="left">10.500</td>
+</tr>
+<tr class="odd">
+<td align="left">Jul</td>
+<td align="left">24.300</td>
+<td align="left">12.500</td>
+</tr>
+<tr class="even">
+<td align="left">Aug</td>
+<td align="left">23.700</td>
+<td align="left">12.300</td>
+</tr>
+<tr class="odd">
+<td align="left">Sep</td>
+<td align="left">19.100</td>
+<td align="left">8.900</td>
+</tr>
+<tr class="even">
+<td align="left">Okt</td>
+<td align="left">13.800</td>
+<td align="left">5.400</td>
+</tr>
+<tr class="odd">
+<td align="left">Nov</td>
+<td align="left">7.300</td>
+<td align="left">0.400</td>
+</tr>
+<tr class="even">
+<td align="left">Dez</td>
+<td align="left">3.500</td>
+<td align="left">-2.300</td>
+</tr>
+</tbody>
+</table>
 <p>Oder als Ansicht wie sie etwas mehr den Vorgaben entspricht:</p>
 <pre class="r"><code>stargazer(tidy_table, type = &quot;html&quot;, summary = FALSE)</code></pre>
 <table style="text-align:center">

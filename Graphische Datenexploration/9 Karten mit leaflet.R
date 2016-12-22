@@ -58,23 +58,15 @@ leaflet() %>%
 
 # Damit die Daten eingezeichnet werden können, müssen sie zunächst ins gewöhnliche
 # Längen- und Breitengrad System übertragen werden
-library(sp)
-library(rgdal)
-library(maptools)
-setwd("~/SnowGIS/SnowGIS_SHP")
-deaths <- readShapePoints("Cholera_Deaths")                      
-df_deaths <- data.frame(deaths@coords)                             
-coordinates(df_deaths)=~coords.x1+coords.x2                         
-proj4string(df_deaths)=CRS("+init=epsg:27700")                      
-df_deaths = spTransform(df_deaths,CRS("+proj=longlat +datum=WGS84"))
-df<-data.frame(df_deaths@coords)
-# Nun sind die Daten ready
+setwd("~/SnowGIS/")
+snowdf <- read.csv("Snowdf.csv")  
 
 # Zuerst zentrieren wir die Karte auf den relevanten Abschnitt (Soho in London)
 library(leaflet)
 m <- leaflet() %>% 
   addTiles() %>% 
   fitBounds(-.141,  51.511, -.133, 51.516)
+m
 
 # Nun zeichnen wir die Toten als Kreise ein
 # Verwenden Sie dafür die AddCircles()-Funktion
