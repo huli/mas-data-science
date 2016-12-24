@@ -155,6 +155,9 @@ ggplot(mtcars, aes(x=mpg))+
 # Überschreiben Sie die bestehenden Labels mit "Meilen pro Gallone" auf der x-Achse 
 # und "Häufigkeiten" auf der y-Achse
 # xlab(), ylab()
+library(extrafont)
+font_import()
+loadfonts(device="win")
 ggplot(mtcars, aes(x=mpg))+
   geom_histogram(binwidth=2)+
   theme(axis.title.x = element_text("Meilen pro Gallone"), 
@@ -259,7 +262,8 @@ ggplot(faithful,aes(x=waiting,y=eruptions))+
 
 # geom_label() verziert die Textschnippsel mit einem Rahmen
 ggplot(faithful,aes(x=waiting,y=eruptions))+
-  geom_point()
+  geom_point()+
+  geom_label(aes(x=50, y=4.5), label = "foobar")
 
 ##
 # Die Möglichkeit ausserhalbd der Grafik Fussnoten zu setzen ist nützlich um beispielsweise
@@ -337,7 +341,7 @@ display.brewer.all()
 
 # Eine Farbpalette anzeigen lassen 
 # display.brewer.pal(n=Anzahl gewünschter Farben,name="Name der Palette"
-display.brewer.pal(n=3,name="Greens")
+display.brewer.pal(n=9,name="Greens")
 
 # speichern Sie die palette mit brewer.pal() in einem eigenen Objekt.
 greens <- brewer.pal(n = 3, name = "Greens")

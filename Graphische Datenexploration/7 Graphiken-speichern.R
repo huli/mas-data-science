@@ -52,9 +52,7 @@ dev.off()
 ### http://davidgohel.github.io/ReporteRs/
 
 
-
-
-# Erstellen Sie ein neues PowerPoint-Dokument 
+# Erstelle Sie ein PowerPoint-Dokument 
 doc <- pptx()
 
 # Betrachten Sie die Funktion pptx(), damit Sie einen Überblick zu den möglichen Folientypen haben
@@ -64,22 +62,45 @@ pptx()
 doc<-addSlide(doc, "Title Slide")
 
 # Setzen Sie den Titel "CAS Datenanalyse 2016/2017"
+doc<-addTitle(doc, "CAS Datenanalyse 2016/2017")
 
 # Fügen Sie eine neue Folienseite hinzu (mit Speichersockel für zwei Inhalte)
+doc <- addSlide(doc, "Two Content")
 
 # Beschriften Sie die neue Folie mit dem Titel "Editierbare Vektor Graphik versus (uneditierbares) Raster Format"
+doc<- addTitle(doc, "Editierbare Vektor Graphik versus (uneditierbares) Raster Format" )
 
 # Speichern Sie einen Boxplot im objekt bp
 bp <- ggplot(data=PlantGrowth, aes(x=group, y=weight, fill=group))+
   geom_boxplot()
 
-# Fügen Sie die Boxplot-Grafik als editierbare Graphik hinzu
-doc <- addPlot(doc, function() print(bp), vector.graphic = TRUE )
+# Fügen Sie die Boxplot-Grafik als editierbare Vektor-Graphik hinzu
+doc <- addPlot(doc, function() print(bp), vector.graphic = TRUE)
 
-# Fügen Sie die Boxplot Grafik als Raster-Graphik hinzu (deaktivieren Sie die vector.graphic Option)
+# Fügen Sie die Boxplot Grafik als Raster-Graphik hinzu
+doc <- addPlot(doc, function() print(bp), vector.graphic = FALSE )
 
-
-# Speicheren Sie das Dokument ins Arbeitsverzeichnis
+# Speichere das Dokument ins Arbeitsverzeichnis
 writeDoc(doc, file = "editable-ggplot2.pptx")
+
+
+# Zweite Variante
+
+doc <- pptx()
+
+# Speichern Sie einen Boxplot im objekt bp
+bp <- ggplot(data=PlantGrowth, aes(x=group, y=weight, fill=group))+
+  geom_boxplot()
+
+# Fügen Sie eine neue TitelSeite zum Objekt doc hinzu
+doc %>% 
+  addSlide("Title Slide") %>% 
+  addTitle("CAS Datenanalyse 2016/2017") %>% 
+  addSlide("Two Content") %>% 
+  addTitle("Editierbare Vektor Graphik versus (uneditierbares) Raster Format" ) %>% 
+  addPlot(function() print(bp), vector.graphic = TRUE) %>% 
+  addPlot(function() print(bp), vector.graphic = FALSE ) %>% 
+  writeDoc(file = "the-easy-way.pptx")
+
 
 
