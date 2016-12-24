@@ -10,22 +10,121 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ***
-#### Ebay-Auktionen
-
-
-```{r code-ebay-auktionen, echo=TRUE, warning=FALSE, message=FALSE}
-
-# todo
+```{r todo, include=FALSE}
+# todos:
+# - ev. mit data.table?
+# regression interpretieren, resp. dann wohl für zweites Modell mit relavanten Abhängigkeiten das autoplot machen
+# ggfortify elinieren oder ergänzen
+# ev. Summaries entfernen
+# warnings durchschauen
 
 ```
+
+
+### Ebay-Auktionen
+
+
+```{r code-ebay-auktionen-1, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE, results='hide'}
+
+
+library(foreign)
+library(dplyr)
+library(stringr)
+
+
+# Dta-File laden
+ebay_data <- read.dta("http://www.farys.org/daten/ebay.dta")
+
+# Daten bereinigen
+ebay_data %>% 
+    filter(sepos >= 12) %>% 
+    mutate(rating = sepos/(sepos + seneg)) %>% 
+    mutate(makellos = rating > .98) %>% 
+    mutate(geraetetyp = str_match(subcat, "[A-Za-z0-9]*\\s[A-Za-z0-9]*")[,1]) -> ebay_clean
+
+# Handy-Bezeichnungen umbrechen damit diese sauber dargestellt werden
+names_narrow <- str_replace(sort(unique(ebay_clean$geraetetyp)), 
+                            " ", "\n")
+
+# Boxplot zeichnen mit makellosen Bewertungen
+boxplot(price ~ geraetetyp, data = ebay_clean,
+        boxwex = 0.25,
+        frame = FALSE,
+        notch = TRUE,
+        main = "Preise von Mobiltelefonen auf Ebay", 
+        xlab = "Gerätetyp",
+        ylab = "Preise in $",
+        subset = makellos, col = "darkgreen",
+        cex.axis = .8, names = names_narrow)
+
+# Boxplot zeichnen mit nicht makellosen Bewertungen
+boxplot(price ~ geraetetyp, data = ebay_clean,
+        boxwex = 0.25,
+        at = 1:7 + 0.3,
+        notch = TRUE,
+        frame = FALSE,
+        add = TRUE,
+        subset = !makellos, col = "red", axes = FALSE)
+
+# Legende ergaenzen
+legend("topright", c("makellos", "nicht makellos"),
+       inset = .01,
+       fill = c("darkgreen", "red"),
+       cex = .8)
+
+# Grafik exportieren mit Angabe von Dimensionen
+dev.copy(pdf, "boxplot_ebay.pdf", width = 16, height = 10)
+dev.off()
+
+```
+
+Interpretation: 
+Nein, die Verkäufer mit makellosem Rating erzeugen nicht grundsätzlich einen
+höheren Verkaufspreis.  
+
+```{r code-ebay-auktionen-2, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE}
+# Regressionmodelle fuer den Preis erstellen
+
+# Modell 1 mit Prädikatoren Modelltyp und Rating
+model_1 <- lm(price ~ geraetetyp + rating, ebay_clean)
+summary(model_1)
+
+# Modell 2 mit zusätzlichem Praedikat listpic
+model_2 <- lm(price ~ geraetetyp + rating + listpic, ebay_clean)
+summary(model_2)
+
+```
+
+```{r linear-models-1, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
+
+library(stargazer)
+library(ggplot2)
+library(ggfortify)
+
+# Beide Modelle exportieren als Tabelle
+stargazer(model_1, model_2, type = "html", 
+          covariate.labels = c("Nokia 6230","Nokia 6310i", "Samsung E700", "Samsung E800", 
+                               "Sony T610", "Sony T630", "rating", "auction-has-picture", 
+                               "auction-has-thumbnail"))
+```
+
+
+**Interpretation**  
+Modell 2 zeigt eine Abhaenigkeit von Miniaturansicht und Preis. 
+
+```{r linear-models-2, echo=TRUE, warning=FALSE, message=FALSE}
+# Modell 2 mit ggfortify veranschaulichen
+autoplot(model_2, label.size = 3)
+
+```
+
 ***
-#### Webscraping / Tidying
+### Webscraping / Tidying
 
 ```{r code-webscraping, echo=TRUE, warning=FALSE, message=FALSE}
 
 library(rvest)
 library(data.table)
-library(stargazer)
 
 # Url definieren
 url <- "https://de.wikipedia.org/wiki/Bern"
@@ -63,15 +162,17 @@ char_to_numeric <- function(number_as_char)
 }
 
 tidy_table[, Min:=char_to_numeric(Min)][
-              , Max:=char_to_numeric(Max)] %>% knitr::kable(.)
+              , Max:=char_to_numeric(Max)] %>% 
+              knitr::kable(., caption = "Monatliche Höchst- und Tiefsttemperaturen für Bern 1981-2010")
 
 ```
 
 Oder als Ansicht wie sie etwas mehr den Vorgaben entspricht:
 
-```{r cars2, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
+```{r table, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
 stargazer(tidy_table, type = "html", summary = FALSE)
 ```  
 
 ***
-Anmerkung: Obwohl in den Vorgaben in der Tabelle die Min-Messung mit 3 ausgegeben ist, habe ich entschieden dies nicht zu machen. Aus meiner Sicht macht es keinen Sinn, bei dieser Messung dann die Dezimalstellen nicht auszugeben (Einheitlichkeit mit 7.400 etc.).
+**Anmerkung**  
+Obwohl in den Vorgaben in der Tabelle die Min-Messung mit 3 ausgegeben ist, habe ich entschieden dies nicht zu machen. Aus meiner Sicht macht es keinen Sinn, bei dieser Messung dann die Dezimalstellen nicht auszugeben (Einheitlichkeit mit 7.400 etc.).

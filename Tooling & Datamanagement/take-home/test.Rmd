@@ -9,7 +9,8 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### Ebay-Auktionen
 
-### Ebay-Auktionen
-## Ebay-Auktionen
+```{r code-ebay-auktionen, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE, results='hide'}
+dev.copy(pdf, "boxplot_ebay.pdf", width = 16, height = 10)
+dev.off()
+```
