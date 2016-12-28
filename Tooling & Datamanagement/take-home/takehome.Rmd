@@ -17,6 +17,8 @@ knitr::opts_chunk$set(echo = TRUE)
 # ggfortify elinieren oder ergänzen
 # ev. Summaries entfernen
 # warnings durchschauen
+# Warning message:
+# Removed 155 rows containing non-finite values
 
 ```
 
@@ -78,11 +80,29 @@ dev.off()
 
 ```
 
+
+```{r code-ebay-auktionen-2, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE, results='hide'}
+# Das gleiche noch mit ggplot2
+library(ggplot2)
+
+ggplot(ebay_clean, aes(x=geraetetyp, y=price, color=!makellos)) +
+  geom_boxplot(position = position_dodge(.8)) +
+  ggtitle(label = "Preise von Mobiltelefonen auf Ebay", 
+          subtitle = "Verkaufspreis nach Gerätetyp und Verkäuferbewertung") +
+  ylab(label = "Verkaufspreis in US-Dollar") +
+  xlab(label = "Gerätetypen") +
+  scale_color_manual(values = c("springgreen4", "red4"), 
+                     labels=c("Ja","Nein"), 
+                     guide = guide_legend(title = expression("Positive Bewertungen > 98%"))) +
+  scale_x_discrete(labels=names_narrow)
+
+```
+
 Interpretation: 
 Nein, die Verkäufer mit makellosem Rating erzeugen nicht grundsätzlich einen
 höheren Verkaufspreis.  
 
-```{r code-ebay-auktionen-2, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE}
+```{r code-ebay-auktionen-3, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE}
 # Regressionmodelle fuer den Preis erstellen
 
 # Modell 1 mit Prädikatoren Modelltyp und Rating
