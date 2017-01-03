@@ -1,7 +1,7 @@
 ---
-title: "Take-Home-Exam"
+title: "22 Take-Home-Exam"
 author: "Christoph Hilty"
-date: "12 Dezember 2016"
+date: "03 Januar 2017"
 output: html_document
 ---
 
@@ -9,26 +9,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-***
-```{r todo, include=FALSE}
-# todos:
-# - ev. mit data.table?
-# regression interpretieren, resp. dann wohl für zweites Modell mit relavanten Abhängigkeiten das autoplot machen
-# ggfortify elinieren oder ergänzen
-# ev. Summaries entfernen
-# warnings durchschauen
-# Warning message:
-# Removed 155 rows containing non-finite values
-
-```
-
-
-### Ebay-Auktionen
+### 22.1 Ebay-Auktionen
 
 
 ```{r code-ebay-auktionen-1, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE, results='hide'}
 
-
+# Benötigte Bibliotheken laden
 library(foreign)
 library(dplyr)
 library(stringr)
@@ -39,10 +25,11 @@ ebay_data <- read.dta("http://www.farys.org/daten/ebay.dta")
 
 # Daten bereinigen
 ebay_data %>% 
-    filter(sepos >= 12) %>% 
+    filter(sepos >= 12 & !is.na(price)) %>% 
     mutate(rating = sepos/(sepos + seneg)) %>% 
     mutate(makellos = rating > .98) %>% 
-    mutate(geraetetyp = str_match(subcat, "[A-Za-z0-9]*\\s[A-Za-z0-9]*")[,1]) -> ebay_clean
+    mutate(geraetetyp = str_match(subcat, "[A-Za-z0-9]*\\s[A-Za-z0-9]*")[,1]) %>% 
+    droplevels -> ebay_clean
 
 # Handy-Bezeichnungen umbrechen damit diese sauber dargestellt werden
 names_narrow <- str_replace(sort(unique(ebay_clean$geraetetyp)), 
@@ -98,7 +85,7 @@ ggplot(ebay_clean, aes(x=geraetetyp, y=price, color=!makellos)) +
 
 ```
 
-Interpretation: 
+**Interpretation**  
 Nein, die Verkäufer mit makellosem Rating erzeugen nicht grundsätzlich einen
 höheren Verkaufspreis.  
 
@@ -130,7 +117,7 @@ stargazer(model_1, model_2, type = "html",
 
 
 **Interpretation**  
-Modell 2 zeigt eine Abhaenigkeit von Miniaturansicht und Preis. 
+Modell 2 zeigt eine signifikante Abhaenigkeit von Miniaturansicht und Preis. 
 
 ```{r linear-models-2, echo=TRUE, warning=FALSE, message=FALSE}
 # Modell 2 mit ggfortify veranschaulichen
@@ -139,7 +126,7 @@ autoplot(model_2, label.size = 3)
 ```
 
 ***
-### Webscraping / Tidying
+### 22.2 Webscraping / Tidying
 
 ```{r code-webscraping, echo=TRUE, warning=FALSE, message=FALSE}
 
@@ -175,12 +162,14 @@ tidy_table <- dcast(long_table, variable ~ Temp)
 # Bezeichnungen von Spalten und Zeilen bereinigen
 colnames(tidy_table) <- c("Monat", "Max","Min")
 
-# Und nun noch korrekte Datentypen und gemäss Vorgabe mit 3 Nachkommastellen
+# Bereinigungsfunktion definieren
 char_to_numeric <- function(number_as_char)
 {
   format(as.numeric(sub(",", ".", number_as_char, fixed = TRUE)), nsmall = 3)
 }
 
+
+# Für korrekte Datentypen sorgen und gemäss Vorgabe mit 3 Nachkommastellen formatieren
 tidy_table[, Min:=char_to_numeric(Min)][
               , Max:=char_to_numeric(Max)] %>% 
               knitr::kable(., caption = "Monatliche Höchst- und Tiefsttemperaturen für Bern 1981-2010")
@@ -190,9 +179,11 @@ tidy_table[, Min:=char_to_numeric(Min)][
 Oder als Ansicht wie sie etwas mehr den Vorgaben entspricht:
 
 ```{r table, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
+
+# Tabelle exportieren mit Stargazer
 stargazer(tidy_table, type = "html", summary = FALSE)
 ```  
 
 ***
 **Anmerkung**  
-Obwohl in den Vorgaben in der Tabelle die Min-Messung mit 3 ausgegeben ist, habe ich entschieden dies nicht zu machen. Aus meiner Sicht macht es keinen Sinn, bei dieser Messung dann die Dezimalstellen nicht auszugeben (Einheitlichkeit mit 7.400 etc.).
+Obwohl in den Vorgaben in der Tabelle die Min-Messung '3' ohne Nachkommastellen ausgegeben ist, habe ich entschieden dies nicht zu machen. Aus meiner Sicht macht es keinen Sinn, bei dieser einen Messung die Dezimalstellen nicht auszugeben (Einheitlichkeit mit 7.400 etc.).
