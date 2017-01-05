@@ -9,9 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 
 #TODO
-# -nodges hinzufügen
 # nach sold filtern
-# ausreisser in fehlender grafix ergänzen
 
 ```
 
@@ -49,8 +47,10 @@ boxplot(price ~ geraetetyp, data = ebay_clean,
         main = "Preise von Mobiltelefonen auf Ebay", 
         xlab = "Gerätetyp",
         ylab = "Preise in $",
+        ylim = c(0, 370),
         subset = makellos, col = "darkgreen",
         cex.axis = .8, names = names_narrow)
+
 
 # Boxplot zeichnen mit nicht makellosen Bewertungen
 boxplot(price ~ geraetetyp, data = ebay_clean,
@@ -79,7 +79,7 @@ dev.off()
 library(ggplot2)
 
 ggplot(ebay_clean, aes(x=geraetetyp, y=price, color=!makellos)) +
-  geom_boxplot(position = position_dodge(.8)) +
+  geom_boxplot(position = position_dodge(.8), notch = TRUE) +
   ggtitle(label = "Preise von Mobiltelefonen auf Ebay", 
           subtitle = "Verkaufspreis nach Gerätetyp und Verkäuferbewertung") +
   ylab(label = "Verkaufspreis in US-Dollar") +
