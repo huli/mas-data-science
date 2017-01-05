@@ -13,14 +13,28 @@
 
 rm(list = ls())
 
-pulbs <- scan("C:\\temp\\lightbulbs.txt")
+bulbs <- scan("C:\\temp\\lightbulbs.txt")
 
+# mit R
 library(TeachingDemos)
-z.test(pulbs, mu = 10000, stdev = 120, alternative = "less", conf.level = .99)
-
-# Confidence-Level von dem was ist oder dem was verworfen werden soll? .01 od .99?
+z.test(bulbs, mu = 10000, stdev = 120, alternative = "less", conf.level = .99)
 # Kann nicht gehalten werden. 0-Hypothese wird verworfen.
 
+# Ohne z.test
+mu <- 10000
+m0 <- mean(bulbs)
+sd <- 120
+n <- length(bulbs)
+alpha <- .01
+
+# Wahrscheinlichkeit von Ergebnis
+pnorm(m0, mean = 10000, sd = 120/sqrt(n))
+## [1] 3.088019e-05 -> p-Wert kleiner als alpha -> 0-Hypothese verwerfen
+
+# Kritischer Wert bestimmen
+z <- qnorm(alpha, mean = 10000, sd = 120/sqrt(n))
+m0 < z
+## [1] TRUE -> 0-Hypothese verwerfen
 
 
 # Aufgabe: Rechtsseitiger Test bei µ, σ bekannt
