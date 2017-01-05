@@ -65,7 +65,7 @@ z > m0
 ## [1] FALSE -> 0-Hypothese kann behalten werden.
 
 # Antwort:
-# Bei einem Konfidenzlevel von 90% kann die Behauptung des Herstellers
+# Bei einem Konfidenzlevel von 90% muss die Behauptung des Herstellers
 # von einem maximalen Anteil von 2g beibehalten werden.
 
 
@@ -86,7 +86,7 @@ t.test(bulbs, mu = 10000, conf.level = .99, alternative = "less")
 # p-Wert ist kleiner als 1% -> 0-Hypothese verwerfen
 
 # Antwort:
-# Nein, die Hypothese kann mit einem Signifikanzniveau von 1% nicht gehalten werden.
+# Nein, die 0-Hypothese kann mit einem Signifikanzniveau von 1% nicht gehalten werden.
 # Der wahre Mittelwert der Grundgesamtheit ist mit 99% Konfidenz kleiner als 10'000 Stunden
 
 
@@ -102,7 +102,7 @@ t.test(cookies, mu = 2, conf.level = .9, alternative = "greater")
 # Wie kann ich hier das confidence intervall interpretieren?
 
 # Antwort:
-# Bei einem Konfidenzlevel von 90% kann die Behauptung des Herstellers
+# Bei einem Konfidenzlevel von 90% muss die Behauptung des Herstellers
 # von einem maximalen Anteil von 2g beibehalten werden.
 
 
@@ -124,7 +124,7 @@ n <- length(grocery_sex)
 k <- length(grocery_sex[grocery_sex == "F"])
 
 prop.test(k, n, p = .5, conf.level = .95, alternative = "less", correct = FALSE)
-# p-value = 0.9938 -> 0-Hypothese verwerfen
+# p-value = 0.9938 -> 0-Hypothese muss behalten werden
 
 # Antwort:
 # Aufgrund der Stichprobe lässt sich bei einem Konfidenzlevel von 95%
@@ -141,12 +141,12 @@ number_of_credits <- nrow(credits)
 number_of_ruptured_credits <- nrow(credits[bounced == "Yes"])
 
 prop.test(number_of_ruptured_credits, number_of_credits, alternative = "greater",
-          p = .12, conf.level = .99, correct = FALSE)
-## p-value = 0.02581 -> 0-Hypothese muss behalten werden
+          p = .12, conf.level = .95, correct = FALSE)
+## p-value = 0.02581 -> 0-Hypothese muss verworfen werden
 
 # Antwort:
-# Die Bank kann bei einer Konfidenz von 99% davon ausgehen, dass der Anteil
-# von geplatzten Krediten 12% nicht übersteigt
+# Die Bank muss bei einer Konfidenz von 95% davon ausgehen, dass der Anteil
+# von geplatzten Krediten 12% übersteigt
 
 
 # Aufgabe: Zweiseitiger Test des Populationsanteils p
@@ -157,12 +157,12 @@ prop.test(number_of_ruptured_credits, number_of_credits, alternative = "greater"
 
 library(MASS)
 hands <- survey %>%  as.data.table()
-total_hands <- nrow(hands)
+total_hands <- length(na.omit(hands$W.Hnd))
 right_hands <- nrow(hands[W.Hnd == "Right",])
 
 prop.test(right_hands, total_hands, p = .9, conf.level = .99,
           alternative = "two.sided", correct = FALSE)
-## p-value = 0.3088 -> 0-Hypothese wird behalten
+## p-value = 0.2243 -> 0-Hypothese wird behalten
 
 # Antwort:
 # Die Schätzung von 90% Rechtshänder kann bei einer Konfidenz von 99%
