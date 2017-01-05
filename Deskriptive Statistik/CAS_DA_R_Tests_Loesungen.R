@@ -15,16 +15,18 @@ rm(list = ls())
 
 bulbs <- scan("C:\\temp\\lightbulbs.txt")
 
+
+n <- length(bulbs)
+mu <- 10000
+
 # mit R
 library(TeachingDemos)
 z.test(bulbs, mu = 10000, stdev = 120, alternative = "less", conf.level = .99)
 # Kann nicht gehalten werden. 0-Hypothese wird verworfen.
 
 # Ohne z.test
-mu <- 10000
 m0 <- mean(bulbs)
 sd <- 120
-n <- length(bulbs)
 alpha <- .01
 
 # Wahrscheinlichkeit von Ergebnis
@@ -46,27 +48,26 @@ sigma <- .25 #g
 mu <- 2 #g
 alpha <- .1
 
+# mit z.test
 z.test(cookies, mu = 2, stdev = .25, conf.level = .9, alternative = "greater")
+# 0-Hypothese kann gehalten werden
 
-# 0-Hypothese kann gehalten werden - auch hier wieder conf.level?
-# Wieso ist hier der confidence intervall 1.96 - Inf? Macht doch keinen Sinn, denn 2.8 wäre
-# ja sicher nicht im Rahmen
+n <- length(cookies)
+m0 <- mean(cookies)
+
+# Ueber kritischem Wert
+z <- qnorm(1-alpha, sd = .25/sqrt(n), lower.tail = FALSE)
+z > m0 
+## [1] FALSE -> 0-Hypothese kann behalten werden.
+
 
 
 # Aufgabe: Zweiseitiger Test bei µ, σ bekannt
 # ----------------------------------------------------------------------------------------------------
 penguins <- scan("C:\\temp\\penguins.txt")
 
-sigma <- .25 #g
-# mu Unbekannt, deshalb müssen wir das aus der Stichprobe nehmen, resp. t.test bemühen
-alpha <- .05
-
-t.test(penguins, conf.level = .95, alternative = "two.sided")
-z.test(penguins, conf.level = .95, stdev = sigma, alternative = "two.sided")
-
-# Da fehlt doch was?? Nimmt man das Durchschnittgewicht von der vorderen Aufgabe?
-# 0-Hypothese kann beibehalten werden. t.test verwenden ok?
-# Wieso ist hier der p-Wert klein, jedoch ist die Nullhypothese trotzdem richtig?
+# Da fehlt was. Aufgabe kann nicht gelöst werden. Zur Bestimmung einer Veränderung brauchen wir
+# eine Grundgrösse.
 
 
 # Aufgabe: Linksseitiger Test bei µ, σ unbekannt
@@ -75,8 +76,9 @@ z.test(penguins, conf.level = .95, stdev = sigma, alternative = "two.sided")
 bulbs <- scan("C:\\temp\\lightbulbs.txt")
 
 t.test(bulbs, mu = 10000, conf.level = .99, alternative = "less")
+# p-Wert ist kleiner als 1% -> 0-Hypothese verwerfen
 
-# 0-Hypothese verwerfen. Conf-Level bezieht sich immer auf die Alternative
+
 
 
 # Rechtsseitiger Test bei µ, σ unbekannt
