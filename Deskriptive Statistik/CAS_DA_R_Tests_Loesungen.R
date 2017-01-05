@@ -6,7 +6,9 @@
 # ----------------------------------------------------------------------------------------------------
 
 
-# Nur Notizen
+# TODO
+# Intervall angeben bei nicht kompletten zweiseitigen Tests
+# ev. Hypothesen formulieren
 
 # Aufgabe: Linksseitiger Test bei µ, σ bekannt
 # ----------------------------------------------------------------------------------------------------
