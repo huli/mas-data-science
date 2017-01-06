@@ -7,10 +7,6 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-#TODO
-# nach sold filtern
-
 ```
 
 ### 22.1 Ebay-Auktionen
@@ -44,7 +40,8 @@ boxplot(price ~ geraetetyp, data = ebay_clean,
         boxwex = 0.25,
         frame = FALSE,
         notch = TRUE,
-        main = "Preise von Mobiltelefonen auf Ebay", 
+        main = "Preise von Mobiltelefonen auf Ebay nach Verkäuferbewertung", 
+        sub = "Hinweis: Verkäufer mit mehr als 98% positiven Bewertungen gelten als makellos",
         xlab = "Gerätetyp",
         ylab = "Preise in $",
         ylim = c(0, 370),
@@ -93,23 +90,28 @@ ggplot(ebay_clean, aes(x=geraetetyp, y=price, color=!makellos)) +
 
 **Interpretation**  
 Nein, die Verkäufer mit makellosem Rating erzeugen nicht grundsätzlich einen
-höheren Verkaufspreis.  
+höheren Verkaufspreis - es besteht kein signifikanter Unterschied im Verkaufspreis.
 
 ```{r code-ebay-auktionen-3, echo=TRUE, warning=FALSE, message=FALSE, prompt=FALSE}
-# Regressionmodelle fuer den Preis erstellen
+
+# Regressionmodelle fuer den Preis von verkauften Geräten erstellen erstellen
+
+# Zuerst nur die verkauften Geräte herausfiltern
+ebay_sold <- ebay_clean[ebay_clean$sold == 1,]
 
 # Modell 1 mit Prädikatoren Modelltyp und Rating
-model_1 <- lm(price ~ geraetetyp + rating, ebay_clean)
+model_1 <- lm(price ~ geraetetyp + rating, ebay_sold)
 summary(model_1)
 
 # Modell 2 mit zusätzlichem Praedikat listpic
-model_2 <- lm(price ~ geraetetyp + rating + listpic, ebay_clean)
+model_2 <- lm(price ~ geraetetyp + rating + listpic, ebay_sold)
 summary(model_2)
 
 ```
 
 ```{r linear-models-1, echo=TRUE, warning=FALSE, message=FALSE, results='asis'}
 
+# Zusätzliche Bibliotheken laden
 library(stargazer)
 library(ggplot2)
 library(ggfortify)
@@ -123,7 +125,8 @@ stargazer(model_1, model_2, type = "html",
 
 
 **Interpretation**  
-Modell 2 zeigt eine signifikante Abhaenigkeit von Miniaturansicht und Preis. 
+Das Rating hat keinen signifikanten Einfluss auf den Preis. Modell 2 zeigt jedoch eine 
+signifikante Abhaenigkeit von Miniaturansicht und Preis. 
 
 ```{r linear-models-2, echo=TRUE, warning=FALSE, message=FALSE}
 # Modell 2 mit ggfortify veranschaulichen
@@ -156,7 +159,7 @@ temp_table <- url %>%
 clean_table <- 
     temp_table[3:4, 1:13]
 
-# Und Spalten bereinigen
+# Spalten bereinigen
 colnames(clean_table) <- c("Temp", as.character(temp_table[2, 2:13]))
 
 # Langes Format machen

@@ -5,6 +5,7 @@
 # Aufgaben:   CAS_DA_R_Tests_Aufgaben.pdf
 # ----------------------------------------------------------------------------------------------------
 
+rm(list = ls())
 
 # TODO
 # Intervall angeben bei nicht kompletten zweiseitigen Tests
@@ -13,10 +14,9 @@
 # Aufgabe: Linksseitiger Test bei µ, σ bekannt
 # ----------------------------------------------------------------------------------------------------
 
-rm(list = ls())
-
 bulbs <- scan("C:\\temp\\lightbulbs.txt")
 
+# H0: mu >= 10'000, Ha: mu < 10'000
 
 n <- length(bulbs)
 mu <- 10000
@@ -50,13 +50,15 @@ m0 < z
 
 cookies <- scan("C:\\temp\\cookies.txt")
 
+# H0: mu <= 2, Ha: mu > 2
+
 sigma <- .25 #g
 mu <- 2 #g
 alpha <- .1
 
 # mit z.test
 z.test(cookies, mu = 2, stdev = .25, conf.level = .9, alternative = "greater")
-# 0-Hypothese kann gehalten werden
+# 0-Hypothese kann nicht verworfen werden
 
 n <- length(cookies)
 m0 <- mean(cookies)
@@ -64,7 +66,7 @@ m0 <- mean(cookies)
 # Ueber kritischem Wert
 z <- qnorm(1-alpha, sd = .25/sqrt(n), lower.tail = FALSE)
 z > m0 
-## [1] FALSE -> 0-Hypothese kann behalten werden.
+## [1] FALSE -> 0-Hypothese kann nicht verworfen werden
 
 # Antwort:
 # Bei einem Konfidenzlevel von 90% muss die Behauptung des Herstellers
@@ -75,8 +77,29 @@ z > m0
 # ----------------------------------------------------------------------------------------------------
 penguins <- scan("C:\\temp\\penguins.txt")
 
-# Da fehlt was. Aufgabe kann nicht gelöst werden. Zur Bestimmung einer Veränderung brauchen wir
-# eine Grundgrösse.
+# Da fehlt was. Aufgabe kann theoretisch nicht gelöst werden. 
+# Zur Bestimmung einer Veränderung brauchen wir eine Grundgrösse.
+
+# H0: mu = m0, Ha: mu != m0
+
+# Variante 1: Wir nehmen das aus vorherigen Übungen bekannte Durchschnittsgewicht
+# der Pinguine von 15.4 kg und prüfen aufgrund dieser These
+mu = 15.4
+z.test(penguins, stdev = 2.5, mu = mu, alternative = "two.sided", conf.level = .95)
+## p-value = 0.1389 -> H0 muss behalten werden
+
+# Variante 2: Wir bestimmen den Konfidenzintervall von 95% aus unserer Stichprobe
+# mittels Standardisierung
+
+# Standardfehler bestimmen
+alpha <- .05
+SE <- 2.5/sqrt(length(penguins))
+E <- qnorm(1-(alpha/2)) * SE
+m0 <- mean(penguins)
+m0 + c(-E,E)
+## [1] 13.94640 15.60287
+# Wenn der fehlende Durchschnittswert innerhalb dieses Konfidenzintervalls ist
+# dann muss die 0-Hypothese behaltn werden
 
 
 # Aufgabe: Linksseitiger Test bei µ, σ unbekannt
