@@ -80,7 +80,7 @@ penguins <- scan("C:\\temp\\penguins.txt")
 # Da fehlt was. Aufgabe kann theoretisch nicht gelöst werden. 
 # Zur Bestimmung einer Veränderung brauchen wir eine Grundgrösse.
 
-# H0: mu = m0, Ha: mu != m0
+# H0: mu = m0, Ha: mu <> m0
 
 # Variante 1: Wir nehmen das aus vorherigen Übungen bekannte Durchschnittsgewicht
 # der Pinguine von 15.4 kg und prüfen aufgrund dieser These
@@ -107,8 +107,10 @@ m0 + c(-E,E)
 
 bulbs <- scan("C:\\temp\\lightbulbs.txt")
 
+# H0: mu >= 10'000, Ha mu < 10'000
+
 t.test(bulbs, mu = 10000, conf.level = .99, alternative = "less")
-# p-Wert ist kleiner als 1% -> 0-Hypothese verwerfen
+# p-Wert ist kleiner als 1% -> 0-Hypothese muss verworfen werden
 
 # Antwort:
 # Nein, die 0-Hypothese kann mit einem Signifikanzniveau von 1% nicht gehalten werden.
@@ -121,10 +123,10 @@ t.test(bulbs, mu = 10000, conf.level = .99, alternative = "less")
 
 cookies <- scan("c:\\temp\\cookies.txt")
 
-t.test(cookies, mu = 2, conf.level = .9, alternative = "greater")
-## p-value = 0.3497 -> 0-Hypothese behalten
+# H0: mu <= 2, Ha: mu > 2
 
-# Wie kann ich hier das confidence intervall interpretieren?
+t.test(cookies, mu = 2, conf.level = .9, alternative = "greater")
+## p-value = 0.3497 -> 0-Hypothese wird beibehalten
 
 # Antwort:
 # Bei einem Konfidenzlevel von 90% muss die Behauptung des Herstellers
@@ -135,13 +137,31 @@ t.test(cookies, mu = 2, conf.level = .9, alternative = "greater")
 # ----------------------------------------------------------------------------------------------------
 penguins <- scan("C:\\temp\\penguins.txt")
 
-# Da fehlt was. Aufgabe kann nicht gelöst werden. Zur Bestimmung einer Veränderung brauchen wir
-# eine Grundgrösse.
+# Da fehlt wieder was. Aufgabe kann theoretisch nicht gelöst werden. 
+# Zur Bestimmung einer Veränderung brauchen wir eine Grundgrösse.
+
+# H0: mu = m0, Ha: mu != m0
+
+# Variante 1: Wir nehmen das aus vorherigen Übungen bekannte Durchschnittsgewicht
+# der Pinguine von 15.4 kg und prüfen aufgrund dieser These
+t.test(penguins, mu = 15.4, conf.level = .95, alternative = "two.sided")
+## p-value = 0.1723 -> H0 wird beibehalten
+
+# Variante 2: Wir bestimmen den Konfidenzintervall von 95% aus unserer Stichprobe
+# mittels Standardisierung
+n <- length(penguins)
+SE <- sd(penguins) / sqrt(n)
+E <- qt(.975, df = n-1) * SE
+m0 <- mean(penguins)
+m0 + c(-E, E)
+## [1] 13.86313 15.68613 -> # Wenn der fehlende Durchschnittswert innerhalb 
+# dieses Konfidenzintervalls ist dann muss die 0-Hypothese behaltn werden
+
 
 # Aufgabe: Linksseitiger Test des Populationsanteils p
 # ----------------------------------------------------------------------------------------------------
 
-### Was ist hier die 0-Hypothese
+# H0: p > 50 %, p <= 50%
 
 grocery <- read.csv("C:\\temp\\grocerystore.csv", sep = ";")
 grocery_sex <- grocery$gender
@@ -158,6 +178,8 @@ prop.test(k, n, p = .5, conf.level = .95, alternative = "less", correct = FALSE)
 
 # Aufgabe: Rechtsseitiger Test des Populationsanteils p
 # ----------------------------------------------------------------------------------------------------
+
+# H0: p <= 12%, Ha: p > 12%
 
 library(data.table)
 credit_csv <- read.csv("C:\\temp\\creditcards.csv", sep = ";")
@@ -177,8 +199,7 @@ prop.test(number_of_ruptured_credits, number_of_credits, alternative = "greater"
 # Aufgabe: Zweiseitiger Test des Populationsanteils p
 # ----------------------------------------------------------------------------------------------------
 
-# Hier ist aus meiner Sicht die Frage nicht korrekt:
-# Hier müsste sich die Schätzung doch auf alle Studierenden und nicht auf die Stichprobe beziehen
+# H0: p = 90%, Ha: p <> 90%
 
 library(MASS)
 hands <- survey %>%  as.data.table()
