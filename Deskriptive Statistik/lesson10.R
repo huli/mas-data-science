@@ -86,5 +86,85 @@ cor.test(faithful$eruptions, faithful$waiting)
 # method = c("pearson", "kendall", "spearman"),
 
 plot(faithful$waiting, faithful$eruptions)
-abline(lm(faithful$eruptions ~ faithful$waiting))
+abline(lm(eruptions ~ waiting, data = faithful))
+
+# Wenn man fuer zweite Wolke ein zweites Modell machen würde
+abline(lm(eruptions ~ waiting, data = faithful[faithful$waiting > 70,]), lty = 3)
+abline(lm(eruptions ~ waiting, data = faithful[faithful$waiting <= 70,]), lty = 3)
+
+library(ggplot2)
+ggplot(data = faithful, aes(waiting, eruptions)) +
+  geom_point() +
+  # stat_smooth()
+  stat_smooth(method = "lm")
+
+eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
+summary(eruptions_lm)
+
+coeffs <- coefficients(eruptions_lm)
+
+# Intercepts = Schnittpunkt y-Achse
+# Variable = Steigung
+# Residum = Fehlerterm = Abstand vonabline(lm(eruptions ~ waiting, data = faithful[faithful$waiting > 70,]))
+
+plot(faithful$waiting, faithful$eruptions)
+abline(coeffs[1], coeffs[2])
+
+# Eruptionszeit berechnen bei Wartezeit
+waiting <- 80
+coeffs[2] * waiting + coeffs[1]
+
+# Mit predict von R
+data_frame <- data.frame(waiting = 90)
+predict(eruptions_lm, newdata = data_frame)
+
+# Bestimmtsheismass
+# (Hut, resp. ^ weisst immer auf vorhergesagte Werte, Modellwerte hin)
+
+# Bei der linearen Regression entspricht das Bestimmtheitsmass
+# dem Quadrat des Korrelationskoeffizienten.
+summary(eruptions_lm)
+## Multiple R-squared:  0.8115
+## Adjusted R-squared rechnet noch die Stichprobengrösse mit ein
+## -> 81% der Schwankungen können wir durch die Variable waiting erklären
+
+# Achtung, da es im Quadrat ist und die Faustregel >= 0.6 als stark beurteilt,
+# muss hier bereits ab .36 (6*6) herbeiführen
+
+# Signifikanztests
+# waiting      0.075628   0.002219   34.09   <2e-16 ***
+#   ---
+#   Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# Ist 0.0756 signifikant? p-Wert sagt <2e-16 -> Ja
+
+# Std Error oben und unten dazu gibt Konfidenzintervall von Steigung und Schnittpunkt
+# Da 0 nicht möglich ist gemäss dieser Berechnung, ist auch p-Wert Signifikant
+
+# Intercept macht keine Aussage über die Qualität des Modells
+# Je nach Modell, wären das zum Beispiel die Fixkosten
+
+# Konfidenzintervalle
+predict(eruptions_lm, newdata = data_frame, interval = "confidence")
+
+# Wenn mich nicht der Mittelwert interessiert, sonder der einzelne
+predict(eruptions_lm, newdata = data_frame, interval = "predict")
+
+# Die Abweichungen vom Vorausgesagten Wert plotten
+eruptions_rests <- resid(eruptions_lm)
+plot(faithful$waiting, eruptions_rests)
+abline(0,0)
+
+# Muster dürfte eigentlich nicht sein
+# Müsste unkorreliert und gleichverteilt sein
+# (Gleichmässig verteilt, überall gleiche Bandbreite)
+
+# Wir wollen überprüfen ob die Residuen wirklich normalverteilt sind
+# (Plot Normal Q-Q)
+plot(eruptions_lm, which = 2)
+
+# Oder alle anschauen
+plot(eruptions_lm)
+
+
 
