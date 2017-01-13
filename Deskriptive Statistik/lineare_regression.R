@@ -57,3 +57,43 @@ predict(eruptions_lm, waitings_df, interval = "confidence")
 # Die durchschnittliche Eruptionszeit beträgt bei einer Wartezeit 
 # von 80 Minuten zwischen 4.10 und 4.24 Minuten, bei einem
 # Signifikanzniveau von 95%.
+
+# Prognoseintervalle für y
+
+# Problem: Bestimmen Sie ein 95%-Prognoseintervall für die
+# Eruptionsdauer bei einer Wartezeit von 80 Minuten.
+
+eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
+waitings_df <- data.frame(waiting = 80)
+predict(eruptions_lm, waitings_df, interval = "predict")
+
+# fit      lwr      upr
+# 1 4.17622 3.196089 5.156351
+
+# Die Eruptionszeit beträgt bei einer Wartezeit von 80 Minuten zwischen
+# 3.20 und 5.16 Minuten, bei einem Signifikanzniveau von 95%
+
+# Residuen-Plot
+
+# Problem: Stellen Sie die Residuen des linearen Modells 
+# zwischen der Eruptionsdauer und der Wartezeit aus 
+# faithful grafisch dar.
+
+eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
+eruptions_resids <- resid(eruptions_lm)
+
+plot(faithful$waiting, eruptions_resids, ylab="Residuen",
+     xlab="Wartezeit", main="Eruptionen von Old Faithful")
+abline(0, 0)
+
+# Oder auch
+plot(eruptions_lm, which = 1)
+
+# QQ-Plot
+
+# Problem: Erstellen Sie das Normal-Wahrscheinlichkeits-Diagramm der
+# Residuen aus dem Datensatz faithful
+
+eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
+plot(eruptions_lm, which = 2)
+
