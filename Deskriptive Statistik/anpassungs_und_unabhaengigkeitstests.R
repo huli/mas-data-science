@@ -1,4 +1,6 @@
 
+# Anpassungstests
+
 # Problem: Aufgrund einer früheren Vollumfrage kennt die 
 # Unileitung die Rauchstatistiken.
 # Heavy Never Occassionaly Regular
@@ -38,4 +40,24 @@ chi2 <- sum(freq_delta^2 / smoke_freq_expected)
 df <- length(smoke_freq)-1
 pchisq(chi2, df = df, lower.tail = F)
 ## [1] 0.9904592
+
+# Unabhängigkeitstests
+
+# Problem: Untersuchen Sie, ob das Rauch- und Sportverhalten 
+# der Studierenden aus survey unabhängig sind. Die 
+# entsprechenden Variablen sind smoke und Exer. Arbeiten Sie 
+# mit einem Signifikanzniveau von 5%
+
+smoke_exer <- table(survey$Smoke, survey$Exer)
+
+chisq.test(smoke_exer)
+## p-value = 0.4828, H0 wird nicht verworfen
+
+# Oder Warnung eliminieren mit Zusammenfassen
+smoke_exer_comb <- cbind(smoke_exer[,"Freq"], smoke_exer[,"None"] + smoke_exer[,"Some"])
+colnames(smoke_exer_comb) <- c("Freq", "Not-Freq")
+
+chisq.test(smoke_exer_comb)
+## p-value = 0.3571 -> H0 wird auch beibehalten
+
 
