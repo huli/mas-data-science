@@ -32,8 +32,9 @@ summary(eruptions_lm)$r.squared
 
 # Signifikanztest für β1
 
-# Problem: Untersuchen Sie, ob zwischen den Grössen eruptions und
-# waiting aus faithful ein signifikanter Zusammenhang besteht
+# Problem: Untersuchen Sie, ob zwischen den Grössen 
+# eruptions und waiting aus faithful ein signifikanter 
+# Zusammenhang besteht
 
 eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
 summary(eruptions_lm)
@@ -54,14 +55,14 @@ predict(eruptions_lm, waitings_df, interval = "confidence")
 # fit      lwr      upr
 # 1 4.17622 4.104848 4.247592
 
-# Die durchschnittliche Eruptionszeit beträgt bei einer Wartezeit 
-# von 80 Minuten zwischen 4.10 und 4.24 Minuten, bei einem
-# Signifikanzniveau von 95%.
+# Antwort: Die durchschnittliche Eruptionszeit beträgt bei 
+# einer Wartezeit von 80 Minuten zwischen 4.10 und 4.24 Minuten, 
+# bei einem Signifikanzniveau von 95%.
 
 # Prognoseintervalle für y
 
-# Problem: Bestimmen Sie ein 95%-Prognoseintervall für die
-# Eruptionsdauer bei einer Wartezeit von 80 Minuten.
+# Problem: Bestimmen Sie ein 95%-Prognoseintervall für 
+# die Eruptionsdauer bei einer Wartezeit von 80 Minuten.
 
 eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
 waitings_df <- data.frame(waiting = 80)
@@ -91,8 +92,8 @@ plot(eruptions_lm, which = 1)
 
 # QQ-Plot
 
-# Problem: Erstellen Sie das Normal-Wahrscheinlichkeits-Diagramm der
-# Residuen aus dem Datensatz faithful
+# Problem: Erstellen Sie das Normal-Wahrscheinlichkeits-Diagramm 
+# der Residuen aus dem Datensatz faithful
 
 eruptions_lm <- lm(eruptions ~ waiting, data = faithful)
 plot(eruptions_lm, which = 2)

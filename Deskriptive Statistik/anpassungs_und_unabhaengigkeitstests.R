@@ -54,7 +54,8 @@ chisq.test(smoke_exer)
 ## p-value = 0.4828, H0 wird nicht verworfen
 
 # Oder Warnung eliminieren mit Zusammenfassen
-smoke_exer_comb <- cbind(smoke_exer[,"Freq"], smoke_exer[,"None"] + smoke_exer[,"Some"])
+smoke_exer_comb <- cbind(smoke_exer[,"Freq"], 
+                         smoke_exer[,"None"] + smoke_exer[,"Some"])
 colnames(smoke_exer_comb) <- c("Freq", "Not-Freq")
 
 chisq.test(smoke_exer_comb)
