@@ -62,14 +62,14 @@ library(RSQLite)
 library(DBI)
 con = dbConnect(RSQLite::SQLite(), dbname="c:\\temp\\database.sqlite")
 
-mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId from Emails Limit 1000' )
+mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId from Emails Limit 10000' )
 
 subjects_from_clinton <- mails[mails$SenderPersonId == 80, ]
 
 library(dplyr)
 
 filter_words <- c("fw:","re:", "and", "on", "in", "from", "sid", "of", "the", "a", "h:",
-                  "to", "for", "i")
+                  "to", "for", "i", "if", "text", "am", "with", "-", "s", "re", "u", "pm", "fm")
 
 subjects_from_clinton[, "ExtractedSubject"] %>% 
   strsplit(" ")  %>% 
@@ -87,15 +87,15 @@ words %>%
   table() -> 
   word_frequency 
 
-top_twenty_words <- sort(word_frequency, decreasing = T)[1:20]
+top_x_words <- sort(word_frequency, decreasing = T)[1:100]
 
-words <- rownames(top_twenty_words)
-weights <- top_twenty_words[words]
+words <- rownames(top_x_words)
+weights <- top_x_words[words]
 
 library(tagcloud)
 library( extrafont )
 library(RColorBrewer)
 
-colors <- colorRampPalette( brewer.pal( 12, "Paired" ) )( 20 )
-tagcloud( words, weights= weights^3, col= colors) #, algorithm = "fill" )
+colors <- colorRampPalette( brewer.pal( 12, "Paired" ) )( 100 )
+tagcloud( words, weights= weights, col= colors) #, algorithm = "fill" )
 
