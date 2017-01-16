@@ -26,6 +26,7 @@ chi <- sum((actual - expected)^2/expected)
 df <- length(table(survey$Smoke)) -1
 pval <- pchisq(chi, df = df, lower.tail = F)
 ## [1] 0.9909295
+## -> wir behalten H0
 
 
 # Aufgabe: Unabhängigkeitstests
