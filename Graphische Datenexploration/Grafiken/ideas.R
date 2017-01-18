@@ -53,7 +53,9 @@ data=data.frame(long=sample(seq(-150,150),20) ,  lat=sample(seq(-50,50),20) , va
 m=leaflet(data = data) %>% addTiles() %>% addCircleMarkers(~long, ~lat , popup = ~as.character(name))
 m
 
-
+# http://tidytextmining.com/
+# http://jason.bryer.org/timeline/
+# https://daattali.com/shiny/timevis-demo/
 
 # Clinton
 library(RSQLite)
