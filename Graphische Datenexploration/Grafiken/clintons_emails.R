@@ -71,4 +71,24 @@ tidy_words %>%
   xlab(NULL) +
   coord_flip()
 
+# sentiment analysis
+#?sentiments
 
+# Bing lexikon with score
+sentiments_bing <- get_sentiments("bing")
+
+tidy_words %>% 
+  inner_join(sentiments_bing) ->
+  words_with_sentiments
+
+words_with_sentiments %>% 
+  count(word, sort = TRUE) %>% 
+  inner_join(sentiments_bing) -> 
+  words_count_sentiments
+
+words <- words_count_sentiments$word
+weights <- words_count_sentiments$n
+sentiments_words <- words_count_sentiments$sentiment
+
+colors <- ifelse(words_count_sentiments$sentiment == "positive", "blue", "red")
+tagcloud( words, weights= weights, col= colors) #, algorithm = "fill" )
