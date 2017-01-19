@@ -13,6 +13,14 @@ library( extrafont )
 library(RColorBrewer)
 library(ggplot2)
 
+
+# Ausführung
+# Wolke mit allen Wörtern erstellen und die mit Emotionen colorieren
+# Zeitverlauf über Tag erstellen
+# Balkendiagramm mit den meisten Wörtern
+# Ev. noch Zeitleiste
+
+
 # connect to the sqlite file
 library(DBI)
 con = dbConnect(RSQLite::SQLite(), dbname="c:\\temp\\database.sqlite")
@@ -25,6 +33,8 @@ mails %>%
   tidy_words
 
 data(stop_words)
+
+library(dplyr)
 
 # Filter stop words
 tidy_words %>%
@@ -95,29 +105,29 @@ tagcloud( words, weights= weights*2, col= colors) #, algorithm = "fill" )
 
 
 # words over the time
-mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent from Emails Limit 100000' )
+mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent, ExtractedDateSent from Emails' )
 
-
+distinct(mails$MetadataDateSent)
 mails %>% 
   unnest_tokens(word, ExtractedSubject) ->
   tidy_words
 
-library(tidyr)
 #Anschauen: lubridate
 
 library(reshape2)
 library(tidyr)
 
-tidy_words %>%
-  inner_join(get_sentiments("bing"))  %>%
-  # group by week
-  mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
-  group_by(week, sentiment) %>% 
-  summarise(n = n()) %>% 
-  dcast(week ~ sentiment) %>% 
-  replace_na(list(negative = 0)) ->
-  weeks
+# tidy_words %>%
+#   inner_join(get_sentiments("bing"))  %>%
+#   # group by week
+#   mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
+#   group_by(week, sentiment) %>% 
+#   summarise(n = n()) %>% 
+#   dcast(week ~ sentiment) %>% 
+#   replace_na(list(negative = 0)) ->
+#   weeks
 
+# über die wochen
 tidy_words %>%
   inner_join(get_sentiments("bing"))  %>%
   # group by week
@@ -129,6 +139,23 @@ tidy_words %>%
   ggplot(aes(x = week, y = n, fill = sentiment)) +
   geom_bar(stat = "identity")
 
+
+# über die Zeit - geht noch nicht!
+tidy_words %>%
+  inner_join(get_sentiments("bing"))  %>%
+  # group by week
+  mutate(hour = strsplit(ExtractedDateSent, " ")[[1]][2]) %>% 
+  # mutate(hour = strsplit(strsplit(ExtractedDateSent, 
+  #                                 split = " ")[[1]][5], ":")[[1]][1]) %>% 
+  group_by(hour, sentiment) %>%
+  summarise(n = n()) %>%
+  ungroup() %>% 
+  mutate(n = ifelse(sentiment == "negative", n*-1, n)) %>% 
+  ggplot(aes(x = hour, y = n, fill = sentiment)) +
+  geom_bar(stat = "identity")
+
+strsplit(strsplit("Saturday, May 23, 2009 8:57 PM", 
+                  split = " ")[[1]][5], ":")[[1]][1]
 
 # wordcloud
 library(wordcloud)
