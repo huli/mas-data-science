@@ -91,4 +91,76 @@ weights <- words_count_sentiments$n
 sentiments_words <- words_count_sentiments$sentiment
 
 colors <- ifelse(words_count_sentiments$sentiment == "positive", "blue", "red")
-tagcloud( words, weights= weights, col= colors) #, algorithm = "fill" )
+tagcloud( words, weights= weights*2, col= colors) #, algorithm = "fill" )
+
+
+# words over the time
+mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent from Emails Limit 100000' )
+
+
+mails %>% 
+  unnest_tokens(word, ExtractedSubject) ->
+  tidy_words
+
+library(tidyr)
+#Anschauen: lubridate
+
+library(reshape2)
+library(tidyr)
+
+tidy_words %>%
+  inner_join(get_sentiments("bing"))  %>%
+  # group by week
+  mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
+  group_by(week, sentiment) %>% 
+  summarise(n = n()) %>% 
+  dcast(week ~ sentiment) %>% 
+  replace_na(list(negative = 0)) ->
+  weeks
+
+tidy_words %>%
+  inner_join(get_sentiments("bing"))  %>%
+  # group by week
+  mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
+  group_by(week, sentiment) %>%
+  summarise(n = n()) %>%
+  ungroup() %>% 
+  mutate(n = ifelse(sentiment == "negative", n*-1, n)) %>% 
+  ggplot(aes(x = week, y = n, fill = sentiment)) +
+  geom_bar(stat = "identity")
+
+
+# wordcloud
+library(wordcloud)
+
+# einmal ganz einfach
+tidy_words %>% 
+  dplyr::filter(!(word %in% filter_words)) %>% 
+  dplyr::filter( str_length(word) > 2) %>% 
+  count(word) %>%
+  with(wordcloud(word, n, max.words = 100))
+
+
+# mit gruppierung gegen positive und negative emotionen
+mails = dbGetQuery( con,'select ExtractedSubject from Emails' )
+
+mails %>% 
+  unnest_tokens(word, ExtractedSubject) ->
+  tidy_words
+
+data(stop_words)
+
+# Filter stop words
+tidy_words %>%
+  anti_join(stop_words) ->
+  tidy_words
+
+tidy_words %>% 
+  count(word, sort = TRUE) 
+
+tidy_words %>%
+  inner_join(get_sentiments("bing")) %>%
+  count(word, sentiment, sort = TRUE) %>%
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>%
+  comparison.cloud(colors = c("#F8766D", "#00BFC4"),
+                   max.words = 100)
