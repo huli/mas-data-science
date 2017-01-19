@@ -11,6 +11,7 @@ library(stringr)
 library(tagcloud)
 library( extrafont )
 library(RColorBrewer)
+library(ggplot2)
 
 # connect to the sqlite file
 library(DBI)
@@ -53,9 +54,21 @@ tidy_words %>%
   head(n) ->
   top_n_words
 
-
+# create tag cloud
 words <- top_n_words$word
 weights <- top_n_words$n
 
 colors <- colorRampPalette( brewer.pal( 12, "Paired" ) )( 100 )
 tagcloud( words, weights= weights, col= colors) #, algorithm = "fill" )
+
+# create bar chart
+tidy_words %>%
+  count(word, sort = TRUE) %>%
+  head(10) %>%
+  mutate(word = reorder(word, n)) %>%
+  ggplot(aes(word, n)) +
+  geom_bar(stat = "identity") +
+  xlab(NULL) +
+  coord_flip()
+
+
