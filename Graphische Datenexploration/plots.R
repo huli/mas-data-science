@@ -1,7 +1,5 @@
 
 
-# TODO: Grafik speichern
-
 library(MASS)
 library(ggplot2)
  
