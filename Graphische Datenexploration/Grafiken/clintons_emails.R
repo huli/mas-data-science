@@ -25,7 +25,7 @@ library(ggplot2)
 library(DBI)
 con = dbConnect(RSQLite::SQLite(), dbname="c:\\temp\\database.sqlite")
 
-mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId from Emails Limit 10000' )
+mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent from Emails' )
 
 
 mails %>% 
@@ -112,82 +112,53 @@ words_with_sentiments %>%
   inner_join(sentiments_bing) ->
   words_count_sentiments
 
+words_count_sentiments[words_count_sentiments$sentiment 
+                       == "positive", ] [1:10,] ->
+                        top_10_positive
 
-# create bar chart
-tidy_words %>%
-  count(word, sort = TRUE) %>%
-  head(10) %>%
-  mutate(word = reorder(word, n)) %>%
-  ggplot(aes(word, n)) +
+words_count_sentiments[words_count_sentiments$sentiment 
+                       == "negative", ]  [1:10,] ->
+  top_10_negative
+
+# plot positive
+# colors <- brewer.pal(n=10,name="Blues")(11)
+# colors <- gray.colors(10)
+ggplot(top_10_positive, aes(x = reorder(word, n), y = n)) +
   geom_bar(stat = "identity") +
-  xlab(NULL) +
   coord_flip()
 
-# sentiment analysis
-#?sentiments
+
+# plot negative
+ggplot(top_10_negative, aes(x = reorder(word, n), y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip()
 
 
-words <- words_count_sentiments$word
-weights <- words_count_sentiments$n
-sentiments_words <- words_count_sentiments$sentiment
-
-colors <- ifelse(words_count_sentiments$sentiment == "positive", "blue", "red")
-tagcloud( words, weights= weights*2, col= colors) #, algorithm = "fill" )
-
-
-# words over the time
-mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent, ExtractedDateSent from Emails' )
-
-distinct(mails$MetadataDateSent)
-mails %>% 
-  unnest_tokens(word, ExtractedSubject) ->
-  tidy_words
+# Verlauf ueber die Zeit
+# ---------------------------------------------------------------------------------------------
 
 #Anschauen: lubridate
 
 library(reshape2)
 library(tidyr)
 
-# tidy_words %>%
-#   inner_join(get_sentiments("bing"))  %>%
-#   # group by week
-#   mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
-#   group_by(week, sentiment) %>% 
-#   summarise(n = n()) %>% 
-#   dcast(week ~ sentiment) %>% 
-#   replace_na(list(negative = 0)) ->
-#   weeks
-
-# über die wochen
+# über die wochen  -- SORTIERUNG FEHLT
 tidy_words %>%
   inner_join(get_sentiments("bing"))  %>%
   # group by week
-  mutate(week = strftime(MetadataDateSent, format="%W")) %>% 
+    mutate(week = strftime(MetadataDateSent, format="%Y-%W")) %>% 
   group_by(week, sentiment) %>%
-  summarise(n = n()) %>%
+  dplyr::summarise(n = n()) %>%
   ungroup() %>% 
+  arrange(week) %>% 
   mutate(n = ifelse(sentiment == "negative", n*-1, n)) %>% 
   ggplot(aes(x = week, y = n, fill = sentiment)) +
   geom_bar(stat = "identity")
 
 
-# über die Zeit - geht noch nicht!
-tidy_words %>%
-  inner_join(get_sentiments("bing"))  %>%
-  # group by week
-  mutate(hour = strsplit(ExtractedDateSent, " ")[[1]][2]) %>% 
-  # mutate(hour = strsplit(strsplit(ExtractedDateSent, 
-  #                                 split = " ")[[1]][5], ":")[[1]][1]) %>% 
-  group_by(hour, sentiment) %>%
-  summarise(n = n()) %>%
-  ungroup() %>% 
-  mutate(n = ifelse(sentiment == "negative", n*-1, n)) %>% 
-  ggplot(aes(x = hour, y = n, fill = sentiment)) +
-  geom_bar(stat = "identity")
 
-strsplit(strsplit("Saturday, May 23, 2009 8:57 PM", 
-                  split = " ")[[1]][5], ":")[[1]][1]
-
+# not used anymore ----------------------------------------------------------------------------
+  
 # wordcloud
 library(wordcloud)
 
@@ -197,7 +168,6 @@ tidy_words %>%
   dplyr::filter( str_length(word) > 2) %>% 
   count(word) %>%
   with(wordcloud(word, n, max.words = 100))
-
 
 # mit gruppierung gegen positive und negative emotionen
 mails = dbGetQuery( con,'select ExtractedSubject from Emails' )
@@ -218,7 +188,7 @@ tidy_words %>%
 
 tidy_words %>%
   inner_join(get_sentiments("bing")) %>%
-  count(word, sentiment, sort = TRUE) %>%
+  dplyr::count(word, sentiment, sort = TRUE) %>%
   acast(word ~ sentiment, value.var = "n", fill = 0) %>%
   comparison.cloud(colors = c("#F8766D", "#00BFC4"),
-                   max.words = 100)
+                   max.words = 1000)
