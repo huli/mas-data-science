@@ -19,7 +19,7 @@ library(ggplot2)
 # Zeitverlauf über Tag erstellen
 # Balkendiagramm mit den meisten Wörtern
 # Ev. noch Zeitleiste
-
+# Ev. Smileys
 
 # connect to the sqlite file
 library(DBI)
@@ -56,11 +56,15 @@ tidy_words %>%
   tidy_words
 
 
+
+# Display most common words
+# ---------------------------------------------------------------------------------------------
+
 n <- 100
 
 # Most common words
 tidy_words %>% 
-  count(word, sort = TRUE) %>% 
+  dplyr::count(word, sort = TRUE) %>% 
   head(n) ->
   top_n_words
 
@@ -68,8 +72,46 @@ tidy_words %>%
 words <- top_n_words$word
 weights <- top_n_words$n
 
-colors <- colorRampPalette( brewer.pal( 12, "Paired" ) )( 100 )
-tagcloud( words, weights= weights, col= colors) #, algorithm = "fill" )
+# Bing lexikon with score
+sentiments_bing <- get_sentiments("bing")
+
+
+# display.brewer.all()
+# display.brewer.pal(n=10,name="Blues")
+
+colors <- colorRampPalette( brewer.pal(n=3,name="Blues") )( 100 )
+tagcloud( words, weights= weights, col= sort(colors, decreasing = F) ) #, algorithm = "fill" )
+
+
+# Barchart of top 10 words
+# ---------------------------------------------------------------------------------------------
+
+tidy_words %>% 
+  dplyr::count(word, sort = TRUE) %>% 
+  head(10) -> 
+  top_10_words 
+
+# arrange(!n) ->
+
+ggplot(top_10_words, aes(x = reorder(word, n), y = n)) +
+  geom_bar(stat = "identity") +
+  coord_flip()
+
+
+# Barchart of top 10 positiv and negative sentiments
+# ---------------------------------------------------------------------------------------------
+
+
+# Woerter mit Sentiments
+tidy_words %>%
+  inner_join(sentiments_bing) ->
+  words_with_sentiments
+
+words_with_sentiments %>%
+  dplyr::count(word, sort = TRUE) %>%
+  inner_join(sentiments_bing) ->
+  words_count_sentiments
+
 
 # create bar chart
 tidy_words %>%
@@ -84,17 +126,6 @@ tidy_words %>%
 # sentiment analysis
 #?sentiments
 
-# Bing lexikon with score
-sentiments_bing <- get_sentiments("bing")
-
-tidy_words %>% 
-  inner_join(sentiments_bing) ->
-  words_with_sentiments
-
-words_with_sentiments %>% 
-  count(word, sort = TRUE) %>% 
-  inner_join(sentiments_bing) -> 
-  words_count_sentiments
 
 words <- words_count_sentiments$word
 weights <- words_count_sentiments$n
