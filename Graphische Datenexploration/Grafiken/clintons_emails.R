@@ -25,11 +25,11 @@ library(ggplot2)
 library(DBI)
 con = dbConnect(RSQLite::SQLite(), dbname="c:\\temp\\database.sqlite")
 
-mails = dbGetQuery( con,'select ExtractedSubject, SenderPersonId, MetadataDateSent from Emails' )
+mails = dbGetQuery( con,'select ExtractedBodyText, ExtractedSubject, SenderPersonId, MetadataDateSent from Emails' )
 
 
 mails %>% 
-  unnest_tokens(word, ExtractedSubject) ->
+  unnest_tokens(word, ExtractedBodyText) ->
   tidy_words
 
 data(stop_words)
