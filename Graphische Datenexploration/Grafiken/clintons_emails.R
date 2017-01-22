@@ -156,6 +156,24 @@ tidy_words %>%
   geom_bar(stat = "identity")
 
 
+# Haiti Earthquake??
+# Ev nicht nur Subjects durchsuchen?
+
+# peak at 
+# 2010-05  positive     24
+# 1 - 7 Februar
+## http://www.bbc.com/news/uk-northern-ireland-31930496
+
+# second peak
+# 8  2010-34  positive     18
+# 23 - 29 August
+
+# tidy_words %>%
+#   inner_join(get_sentiments("bing"))  %>%
+#   # group by week
+#   mutate(week = strftime(MetadataDateSent, format="%Y-%W")) %>% 
+#   filter(week == "2010-05")
+
 
 # not used anymore ----------------------------------------------------------------------------
   
