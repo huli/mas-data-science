@@ -3,6 +3,11 @@
 # http://jason.bryer.org/timeline/
 # https://daattali.com/shiny/timevis-demo/
 
+#todo
+# bei den meist verwendeten wörter,
+# könnte man auch eine interessante auswahl 
+# treffen und diese gegenüberstellen
+
 # Clinton
 library(RSQLite)
 library(tidytext)
@@ -41,18 +46,30 @@ tidy_words %>%
   anti_join(stop_words) ->
   tidy_words
 
+# Daten range
+date_range <- tidy_words[!tidy_words$MetadataDateSent == "",]$MetadataDateSent
+
+# "2009-01-06T05:00:00+00:00"
+first_date <- sort(date_range) %>% 
+  head(1)
+
+# "2012-12-20T05:00:00+00:00"
+last_date <- sort(date_range) %>% 
+  tail(10)
+
 # Most common words
 tidy_words %>% 
-  count(word, sort = TRUE) 
+  dplyr::count(word, sort = TRUE) 
 
 # Filter specific word
 # What is sid?
 filter_words <- c("fw:","re:", "and", "on", "in", "from", "sid", "of", "the", "a", "h:","fw","fwd",
-                  "to", "for", "i", "if", "text", "am", "with", "-", "s", "re", "u", "pm", "fm")
+                  "to", "for", "i", "if", "text", "am", "with", "-", "s", "re", "u", "pm", "fm",
+                  "state.gov", "2010", "2009", "2015")
 
 tidy_words %>% 
   dplyr::filter(!(word %in% filter_words)) %>% 
-  dplyr::filter( str_length(word) > 2) ->
+  dplyr::filter( str_length(word) > 3) ->
   tidy_words
 
 
@@ -60,6 +77,7 @@ tidy_words %>%
 # Display most common words
 # ---------------------------------------------------------------------------------------------
 
+# Date Range
 n <- 100
 
 # Most common words
@@ -80,7 +98,8 @@ sentiments_bing <- get_sentiments("bing")
 # display.brewer.pal(n=10,name="Blues")
 
 colors <- colorRampPalette( brewer.pal(n=3,name="Blues") )( 100 )
-tagcloud( words, weights= weights, col= sort(colors, decreasing = F) ) #, algorithm = "fill" )
+tagcloud( words, weights= weights, col= sort(colors, decreasing = F), 
+          algorithm = "fill", scale = "auto" )
 
 
 # Barchart of top 10 words
