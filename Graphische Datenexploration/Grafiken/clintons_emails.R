@@ -8,6 +8,9 @@
 # könnte man auch eine interessante auswahl 
 # treffen und diese gegenüberstellen
 
+# fragen
+# wie kriege ich gute triade
+
 # Clinton
 library(RSQLite)
 library(tidytext)
@@ -97,9 +100,14 @@ sentiments_bing <- get_sentiments("bing")
 # display.brewer.all()
 # display.brewer.pal(n=10,name="Blues")
 
-colors <- colorRampPalette( brewer.pal(n=3,name="Blues") )( 100 )
+# 1A3148
+# 17436D
+
+
+# colors <- colorRampPalette( brewer.pal(n=3,name="Blues") )( 100 )
+colors <- colorRampPalette(c("#17436D", "#182B3D"))(100)
 tagcloud( words, weights= weights, col= sort(colors, decreasing = F), 
-          algorithm = "fill", scale = "auto" )
+          algorithm = "fill", scale = "auto" , order = "size")
 
 
 # Barchart of top 10 words
@@ -164,6 +172,7 @@ library(tidyr)
 # über die wochen  -- SORTIERUNG FEHLT
 tidy_words %>%
   inner_join(get_sentiments("bing"))  %>%
+  dplyr::filter(MetadataDateSent != "") %>% 
   # group by week
     mutate(week = strftime(MetadataDateSent, format="%Y-%W")) %>% 
   group_by(week, sentiment) %>%
@@ -172,8 +181,8 @@ tidy_words %>%
   arrange(week) %>% 
   mutate(n = ifelse(sentiment == "negative", n*-1, n)) %>% 
   ggplot(aes(x = week, y = n, fill = sentiment)) +
-  geom_bar(stat = "identity")
-
+  geom_bar(stat = "identity") + 
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5, size=5))
 
 # Haiti Earthquake??
 # Ev nicht nur Subjects durchsuchen?
