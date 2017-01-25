@@ -278,7 +278,7 @@ ggplot(mtcars, aes(x=mpg))+
   theme(axis.title=element_blank())
 
 library(extrafont)
-font_import()
+# font_import()
 loadfonts(device="win")
 
 # ggplot(mtcars, aes(x=mpg))+
@@ -293,7 +293,6 @@ ggplot(mtcars, aes(x=mpg))+
 
 
 # Legende
-
 ggplot(PlantGrowth,aes(x=group,y=weight,fill=group))+
   geom_boxplot()
 
@@ -325,7 +324,6 @@ ggplot(PlantGrowth,aes(x=group,y=weight,fill=group))+
 
 
 # Anmerkungen in Grafiken
-
 ggplot(faithful,aes(x=waiting,y=eruptions))+
   geom_point()+
   annotate("text",x=50,y=2.5,label="Frühstarter")+
@@ -333,8 +331,7 @@ ggplot(faithful,aes(x=waiting,y=eruptions))+
 
 
 # Farben
- 
-ggplot(cabbage_exp, aes(x=Date,y=Weight, fill = Cultivar))+
+ ggplot(cabbage_exp, aes(x=Date,y=Weight, fill = Cultivar))+
   geom_bar(position="dodge",stat="identity")
 
 library(RColorBrewer)
