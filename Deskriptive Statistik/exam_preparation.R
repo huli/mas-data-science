@@ -1,6 +1,12 @@
 
 
 
+
+# Vergleich von zwei Populationsanteilen
+
+prop.test(table(quine$Eth, quine$Sex), correct=FALSE)
+
+
 # Anpassungstests
 # ---------------------------------------------------------
 
@@ -20,12 +26,10 @@ p4 <- pnorm(1000.5, mean = mu, sd = 1, lower.tail = F)
 # Test
 # p1 + p2 + p3 + p4
 
+# Achtung, muss in Stücken sein!
 actual <- c(.2, .32, .34, .14) * 100
 
 chisq.test(actual, p = c(p1, p2, p3, p4))
-chisq.test(actual, p = c(p1, p2, p3, p4))
-
-
 
 # Testen von einer erwarteten, prozentualen
 # Verteilung
