@@ -121,8 +121,9 @@ ggplot(heightweight, aes(x = ageYear, y = heightIn)) +
 # Dichte ist je Bins visualisiert
 ggplot(diamonds, aes(x=carat,y=price))+
   stat_bin2d(bins=50)+
-  scale_fill_gradient(low="lightblue",high="red",limits=c(0,6000))+
-  stat_smooth(method=lm, se=FALSE,colour="black")
+  scale_fill_gradient(low="lightblue",high="red",limits=c(0,4000))+
+  stat_smooth(method=lm, se=FALSE,colour="black") +
+  ylim(c(0, 15000))
 
 
 # multivariant 
@@ -194,7 +195,8 @@ library(GGally)
 
 # Korrelationsdiagramm -------------------
 
-corrplot(mcar, addCoef.col = "black", number.cex = .7)
+mcar <- cor(mtcars)
+corrplot(mcar,  addCoef.col = "black", number.cex = .7)
 
 # Scatterplot-Matrix ---------------------
 
