@@ -105,9 +105,13 @@ sentiments_bing <- get_sentiments("bing")
 
 
 # colors <- colorRampPalette( brewer.pal(n=3,name="Blues") )( 100 )
-colors <- colorRampPalette(c("#17436D", "#182B3D"))(100)
-tagcloud( words, weights= weights, col= sort(colors, decreasing = F), 
-          algorithm = "fill", scale = "auto" , order = "size")
+colors <- colorRampPalette(c("#17436D", "#9EC5E5"))(100)
+
+#barplot(1:100, col = colors)
+tagcloud( words, weights= weights, col= colors, 
+          algorithm = "fill", scale = 1.5 , order = "random")
+
+
 
 
 # Barchart of top 10 words
