@@ -1,6 +1,46 @@
 
 
 
+# Anpassungstests
+# ---------------------------------------------------------
+
+# Testen einer Verteilungsform
+# Ist eine Variable Normalverteilt?
+
+n <- 100
+mu <- 999.93
+s <- sqrt(.25)
+
+p1 <- pnorm(999.5, mean=mu, sd = s, lower.tail = T)
+# [1] 0.1948945
+p2 <- pnorm(1000, mean=mu, sd = s, lower.tail = T) - p1
+p3 <- pnorm(1000.5, mean = mu, sd = 1, lower.tail = T) - (p1 + p2)
+p4 <- pnorm(1000.5, mean = mu, sd = 1, lower.tail = F)
+
+# Test
+# p1 + p2 + p3 + p4
+
+actual <- c(.2, .32, .34, .14) * 100
+
+chisq.test(actual, p = c(p1, p2, p3, p4))
+chisq.test(actual, p = c(p1, p2, p3, p4))
+
+
+
+# Testen von einer erwarteten, prozentualen
+# Verteilung
+
+data <- na.omit(survey$Smoke)
+table(data)
+# Heavy Never Occas Regul 
+# 11   189    19    17
+
+smoke_expected <- c(.045, .795, .085, .075) 
+
+# Tabelle kann direkt hineingegeben werden
+chisq.test(table(data), p = smoke_expected)
+
+
 # Erwartete Verteilung ohne chi2
 
 data <- na.omit(survey$Smoke)
@@ -8,8 +48,10 @@ n <- length(data)
 
 smoke_expected <- c(.045, .795, .085, .075) * n
 smoke_actual <- table(data)
+# Heavy Never Occas Regul 
+# 11   189    19    17 
   
-# chi2 berechnen mit formel
+# chi2 berechnen mit formel (chisq, pchisq, chi)
 chi <- sum((smoke_actual - smoke_expected) ^2 /
         smoke_expected)
 
