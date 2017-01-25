@@ -1,9 +1,46 @@
 
 
 
+# Erwartete Verteilung ohne chi2
+
+data <- na.omit(survey$Smoke)
+n <- length(data)
+
+smoke_expected <- c(.045, .795, .085, .075) * n
+smoke_actual <- table(data)
+  
+# chi2 berechnen mit formel
+chi <- sum((smoke_actual - smoke_expected) ^2 /
+        smoke_expected)
+
+df <- length(table(data)) -1
+pchisq(chi, df, lower.tail = F)  
 
 
+# Unabhängigkeitstests 
+# ------------------------------------------------------------
 
+# Unabhängitkeit mit Tabelle - ACHTUNG -> matrix nehmen!
+
+row1 <- c(110, 120, 20, 30, 20)
+row2 <- c(90, 60, 30, 10, 10)
+m = matrix(c(row1,row2), byrow = T, nrow = 2)
+chisq.test(m, correct = F)
+
+# Unabhängigkeit bei nominalen Variablen
+library(readxl)
+RauchenGeschlecht <- read_excel("C:/temp/RauchenGeschlecht.xlsx")
+View(RauchenGeschlecht)
+chisq.test(RauchenGeschlecht$`Geschlecht des Kindes`,
+           RauchenGeschlecht$`Rauchverhalten der Eltern`,
+           correct = F)
+
+
+# Unabhängigkeit bei nominalen Variablen
+library(MASS)
+data <- table(survey$Smoke, survey$Exer)
+chisq.test(data,
+           correct = F)
 
 # Unabhängigkeit bei zwei metrischen Variablen
 # Sind die beiden Variablen unabhängig
