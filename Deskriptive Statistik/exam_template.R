@@ -6,12 +6,24 @@ library(ggplot2)
 
 
 
-# Stichprobengrösse ermitteln (Hier mit t-Verteilung)
-# stichprobenGroesse(1.2, sd(heights), .05, length(heights))
-stichprobenGroesse <- function(E, sd, alpha, df){
-   t_alpha <- qt(1-alpha/2, df = df)
-   cat("t_vaue: ", t_alpha)
-   cat("\nn = ", ((t_alpha)^2 * sd^2) / E^2)
+
+# Stichprobengrösse fuer Anteil ermitteln
+stichprobenGroesseAnteil <- function(E, p0, alpha){
+  if(is.na(p0))
+  {
+    p0 <- .5
+  }
+  z_star <- qnorm(1-alpha/2)
+  cat("z-Wert (Konfidenzniveau): ", z_star)
+  n <- (z_star^2 * p0 * (1-p0)) / E^2
+  cat("\nn: ", n)
+}
+
+# Stichprobengrösse fuer Mittelwert ermitteln
+stichprobenGroesse <- function(E, sd, alpha){
+   z_star <- qnorm(1-alpha/2)
+   cat("z-Wert (Konfidenzniveau): ", z_star)
+   cat("\nn = ", ((z_star)^2 * sd^2) / E^2)
 }
 
 # Fehlerbereich und t-Value ermitteln
