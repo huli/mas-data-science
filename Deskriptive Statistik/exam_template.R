@@ -3,6 +3,20 @@
 library(TeachingDemos)
 library(ineq)
 library(ggplot2)
+# library(DescTools)
+# DescTools::CramerV()
+# DescTools::ContCoef()
+
+# RData -> File -> load("C:/temp/Daten_Schulung.RData")
+# txt -> penguings <- scan("c:/temp/penguins.txt")
+# csv -> File -> gemeindedaten <- read.csv("c:/temp/gemeindedaten.csv")
+# excel -> RauchenGeschlecht <- read_excel("C:/temp/RauchenGeschlecht.xlsx")
+
+
+
+
+
+
 
 
 
