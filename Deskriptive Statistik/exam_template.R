@@ -16,25 +16,24 @@ library(ggplot2)
 
 
 
+
+
+
+
+# Konfidenzintervall
+confint(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung), level = .95)
+
+# r^2 ist Anteil der Erklärung
+summary(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung))
+
+
+# Merken - Paired Test ist mit Differenz
 t.test(Daten_Schulung$Pre, Daten_Schulung$Post, conf.level = .95,
        correct = F, alternative = "greater")
 
-# todo
-confint(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung), level = .95)
-
-
-summary(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung))
-sqrt(0.3812)
-
 # Merken
-# Paired Test ist mit Differenz
-
-# Merken !!!!!
-t.test(Daten_Wachstum$Alter ~Daten_Wachstum$Geschlecht,
+t.test(Daten_Wachstum$Alter~Daten_Wachstum$Geschlecht,
        conf.level=.95 )
-
-# TODO
-# Varianz, Sd von Anteil -> übersicht ergänzen
 
 # ü 62
 prop.test(102, 1200, p = .10, correct = F,
