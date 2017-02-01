@@ -2,8 +2,45 @@
 
 
 
-# Vergleich von zwei Populationsanteilen
+# Wahrscheinlichkeit
+# ---------------------------------------------------------
 
+#  guenstige
+# ----------- = Pr(x)
+#  mögliche
+
+
+# Möglichkeiten 5 aus 20 zu ziehen
+# choose(20, 5)
+# sample(1:40, 6)
+
+
+# Diverse Punkte
+# ---------------------------------------------------------
+
+
+# Konfidenzintervall
+confint(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung), level = .95)
+
+# r^2 ist Anteil der Erklärung
+summary(lm(Daten_Wachstum$Wachstumsrate~Daten_Wachstum$Erfahrung))
+
+
+# Merken - Paired Test ist mit Differenz
+# ---------------------------------------------------------
+
+t.test(Daten_Schulung$Pre, Daten_Schulung$Post, conf.level = .95,
+       correct = F, alternative = "greater")
+
+
+# Merken - t-test geht auch mit zwei Stichproben aus einer
+# ---------------------------------------------------------
+t.test(Daten_Wachstum$Alter~Daten_Wachstum$Geschlecht,
+       conf.level=.95 )
+
+
+# Vergleich von zwei Populationsanteilen
+# ---------------------------------------------------------
 prop.test(table(quine$Eth, quine$Sex), correct=FALSE)
 
 

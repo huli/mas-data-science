@@ -7,6 +7,8 @@ library(ggplot2)
 df <- survey[na.omit(survey$Sex), ]
 nrow(df)
 
+
+
 # univariant
 # ------------------------------------------------------------------------------------------------
 
@@ -54,6 +56,11 @@ ggplot(data = mtcars, aes(mpg)) +
 ggplot(mtcars, aes(mpg)) +
   geom_histogram(binwidth = 1)
 
+# mit korrekten Achsen
+breiten<-seq(15,51,by=3)
+hist(Daten_Wachstum$Alter, breiten, axes = F)
+axis(1, at = breiten, labels = breiten)
+
 # Dichtefunktion ------------------------------------
 
 ggplot(mtcars, aes(x=mpg))+
@@ -77,7 +84,7 @@ ggplot(BOD, aes(x = Time, y = demand)) +
 ggplot(BOD, aes(x = Time, y = demand)) +
   geom_line() +
   ylim(0, max(BOD$demand)) +
-  geom_point(data = BOD)
+  geom_point()
 
 # Balkendiagramm ------------------------------------
 
@@ -175,7 +182,7 @@ ggplot(heightweight, aes(x=ageYear,y=heightIn,colour=sex)) +
 
 library(plyr)
 
-countsub<-filter(countries, Year==2009)
+countsub<-filter(countries, "Year"==2009)
 
 ggplot(countsub, aes(x=healthexp, y=infmortality, size=GDP))+
   geom_point()
