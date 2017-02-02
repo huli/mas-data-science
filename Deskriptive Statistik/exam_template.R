@@ -50,6 +50,13 @@ einseitigAnalyse <- function(values, alpha) {
   cat("\nFehlerbereich: ", mu + c(-E,E))
 }
 
+mean_geom <- function (x)
+{
+  n<-length(x) 
+  mittelwert<-prod(x)^(1/n) 
+  return (mittelwert)
+}
+
 
 
 library(TeachingDemos)
@@ -63,46 +70,6 @@ library(ggplot2)
 # txt -> penguings <- scan("c:/temp/penguins.txt")
 # csv -> File -> gemeindedaten <- read.csv("c:/temp/gemeindedaten.csv")
 # excel -> RauchenGeschlecht <- read_excel("C:/temp/RauchenGeschlecht.xlsx")
-
-
-
-
-
-# zuerst x
-m <- lm(eruptions ~ waiting, data = faithful)
-plot(faithful$waiting, resid(m))
-
-# Achtung: mit data.frame funktioniert nur wenn ohne faithful$
-predict(m, data.frame(waiting = 80), interval = "predict")
-
-
-# Konfidenzintervall
-model <- lm(eruptions ~ waiting, data = faithful)
-confint(model)
-# 2.5 %      97.5 %
-#   (Intercept) -2.18930436 -1.55872761
-# waiting      0.07126011  0.07999579
-
-
-# modellierung
-ggplot(aes(waiting, eruptions), data = faithful) +
-  geom_point()+
-  geom_smooth(method = "lm")
-
-
-# Unabhängigkeit
-cor.test(faithful$waiting, faithful$eruptions,
-         method = "pearson")
-
-
-# Verteilung
-chisq.test(table(survey$Smoke), p = c(.045, .795, .085, .075), 
-           correct = F)
-
-pchisq(0.10744, df = 3, lower.tail = F)
-
-# Unabhängige Stichproben
-t.test(mpg ~ am, data = mtcars)
 
 
 
