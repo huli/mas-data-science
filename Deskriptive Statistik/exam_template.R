@@ -73,3 +73,63 @@ library(ggplot2)
 
 
 
+# 2
+n <- 100
+mu <- 34.25
+s <- 7.5
+alpha <- .05
+
+SE <- s / sqrt(n)
+E <- qt(1-alpha/2, df = n- 1) * SE
+mu + c(-E, E)
+
+# 3
+240 * 100 / 96
+250 * .96
+
+# ??
+
+# 4
+t.test(mtcars$mpg, mu = 50, conf.level = .95,
+       alternative = "less")
+
+# 5
+library(MASS)
+View(Cars93)
+
+df <- table(Cars93$AirBags, Cars93$Type)
+chisq.test(df, correct = F)
+
+DescTools::CramerV(df)
+
+# 6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
