@@ -28,3 +28,18 @@ rect.hclust(cluster, 5)
 data.frame(mtcars, cutree(cluster, 5))
 
 
+# k-means Clustering
+
+set.seed(1234)
+df <- iris[3:4]
+
+# Normalisieren
+df_norm <- scale(df)
+
+# Cluster bilden (Anzahl Clusters!)
+clusters <- kmeans(df_norm, 3)
+
+# Plot
+plot(df, col=clusters$cluster + 1, pch=20)
+
+
