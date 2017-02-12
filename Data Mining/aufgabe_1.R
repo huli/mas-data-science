@@ -1,5 +1,7 @@
 
 
+# todo:
+# columns ueberpruefen
 
 # 1. Datenaufbereitung
 library(readr)
@@ -32,6 +34,31 @@ df[,4] <- hours
 ids_with_hours <- df[, c(4,1,2,3)]
 names(ids_with_hours) <- c("hour","employeeid","departmentid","clientid") 
 
-str(ids_with_hours)
+# 2. Analyse
+data <- read_csv("https://raw.githubusercontent.com/romeokienzler/developerWorks/master/testdata.csv")
+
+View(data)
+library(ggplot2)
+
+# Histogramm erstellen der Stunden
+ggplot(data = data, aes(x=factor(hour))) +
+  geom_bar()
+
+ggplot(data = data, aes(x=factor(employeeid))) +
+  geom_bar()
+
+ggplot(data = data, aes(x=factor(clientid))) +
+  geom_bar()
+
+ggplot(data = data, aes(x=factor(departmentid))) +
+  geom_bar()
+
+# some experiments
+ggplot(data = data[1:10000,], aes(x=departmentid, y=clientid, color=employeeid)) +
+  geom_point()
+
+
+
+
 
 
