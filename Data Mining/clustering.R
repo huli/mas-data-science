@@ -43,3 +43,6 @@ clusters <- kmeans(df_norm, 3)
 plot(df, col=clusters$cluster + 1, pch=20)
 
 
+
+
+
