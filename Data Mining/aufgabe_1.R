@@ -1,9 +1,6 @@
 
 
-# todo:
-# columns ueberpruefen
-
-# 1. Datenaufbereitung
+# 1. Data cleansing
 # -----------------------------------------------------------------------------------------------
 
 library(readr)
@@ -20,11 +17,11 @@ log_filtered$X6 %>%
   as.data.frame() ->
   ids_as_table
 
-# Spalten umsortieren
+# Reorder columns
 # Spalte 1> employeeid, Spalte 2> departmentid, Spalte 3> clientid
 df <- ids_as_table[,c(2,1,3)]
 
-# Datum hinzufuegen
+# add date
 hoursAndDates <- log[!(1:nrow(log)%%2),4]
 
 hoursAndDates$X4 %>% 
@@ -39,7 +36,7 @@ names(ids_with_hours) <- c("hour","employeeid","departmentid","clientid")
 # result
 ids_with_hours
 
-# 2. Analyse
+# 2. Analysis
 # -----------------------------------------------------------------------------------------------
 data <- read_csv("https://raw.githubusercontent.com/romeokienzler/developerWorks/master/testdata.csv")
 
@@ -70,8 +67,6 @@ df %>%
   summarise(n = n()) ->
   departments_per_hour
 
-
-
 # Clustering
 k <- kmeans(departments_per_hour, 2)
 
@@ -84,7 +79,7 @@ departments_per_hour %>%
 departments_with_cluster %>% 
     ggplot(aes(hour, departmentid, size=n, color=factor(cluster))) +
     geom_point()+
-    geom_text(aes(0,23,label="< whats happening here?"), size=4,
+    geom_text(aes(0,23,label="whats happening here?"), size=4,
           color="black",
           vjust=0, hjust=-0.05)
 
@@ -106,6 +101,7 @@ df %>%
   group_by(employeeid, hour) %>% 
   summarise(n = n()) %>% 
   ggplot(aes(factor(hour), y=factor(employeeid))) +
+  theme_minimal() +
   geom_tile(aes(fill = n))
 
 # Only one employee is active during this hour in
