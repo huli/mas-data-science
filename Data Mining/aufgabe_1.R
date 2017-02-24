@@ -14,6 +14,8 @@ log_filtered <- log[!(1:nrow(log)%%2),6]
 # departmentid, employeeid, clientid
 log_filtered$X6 %>% 
   str_split_fixed(",", n = 3) %>% 
+  apply(2, str_trim) %>% 
+  apply(2, as.integer) %>% 
   as.data.frame() ->
   ids_as_table
 
@@ -115,6 +117,7 @@ df %>%
 # -----------------------------------------------------------------------------------------------
 
 # Suspicious employee 12 in department 7 found (1000 requests in the middle of the night)
+
 
 
 
