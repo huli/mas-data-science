@@ -11,7 +11,7 @@ library(dplyr)
 log <- read_log("https://raw.githubusercontent.com/romeokienzler/developerWorks/master/log")
 log_filtered <- log[!(1:nrow(log)%%2),6]
 
-# epartmentid, employeeid, clientid
+# departmentid, employeeid, clientid
 log_filtered$X6 %>% 
   str_split_fixed(",", n = 3) %>% 
   as.data.frame() ->
@@ -36,15 +36,26 @@ names(ids_with_hours) <- c("hour","employeeid","departmentid","clientid")
 # result
 ids_with_hours
 
+
 # 2. Analysis
 # -----------------------------------------------------------------------------------------------
-data <- read_csv("https://raw.githubusercontent.com/romeokienzler/developerWorks/master/testdata.csv")
-
-# View data
-View(data)
 
 library(ggplot2)
 library(reshape2)
+
+data <- read_csv("https://raw.githubusercontent.com/romeokienzler/developerWorks/master/testdata.csv")
+
+# View data and controlling the work with our previous result
+View(data)
+range(data$employeeid)
+range(data$departmentid)
+
+# He mixed up the columns empoloyeeid and departementid so we fix it 
+colname <- colnames(data)[3]
+colnames(data)[3] <- colnames(data)[4]
+colnames(data)[4] <- colname
+
+#View(df)
 
 # Clean columns without value
 data %>% 
@@ -57,69 +68,53 @@ df %>%
   geom_bar() +
   facet_wrap(~id, scale = "free")
 
-
-# View departments over time
-ggplot(data =  df[,c(1,3)], aes(x=factor(departmentid), y=hour)) +
-  geom_point()
-
 df %>% 
-  group_by(hour, departmentid) %>% 
+  group_by(hour, employeeid) %>% 
   summarise(n = n()) ->
-  departments_per_hour
+  employees_per_hour
 
 # Clustering
-k <- kmeans(departments_per_hour, 2)
+k <- kmeans(employees_per_hour, 2)
 
-departments_per_hour %>% 
+employees_per_hour %>% 
   dplyr::ungroup() %>% 
   dplyr::mutate(cluster = k$cluster %>% as.integer) ->
-  departments_with_cluster
+  employees_with_cluster
 
 # Visualize Clusters
-departments_with_cluster %>% 
-    ggplot(aes(hour, departmentid, size=n, color=factor(cluster))) +
+employees_with_cluster %>% 
+    ggplot(aes(hour, employeeid, size=n, color=factor(cluster))) +
     geom_point()+
-    geom_text(aes(0,23,label="whats happening here?"), size=4,
+    geom_text(aes(0,23,label="outlier"), size=4,
           color="black",
           vjust=0, hjust=-0.05)
 
-# We found an anomaly..
+# We found an anomaly..lets look closer
 
-# Suspicious department
-departments_with_cluster %>% 
+# Suspicious employee
+employees_with_cluster %>% 
   filter(hour == 0, cluster == 1)
 
-# Examine deparment over hours
+# Examine employee over hours
 df %>% 
-  filter(departmentid == 23) %>% 
+  filter(employeeid == 23) %>% 
   ggplot(aes(factor(hour))) +
   geom_bar()
 
-# a Heatmap of this
+# Examining his activity in different appartments
 df %>% 
-  filter(departmentid == 23) %>% 
-  group_by(employeeid, hour) %>% 
+  filter(employeeid == 23) %>% 
+  group_by(departmentid, hour) %>% 
   summarise(n = n()) %>% 
-  ggplot(aes(factor(hour), y=factor(employeeid))) +
+  ggplot(aes(factor(hour), y=factor(departmentid))) +
   theme_minimal() +
   geom_tile(aes(fill = n))
 
-# Only one employee is active during this hour in
-# that deparment
-df %>% 
-  filter(departmentid == 23, hour == 0) %>% 
-  group_by(employeeid) %>% 
-  summarise(n = n())
 
-# -------------------------------------------
-# suspicious employee: 7
-# -------------------------------------------
+# 3. Conclusion
+# -----------------------------------------------------------------------------------------------
 
-# futher examination of employee
-df %>% 
-  filter(employeeid == 7) %>% 
-  ggplot(aes(hour))+
-  geom_bar()
+# Suspicious employee 12 in department 7 found (1000 requests in the middle of the night)
 
 
 
