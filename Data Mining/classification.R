@@ -108,9 +108,12 @@ forest_model <- randomForest(class ~ ., data = train_df,
                              na.action=na.roughfix,
                              importance = T)
 
-forest_model
-
 # determine variable importance
 importance(forest_model, type = 2)
 
+# classify new cases
+forest_pred <- predict(forest_model, validation_df)
+
+table(validation_df$class, forest_pred,
+      dnn=c("Actual", "Predicted"))
 
