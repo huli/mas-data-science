@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gretldata SYSTEM "gretldata.dtd">
+
+<gretldata version="1.3" name="agrarconsult_gmbh" frequency="1" startobs="1" endobs="30" type="cross-section">
+<description>Daten aus CSV-Datei '08-12.txt' importiert, 2017-02-16 21:02:
+</description>
+<variables count="4">
+<variable name="t"
+/>
+<variable name="p"
+/>
+<variable name="n"
+/>
+<variable name="g"
+/>
+</variables>
+<observations count="30" labels="false">
+<obs>1 22 40 38.36 </obs>
+<obs>2 22 60 49.03 </obs>
+<obs>3 22 90 59.87 </obs>
+<obs>4 22 120 59.35 </obs>
+<obs>5 23 50 45.45 </obs>
+<obs>6 23 80 53.23 </obs>
+<obs>7 23 100 56.55 </obs>
+<obs>8 23 120 50.91 </obs>
+<obs>9 24 40 44.87 </obs>
+<obs>10 24 60 54.06 </obs>
+<obs>11 24 90 60.34 </obs>
+<obs>12 24 120 58.21 </obs>
+<obs>13 25 50 51.52 </obs>
+<obs>14 25 80 58.58 </obs>
+<obs>15 25 100 57.27 </obs>
+<obs>16 25 110 59.55 </obs>
+<obs>17 26 50 55.24 </obs>
+<obs>18 26 70 54.13 </obs>
+<obs>19 26 90 66.57 </obs>
+<obs>20 26 110 61.74 </obs>
+<obs>21 27 40 48.99 </obs>
+<obs>22 27 60 54.38 </obs>
+<obs>23 27 80 58.28 </obs>
+<obs>24 27 100 62.81 </obs>
+<obs>25 28 50 50.76 </obs>
+<obs>26 28 70 51.54 </obs>
+<obs>27 28 100 59.39 </obs>
+<obs>28 28 110 68.17 </obs>
+<obs>29 29 60 59.25 </obs>
+<obs>30 29 100 64.39 </obs>
+</observations>
+</gretldata>

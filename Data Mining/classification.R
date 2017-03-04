@@ -56,7 +56,8 @@ performance <- table(validation_df$class,
                      prediction, dnn = c("Actual","Predicted"))
 
 # confusion matrix
-performance
+fourfoldplot(performance, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
 
 # Method 2: Descision trees
 
@@ -81,8 +82,10 @@ dtree_predict <- predict(dtree_pruned, validation_df,
                          type = "class")
 
 # confusion matrix
-table(validation_df$class, dtree_predict, 
+confusion_matrix <- table(validation_df$class, dtree_predict, 
                      dnn = c("Actual","Predicted"))
+fourfoldplot(confusion_matrix, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
 
 # Method 2.2: conditional inference trees
 library(party)
@@ -94,9 +97,10 @@ plot(ctree_model, main="Conditional Inference Tree")
 # classify new vlaues
 ctree_prediction <- predict(ctree_model, validation_df, type = "response")
 
-table(validation_df$class, ctree_prediction,
+confusion_matrix <- table(validation_df$class, ctree_prediction,
       dnn = c("Actual", "Predicted"))
-
+fourfoldplot(confusion_matrix, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
 
 # Method 3: Random forests
 
@@ -114,6 +118,36 @@ importance(forest_model, type = 2)
 # classify new cases
 forest_pred <- predict(forest_model, validation_df)
 
-table(validation_df$class, forest_pred,
-      dnn=c("Actual", "Predicted"))
+confusion_matrix <- table(validation_df$class, forest_pred,
+                          dnn=c("Actual", "Predicted"))
+
+fourfoldplot(confusion_matrix, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
+
+
+# Method 4: Support vector machine
+
+library(e1071)
+set.seed(1234)
+
+# try different models and make a proposition
+svm_tuned <- tune.svm(class ~ ., data = train_df,
+                      gamma=10^(-6:1),
+                      cost=10^(-10:10))
+
+# build support vector machine with proposed values
+svm_model <- svm(class ~ ., data = train_df,
+                  gamma=.01,
+                  cost=1
+                 )
+
+# classify new values
+svm_prediction <- predict(svm_model, na.omit(validation_df))
+
+# confusion matrix
+confusion_matrix <- table(na.omit(validation_df)$class, svm_prediction,
+      dnn = c("Actual","Predicted"))
+fourfoldplot(confusion_matrix, color = c("#CC6666", "#99CC99"),
+             conf.level = 0, margin = 1, main = "Confusion Matrix")
+
 
