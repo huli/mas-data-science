@@ -3,6 +3,7 @@
 library(ggplot2)
 library(openxlsx)
 library(dplyr)
+library(gridExtra)
 
 
 assessments <- read.xlsx("C:/Users/ch0125/Dropbox/Assessments/assessments.xlsx")
@@ -15,13 +16,13 @@ assessments_df %>%
   dplyr::mutate(minutes_per_test = as.numeric(minutes)/as.numeric(tests_done)) -> 
   assessments_eval
 
-
 assessments_eval %>% 
   ggplot(aes(factor(applicant), tests_per_minute*10, fill=applicant)) +
   geom_bar(stat = "identity") +
-  geom_hline(yintercept = mean(assessments_eval$tests_per_minute)*10, color="darkgray") +
+  geom_hline(yintercept = mean(assessments_eval$tests_per_minute)*10, color="darkgray",
+             linetype="dotdash") +
   geom_hline(yintercept = median(assessments_eval$tests_per_minute)*10,
-                                 linetype="dotdash", color="darkgray") +
+                                 linetype=1, color="darkgray") +
   scale_fill_brewer(palette = 2) +
   geom_text(aes(.6,median(assessments_eval$tests_per_minute)*10+.01), label = "median",
             color="darkgray", size=3)+
@@ -29,17 +30,14 @@ assessments_eval %>%
             color="darkgray", size=3)  ->
   overview
 
-overview
-
 assessments_eval %>% 
-  ggplot(aes(tests_per_minute*10, x="", group=NA)) + 
+  ggplot(aes(tests_per_minute*10, x="applicants", group=NA)) + 
   geom_boxplot(colour="gray", fill="#99d8c9") +
   labs(x = "all") ->
   boxplot
 
-boxplot
 
-library(gridExtra)
+grid.arrange(overview, boxplot, ncol=2, layout_matrix = rbind(c(1,1,1,2)))
 
 pdf("C:/Source/mas-data-science/Assessments/overview.pdf", width = 20)
 grid.arrange(overview, boxplot, ncol=2, layout_matrix = rbind(c(1,1,1,2)))
