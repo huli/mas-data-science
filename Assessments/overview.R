@@ -33,6 +33,7 @@ assessments_eval %>%
 assessments_eval %>% 
   ggplot(aes(tests_per_minute*10, x="applicants", group=NA)) + 
   geom_boxplot(colour="gray", fill="#99d8c9") +
+  scale_y_continuous(limits = c(0, NA)) +
   labs(x = "all") ->
   boxplot
 
