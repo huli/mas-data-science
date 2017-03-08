@@ -8,7 +8,7 @@ library(dplyr)
 assessments <- read.xlsx("C:/Users/ch0125/Dropbox/Assessments/assessments.xlsx")
 
 assessments_df <- assessments[2:nrow(assessments),]
-names(assessments_df) <- c("bewerber","tests_done","minutes")
+names(assessments_df) <- c("applicant","tests_done","minutes")
 
 assessments_df %>% 
   dplyr::mutate(tests_per_minute = as.numeric(tests_done)/as.numeric(minutes)) %>% 
@@ -16,7 +16,7 @@ assessments_df %>%
   assessments_eval
 
 assessments_eval %>% 
-  ggplot(aes(factor(bewerber), tests_per_minute*10, fill=bewerber)) +
+  ggplot(aes(factor(applicant), tests_per_minute*10, fill=applicant)) +
   geom_bar(stat = "identity") +
   geom_hline(yintercept = mean(assessments_eval$tests_per_minute)*10, color="darkgray") +
   geom_hline(yintercept = median(assessments_eval$tests_per_minute)*10,
@@ -30,7 +30,7 @@ assessments_eval %>%
 
 overview 
 
-pdf("C:/Users/ch0125/Dropbox/Assessments/overview.pdf")
+pdf("C:/Source/mas-data-science/Assessments/overview.pdf")
 overview
 dev.off()
 
