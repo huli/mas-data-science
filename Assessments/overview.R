@@ -32,18 +32,16 @@ assessments_eval %>%
 overview
 
 assessments_eval %>% 
-  ggplot(aes(tests_per_minute*10, x="applicants")) + 
-  geom_boxplot(colour="#006d2c", fill="#99d8c9")  +
-  theme(axis.title.x=element_blank(),axis.title.y=element_blank()) ->
+  ggplot(aes(tests_per_minute*10, x="", group=NA)) + 
+  geom_boxplot(colour="gray", fill="#99d8c9") +
+  labs(x = "all") ->
   boxplot
 
 boxplot
 
 library(gridExtra)
-grid.arrange(overview, boxplot, ncol=2)
 
-
-pdf("C:/Source/mas-data-science/Assessments/overview.pdf")
-overview
+pdf("C:/Source/mas-data-science/Assessments/overview.pdf", width = 20)
+grid.arrange(overview, boxplot, ncol=2, layout_matrix = rbind(c(1,1,1,2)))
 dev.off()
 
