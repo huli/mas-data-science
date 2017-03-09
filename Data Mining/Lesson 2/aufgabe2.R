@@ -30,10 +30,59 @@ for(i in 1:100){
   text( 0.2, 0, mnist_matrix[i,1], cex = 3, col = 2, pos = c(3,4))
 }
 
-# First, we make the 
+# First, we make the flow reproducable
+set.seed(1234)
+
 # split the data set training and validation set
-# We take 2/3 vs 1/3
-training_size <- dim(mnist_matrix)
+train_rows <- sample(nrow(mnist_matrix), .7*nrow(mnist_matrix))
+train_df <- mnist_matrix[train_rows,] 
+validation_df <- mnist_matrix[-train_rows,]
+
+library(ggplot2)
+library(dplyr)
+
+# check out the distributions
+
+train_df %>% 
+  ggplot() +
+  geom_bar(aes(label))
+
+validation_df %>% 
+  ggplot() +
+  geom_bar(aes(label))
+
+# Now we are trying some methods for classification
+
+# 1. Descision trees
+library(rpart)
+
+# build the tree
+dtree <- rpart(label ~ ., data = train_df, method="class",
+               parms = list(split="information"))
+
+# check the classifications
+dtree$cptable
+
+# plot the effectivness
+plotcp(dtree)
+
+# prune the tree
+dtree_pruned <- prune(dtree, .01738)
+
+# show the descision
+library(rpart.plot)
+prp(dtree_pruned, type = 2, extra = 104, fallen.leaves = T, main = "Descision Tree")
+
+dtree_pred <- predict(dtree_pruned, validation_df, type="class")
+dtree_perf <- table(validation_df$label, dtree_pred,
+                    dnn=c("Actual","Predicted"))
+
+# have a glance at the peformance
+good <- sum(dtree_perf[row(dtree_perf) == (col(dtree_perf))])
+all <- length(dtree_pred)
+
+# performance
+good/all
 
 
 ##2. Nehmen Sie einen Classifier Ihrer Wahl und trainieren Sie Ihn mit der bereitgestellten Matrix.
