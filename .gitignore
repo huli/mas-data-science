@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 Exports
+database.sqlite
+logfile
