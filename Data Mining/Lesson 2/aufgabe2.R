@@ -121,9 +121,24 @@ checkPerformance(citree_pred, validation_df)
 # 3. Random forests
 library(randomForest)
 
-forest <- randomForest()
+# growing the forest
+forest <- randomForest(label ~., data = train_df,
+                       importance = T)
+
+# make the prediction
+forest_pred <- predict(forest, validation_df)
+
+# confusion matrix
+table(validation_df$label, forest_pred,
+      dnn=c("Actual","Predicted"))
+
+checkPerformance(forest_pred, validation_df)
+## Correct predictions:  12145
+## Success percentage:  96.38124
 
 
+# Tensorflow
+# https://rstudio.github.io/tensorflow/
 
 
 ##2. Nehmen Sie einen Classifier Ihrer Wahl und trainieren Sie Ihn mit der bereitgestellten Matrix.
