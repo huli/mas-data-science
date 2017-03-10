@@ -54,6 +54,7 @@ validation_df %>%
 # Now we are trying some methods for classification
 
 # 1. Descision trees
+
 library(rpart)
 
 # build the tree
@@ -73,16 +74,56 @@ dtree_pruned <- prune(dtree, .01738)
 library(rpart.plot)
 prp(dtree_pruned, type = 2, extra = 104, fallen.leaves = T, main = "Descision Tree")
 
+# make prediction
 dtree_pred <- predict(dtree_pruned, validation_df, type="class")
-dtree_perf <- table(validation_df$label, dtree_pred,
+
+# confusion matrix
+table(validation_df$label, dtree_pred,
                     dnn=c("Actual","Predicted"))
 
-# have a glance at the peformance
-good <- sum(dtree_perf[row(dtree_perf) == (col(dtree_perf))])
-all <- length(dtree_pred)
+# performance function
+checkPerformance = function(prediction, validation){
+  good <- sum(prediction == validation$label)
+  cat("Correct predictions: ", good)
+  all <- length(validation$label)
+  cat("\nSuccess percentage: ", (good/all)*100)
+}
 
-# performance
-good/all
+# have a glance at the peformance
+checkPerformance(dtree_pred, validation_df)
+## Correct predictions:  7129
+## Success percentage:  56.57488
+
+
+# 2. Conditional interference trees
+library(party)
+
+# convert label to factors
+train_df$label <- as.factor(train_df$label)
+validation_df$label <- as.factor(validation_df$label)
+
+# build tree
+citree <- ctree(label~., data = train_df)
+
+# make prediction
+citree_pred <- predict(citree, validation_df, type="response")
+
+# confusion matrix
+table(validation_df$label, citree_pred,
+                     dnn=c("Actual", "Predicted"))
+
+# check performance
+checkPerformance(citree_pred, validation_df)
+## Correct predictions:  9411
+## Success percentage:  74.68455
+
+
+# 3. Random forests
+library(randomForest)
+
+forest <- randomForest()
+
+
 
 
 ##2. Nehmen Sie einen Classifier Ihrer Wahl und trainieren Sie Ihn mit der bereitgestellten Matrix.
