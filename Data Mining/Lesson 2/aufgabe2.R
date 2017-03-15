@@ -1,19 +1,11 @@
 
-## Uebung 3 - Classification
-## Das MNIST Datenset ist sozusagen das HelloWorld Program wenn es um Classification mit DeepLearning
-## geht. Wir missbrauchen hier dieses Datenset für traditionelle Classification.
-## 1. Führen Sie u.g. Source Code aus und beantworten Sie folgende Fragen
-##a) Wieviele Bilder sind in der Matrix mnist_matrix encodiert
-# 42'000
+# Uebung 3 - Classification
 
-##b) Da es sich um einen Supervised Machine Learning task handelt muss ein Label (Target Variable)
-##bereitgestellt sein - welche Spalte der Matrix enthält das Label?
-# Spalte: label (1)
-
-##c) Wieviele Pixel haben die Bilder?
-# 784
-##d) Wie hoch/breit sind die Bilder?
-# 28x28
+# Antworten
+# a) Es sind 42'000 Bilder in der Matrix encodiert
+# b) Die Spalte welche das Laben enthält ist: label (Spalte 1)
+# c) 784 Pixel habe die Bilder
+# d) Die Bilder haben eine Dimension von 28x28
 
 # Imported code
 mnist_matrix = read.csv( 'https://github.com/romeokienzler/developerWorks/raw/master/train.csv' )
@@ -51,9 +43,9 @@ validation_df %>%
   ggplot() +
   geom_bar(aes(label))
 
-# Now we are trying some methods for classification
+# Seems ok, now we are trying some methods for classification
 
-# 1. Descision trees
+# 1. Descision trees -------------------------------------------
 
 library(rpart)
 
@@ -79,7 +71,7 @@ dtree_pred <- predict(dtree_pruned, validation_df, type="class")
 
 # confusion matrix
 table(validation_df$label, dtree_pred,
-                    dnn=c("Actual","Predicted"))
+      dnn=c("Actual","Predicted"))
 
 # performance function
 checkPerformance = function(prediction, validation){
@@ -95,7 +87,7 @@ checkPerformance(dtree_pred, validation_df)
 ## Success percentage:  56.57488
 
 
-# 2. Conditional interference trees
+# 2. Conditional interference trees -------------------------------------------
 library(party)
 
 # convert label to factors
@@ -110,7 +102,7 @@ citree_pred <- predict(citree, validation_df, type="response")
 
 # confusion matrix
 table(validation_df$label, citree_pred,
-                     dnn=c("Actual", "Predicted"))
+      dnn=c("Actual", "Predicted"))
 
 # check performance
 checkPerformance(citree_pred, validation_df)
@@ -121,7 +113,7 @@ checkPerformance(citree_pred, validation_df)
 # 3. Random forests
 library(randomForest)
 
-# growing the forest
+# growing the forest -------------------------------------------
 forest <- randomForest(label ~., data = train_df,
                        importance = T)
 
@@ -136,17 +128,18 @@ checkPerformance(forest_pred, validation_df)
 ## Correct predictions:  12145
 ## Success percentage:  96.38124
 
+# 4. Support vector machines  -------------------------------------------
+library(e1071)
 
-# Tensorflow
-# https://rstudio.github.io/tensorflow/
+# Building the machine
+svm_model <- svm(label~., data = train_df)
 
+# Doing the prediction
+svm_pred <- predict(svm_model, validation_df)
 
-##2. Nehmen Sie einen Classifier Ihrer Wahl und trainieren Sie Ihn mit der bereitgestellten Matrix.
-##a) Teilen Sie die Matrix in ein sinnvolles Training und Test set auf, lesen Sie hierzu diesen
-##Thread: http://stats.stackexchange.com/questions/19048/what-is-the-difference-between-test-set-and-validation-set
-##(Ein Validation Set wird hier nicht benötigt da nicht erwartet wird Parameter des
-##Classifiers zu tunen)
-##b) Verwenden Sie nun das Training Set um einen Classifier Ihrer Wahl zu trainieren
-##c) Berechnen Sie den Prozentsatz der richtig klassifizierten Daten indem Sie Ihren
-##trainierten Classifier auf das Test Set anwenden (Hinweis: Die Qualität des Classifiers
-##wird nicht bewertet)
+# confustion matrix and performance stats
+table(validation_df$label, svm_pred,
+      dnn=c("Actual","Predicted"))
+
+checkPerformance(svn_pred, validation_df)
+
