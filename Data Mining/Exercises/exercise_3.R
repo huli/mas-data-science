@@ -128,19 +128,5 @@ checkPerformance(forest_pred, validation_df)
 ## Correct predictions:  12145
 ## Success percentage:  96.38124
 
-# 4. Support vector machines  -------------------------------------------
-library(e1071)
-
-
-# Building the machine
-svm_model <- svm(label~., data = train_df)
-
-# Doing the prediction
-svm_pred <- predict(svm_model, validation_df)
-
-# confustion matrix and performance stats
-table(validation_df$label, svm_pred,
-      dnn=c("Actual","Predicted"))
-
-checkPerformance(svm_pred, validation_df)
+# svm removed, what about tensorflow?
 
