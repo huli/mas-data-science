@@ -71,12 +71,6 @@ with(df_sample, {
   scatterplot3d(x,y,z, color = cluster)
 })
 
-# centers_df = km$centers
-# colnames(centers_df) = c("x","y","z")
-# with(data.frame(centers_df), {
-#   scatterplot3d(x,y,z)
-# })
-
 
 # with some 3d
 library(plotly)

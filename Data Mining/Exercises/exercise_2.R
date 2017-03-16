@@ -185,6 +185,9 @@ plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~activity)
 ggplot(df_sample) +
   geom_point(aes(mean_y, factor(cluster), color=activity))
 
+ggplot(df_sample) +
+  geom_point(aes(mean_y, factor(cluster), color=activity))
+
 
 df_with_cluster %>% 
   filter(cluster == 2 & activity == "climbing_stairs") %>% 
@@ -198,5 +201,17 @@ df_with_cluster %>%
 (count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster)
 # [1] 0.9740893
 
+df_sample <- df_extended[sample(nrow(df_extended), 1000), ]
+
+t <- dist(df_sample)
+
+#hclust noch verwenden
+hclustered <- hclust(t, method="single")
+
+plot(hclustered)
+
+
+# Gruppen zeichnen
+rect.hclust(hclustered, 2)
 
 
