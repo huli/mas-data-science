@@ -95,7 +95,6 @@ View(df1)
 
 # So we are reading all the data from 2 activities in the same dataset
 
-library(dplyr)
 
 readActivity <- function(folder_name, activity)
 {
@@ -111,26 +110,93 @@ readActivity <- function(folder_name, activity)
   df
 }
 
+library(ggplot2)
 df_climbing <- readActivity("Climb_stairs", "climbing_stairs")
+summary(df_climbing)
+ggplot(df_climbing, aes(timestep)) + 
+  geom_line(aes(y = x, colour = "x")) + 
+  geom_line(aes(y = y, colour = "y")) + 
+  geom_line(aes(y = z, colour = "z"))
 
-library(stringr)
+df_brush_teeth <- readActivity("Brush_teeth", "brushing_teeth")
+summary(df_brush_teeth)
+ggplot(df_brush_teeth, aes(timestep)) + 
+  geom_line(aes(y = x, colour = "x")) + 
+  geom_line(aes(y = y, colour = "y")) + 
+  geom_line(aes(y = z, colour = "z"))
 
-# adding user and time stamp as column
+df_combined <- rbind(df_climbing, df_brush_teeth)
 
-getDateAndVolunteer("Accelerometer-2012-06-07-10-48-08-climb_stairs-f1.txt")$vol
+library(dplyr)
 
-getDateAndVolunteer <- function(filename){
-  index_of <- str_locate(filename, "-")+1
-  time_stamp <- str_sub(filename, index_of[1], index_of[1]+18)
-  date_time <- strptime(time_stamp,format='%Y-%m-%d-%H-%M-%S')
-  volunteer <- str_sub(filename, str_length(filename)-5, str_length(filename)-4)
-  list(vol=volunteer, dat=date_time)
-}
+df_combined %>% 
+  group_by(filename) %>% 
+  mutate(
+    mean_x = mean(x),
+    mean_y = mean(y),
+    mean_z = mean(z),
+    range_x = max(x)-max(x),
+    range_y = max(y)-max(y),
+    range_z = max(z)-max(z)
+    ) %>% 
+  ungroup -> df_extended
+  
+df_extended
+summary(df_extended)
 
-Get
+
+library(rpart)
+
+rpart_model <- rpart(activity ~ mean_x + mean_y + mean_z, df_extended)
+summary(rpart_model)
+
+library(rpart.plot)
+rpart.plot(rpart_model)
+
+# means_y seams to be appropriate for clustering
+km <- kmeans(df_extended$mean_y, 2)
+summary(km$centers)
+
+df_with_cluster <- df_extended
+df_with_cluster$cluster <- km$cluster
+
+# taking a sample
+df_sample <- df_with_cluster[sample(nrow(df_with_cluster), 1000), ]
 
 
+library(scatterplot3d)
+
+# plot the clusters
+with(df_sample, {
+  scatterplot3d(x,y,z, color = cluster)
+})
+
+# with some (more) 3d
+library(plotly)
+
+# Plotting the clusters 
+# the calculated and somehow artifical values of the algorithm
+plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~cluster)
+
+# the read values where the separation is not strict
+plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~activity)
+
+# Show calculated and read clusters
+ggplot(df_sample) +
+  geom_point(aes(mean_y, factor(cluster), color=activity))
 
 
-??stringr
+df_with_cluster %>% 
+  filter(cluster == 2 & activity == "climbing_stairs") %>% 
+  nrow -> count_correct_climbing
+
+df_with_cluster %>% 
+  filter(cluster == 1 & activity == "brushing_teeth") %>% 
+  nrow -> count_correct_brushing
+
+# Success rate
+(count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster)
+# [1] 0.9740893
+
+
 
