@@ -131,6 +131,7 @@ checkPerformance(forest_pred, validation_df)
 # 4. Support vector machines  -------------------------------------------
 library(e1071)
 
+
 # Building the machine
 svm_model <- svm(label~., data = train_df)
 
@@ -141,5 +142,5 @@ svm_pred <- predict(svm_model, validation_df)
 table(validation_df$label, svm_pred,
       dnn=c("Actual","Predicted"))
 
-checkPerformance(svn_pred, validation_df)
+checkPerformance(svm_pred, validation_df)
 
