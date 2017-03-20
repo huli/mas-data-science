@@ -53,4 +53,3 @@ apply(df, 2, normalize)
 
 
 
-
