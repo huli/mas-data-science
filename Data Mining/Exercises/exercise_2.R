@@ -207,4 +207,12 @@ df_with_cluster %>%
 (count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster)
 # [1] 0.9740893
 
+# Note:
+# (If the value is 0.02591065 then the cluster numbers are the other way
+# around because it is random - we need to switch the cluster numbers above)
+max((count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster),
+         1-(count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster))
+
+
+ 
 
