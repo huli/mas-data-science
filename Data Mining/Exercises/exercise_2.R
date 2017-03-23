@@ -90,8 +90,7 @@ plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~class)
 
 
 # Start with some feature engineering
-#  View(df1)
-
+#  ------------------------------------------------------------------------------------
 
 # The suggested feature of exercise is fundamentally flawed, we cannot
 # use class to calculate a mean or anything because we would not have
