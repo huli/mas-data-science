@@ -38,7 +38,6 @@ names(ids_with_hours) <- c("hour","employeeid","departmentid","clientid")
 # result
 ids_with_hours
 
-
 # 2. Analysis
 # -----------------------------------------------------------------------------------------------
 
@@ -116,7 +115,7 @@ df %>%
 # 3. Conclusion
 # -----------------------------------------------------------------------------------------------
 
-# Suspicious employee 23 in department 7 found (1000 requests in the middle of the night)
+# Suspicious employee 23 in department 7 found (1000 requests in the middle of the night - hour 0)
 
 
 
