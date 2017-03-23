@@ -18,6 +18,8 @@ df1 = create_activity_dataframe("Brush_teeth",1)
 
 library(ggplot2)
 df1_sample = df1[sample(nrow(df1), 500), ]
+
+# Plot the sample with the 3 axis
 ggplot(df1_sample, aes(timestep)) + 
   geom_line(aes(y = x, colour = "x")) + 
   geom_line(aes(y = y, colour = "y")) + 
@@ -26,10 +28,7 @@ ggplot(df1_sample, aes(timestep)) +
 df2 = create_activity_dataframe("Climb_stairs",2)
 df = rbind(df1,df2)
 
-#write.csv(df,"dsx_movement_pattern.csv")
-
-
-# Determine number of clusters
+# Function for number of clusters
 determine_number_of_clusters = function(df) {
   wss <- (nrow(df)-1)*sum(apply(df,2,var))
   for (i in 2:15) wss[i] <- sum(kmeans(df,
@@ -41,18 +40,24 @@ determine_number_of_clusters = function(df) {
 number_of_clusters=2
 n = nrow(df)
 
+# Plot the centers of k-means
 kmeans(df,centers=number_of_clusters)$centers
 
 df_x_y_z = cbind(df$x,df$y, df$z)
+
+# Determine number of clusters
 determine_number_of_clusters(df_x_y_z)
+
+# Calculatring k-means
 km = kmeans(df_x_y_z,centers=number_of_clusters)
 
-
+# Determine success rate of initial example
 truthVector = km$cluster != df$class
 good = length(truthVector[truthVector==TRUE])
 bad = length(truthVector[truthVector==FALSE])
 good/(good+bad)
 
+# Plot the sample
 library(scatterplot3d)
 df_sample = df[sample(nrow(df), 1000), ]
 
@@ -67,7 +72,7 @@ df_with_cluster$cluster <- km$cluster
 # taking a sample
 df_sample <- df_with_cluster[sample(nrow(df_with_cluster), 1000), ]
 
-# plot the clusters
+# Plot the clusters
 with(df_sample, {
   scatterplot3d(x,y,z, color = cluster)
 })
@@ -84,8 +89,8 @@ plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~cluster)
 plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~class)
 
 
-# some feature engineering
-View(df1)
+# Start with some feature engineering
+#  View(df1)
 
 
 # The suggested feature of exercise is fundamentally flawed, we cannot
@@ -94,7 +99,6 @@ View(df1)
 # classification problem so we cannot use supervised learning)
 
 # So we are reading all the data from 2 activities in the same dataset
-
 
 readActivity <- function(folder_name, activity)
 {
@@ -125,10 +129,12 @@ ggplot(df_brush_teeth, aes(timestep)) +
   geom_line(aes(y = y, colour = "y")) + 
   geom_line(aes(y = z, colour = "z"))
 
+# Make a combined dataset (as it would be in reality)
 df_combined <- rbind(df_climbing, df_brush_teeth)
 
 library(dplyr)
 
+# Calculate some features in the different groups
 df_combined %>% 
   group_by(filename) %>% 
   mutate(
@@ -141,10 +147,9 @@ df_combined %>%
     ) %>% 
   ungroup -> df_extended
   
-df_extended
 summary(df_extended)
 
-
+# We try to divide our new features into different categories
 library(rpart)
 
 rpart_model <- rpart(activity ~ mean_x + mean_y + mean_z, df_extended)
@@ -153,10 +158,11 @@ summary(rpart_model)
 library(rpart.plot)
 rpart.plot(rpart_model)
 
-# means_y seams to be appropriate for clustering
+# 'means_y' seams to be appropriate for our clustering case
 km <- kmeans(df_extended$mean_y, 2)
 summary(km$centers)
 
+# Adding the clusters to our set
 df_with_cluster <- df_extended
 df_with_cluster$cluster <- km$cluster
 
@@ -174,43 +180,31 @@ with(df_sample, {
 # with some (more) 3d
 library(plotly)
 
-# Plotting the clusters 
-# the calculated and somehow artifical values of the algorithm
+# Plotting the clusters again with our new features
+
+# The calculated values of the algorithm
 plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~cluster)
 
-# the read values where the separation is not strict
+# The real values where the separation is not strict
 plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~activity)
 
-# Show calculated and read clusters
+# Show calculated and real clusters
 ggplot(df_sample) +
   geom_point(aes(mean_y, factor(cluster), color=activity))
 
-ggplot(df_sample) +
-  geom_point(aes(mean_y, factor(cluster), color=activity))
-
+# (There would actually be a hard line for dividing the two
+# activities, but the clustering does this in another way)
 
 df_with_cluster %>% 
-  filter(cluster == 2 & activity == "climbing_stairs") %>% 
+  filter(cluster == 1 & activity == "climbing_stairs") %>% 
   nrow -> count_correct_climbing
 
 df_with_cluster %>% 
-  filter(cluster == 1 & activity == "brushing_teeth") %>% 
+  filter(cluster == 2 & activity == "brushing_teeth") %>% 
   nrow -> count_correct_brushing
 
 # Success rate
 (count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster)
 # [1] 0.9740893
-
-# df_sample <- df_extended[sample(nrow(df_extended), 10000), ]
-# 
-# t <- dist(df_sample)
-# 
-# #hclust noch verwenden
-# hclustered <- hclust(t, method="complete")
-# 
-# plot(hclustered)
-# 
-# # Gruppen zeichnen
-# rect.hclust(hclustered, 2)
 
 
