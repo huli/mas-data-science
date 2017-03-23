@@ -17,4 +17,23 @@ rules <- apriori(titanic.raw,
 rules_sorted <- sort(rules, by="lift")
 inspect(rules_sorted)
 
-#http://www.rdatamining.com/examples/association-rules
+
+# find redundant rules
+subset_matrix <- is.subset(rules_sorted, rules_sorted);subset.matrix
+subset_matrix[lower.tri(subset_matrix, diag=T)] <- FALSE
+
+redundant <- colSums(subset_matrix, na.rm=T) >= 1
+which(redundant)
+
+# remove redundant rules
+rules_pruned <- rules_sorted[!redundant]
+inspect(rules_pruned)
+
+# Some visualization
+library(arulesViz)
+
+plot(rules)
+plot(rules, method="graph", control=list(type="items"))
+plot(rules, method="paracoord", control=list(reorder=TRUE))
+
+

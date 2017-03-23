@@ -45,7 +45,8 @@ validation_df %>%
 
 # Seems ok, now we are trying some methods for classification
 
-# 1. Descision trees -------------------------------------------
+# 1. Descision trees
+# ---------------------------------------------------------------------------------
 
 library(rpart)
 
@@ -87,7 +88,9 @@ checkPerformance(dtree_pred, validation_df)
 ## Success percentage:  56.57488
 
 
-# 2. Conditional interference trees -------------------------------------------
+# 2. Conditional interference trees
+# ---------------------------------------------------------------------------------
+
 library(party)
 
 # convert label to factors
@@ -111,9 +114,10 @@ checkPerformance(citree_pred, validation_df)
 
 
 # 3. Random forests
+# ---------------------------------------------------------------------------------
 library(randomForest)
 
-# growing the forest -------------------------------------------
+# growing the forest
 forest <- randomForest(label ~., data = train_df,
                        importance = T)
 
@@ -125,8 +129,8 @@ table(validation_df$label, forest_pred,
       dnn=c("Actual","Predicted"))
 
 checkPerformance(forest_pred, validation_df)
+
 ## Correct predictions:  12145
 ## Success percentage:  96.38124
 
-# svm removed, what about tensorflow?
 

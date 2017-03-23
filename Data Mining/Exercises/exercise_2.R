@@ -52,7 +52,7 @@ determine_number_of_clusters(df_x_y_z)
 km = kmeans(df_x_y_z,centers=number_of_clusters)
 
 # Determine success rate of initial example
-truthVector = km$cluster != df$class
+truthVector = km$cluster == df$class
 good = length(truthVector[truthVector==TRUE])
 bad = length(truthVector[truthVector==FALSE])
 good/(good+bad)
@@ -97,7 +97,8 @@ plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~class)
 # the class and this is the whole point of clustering (this is NOT a
 # classification problem so we cannot use supervised learning)
 
-# So we are reading all the data from 2 activities in the same dataset
+# So we are reading all the data from 2 activities in the same dataset, and
+# we make the calculation for every activity
 
 readActivity <- function(folder_name, activity)
 {
