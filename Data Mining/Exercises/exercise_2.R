@@ -1,8 +1,15 @@
 
+
+# First we set the seed to make it reproducable
+set.seed(1234)
+
 # set the working dir to the data folder
 setwd("C:/Source/mas-data-science/Data Mining/Lesson 2/HMP_Dataset")
 
-#create a data frame from all files in specified folder
+# 1. Initial setup as given by the exercise
+# -------------------------------------------------------------------------------
+
+# create a data frame from all files in specified folder
 create_activity_dataframe = function(activityFolder,classId) {
   file_names = dir(activityFolder)
   file_names = lapply(file_names, function(x){ paste(".",activityFolder,x,sep = "/")})
@@ -14,7 +21,6 @@ create_activity_dataframe = function(activityFolder,classId) {
 }
 
 df1 = create_activity_dataframe("Brush_teeth",1)
-
 
 library(ggplot2)
 df1_sample = df1[sample(nrow(df1), 500), ]
@@ -89,7 +95,7 @@ plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~cluster)
 plot_ly(df_sample, x = ~x, y = ~y, z=~z, color = ~class)
 
 
-# Start with some feature engineering
+# 2. Start with some feature engineering
 #  ------------------------------------------------------------------------------------
 
 # The suggested feature of exercise is fundamentally flawed, we cannot
@@ -169,7 +175,6 @@ df_with_cluster$cluster <- km$cluster
 # taking a sample
 df_sample <- df_with_cluster[sample(nrow(df_with_cluster), 1000), ]
 
-
 library(scatterplot3d)
 
 # plot the clusters
@@ -196,11 +201,11 @@ ggplot(df_sample) +
 # activities, but the clustering does this in another way)
 
 df_with_cluster %>% 
-  filter(cluster == 1 & activity == "climbing_stairs") %>% 
+  filter(cluster == 2 & activity == "climbing_stairs") %>% 
   nrow -> count_correct_climbing
 
 df_with_cluster %>% 
-  filter(cluster == 2 & activity == "brushing_teeth") %>% 
+  filter(cluster == 1 & activity == "brushing_teeth") %>% 
   nrow -> count_correct_brushing
 
 # Success rate
@@ -208,6 +213,7 @@ df_with_cluster %>%
 # [1] 0.9740893
 
 # Note:
+# We did set the seed so this should not be nescessary
 # (If the value is 0.02591065 then the cluster numbers are the other way
 # around because it is random - we need to switch the cluster numbers above)
 max((count_correct_climbing + count_correct_brushing) / nrow(df_with_cluster),
