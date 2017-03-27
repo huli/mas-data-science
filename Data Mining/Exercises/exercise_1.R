@@ -1,5 +1,4 @@
 
-
 # 1. Data cleansing
 # -----------------------------------------------------------------------------------------------
 
@@ -69,12 +68,16 @@ df %>%
   geom_bar() +
   facet_wrap(~id, scale = "free")
 
+# The data looks pretty much even distributed, what we recognize
+# is a little peak in the department 7
+
+# Clustering
+
 df %>% 
   group_by(hour, employeeid) %>% 
   summarise(n = n()) ->
   employees_per_hour
 
-# Clustering
 k <- kmeans(employees_per_hour, 2)
 
 employees_per_hour %>% 
