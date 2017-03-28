@@ -12,6 +12,7 @@ mnist_matrix = read.csv( 'https://github.com/romeokienzler/developerWorks/raw/ma
 dim(mnist_matrix)
 sort(unique(mnist_matrix[,1]))
 
+# Have a look at one row
 View(mnist_matrix[1,])
 
 par( mfrow = c(10,10), mai = c(0,0,0,0))
@@ -57,11 +58,14 @@ dtree <- rpart(label ~ ., data = train_df, method="class",
 # check the classifications
 dtree$cptable
 
+# Resetting plot layout
+par(mfrow=c(1,1))
+
 # plot the effectivness
 plotcp(dtree)
 
 # prune the tree
-dtree_pruned <- prune(dtree, .01738)
+dtree_pruned <- prune(dtree, .02)
 
 # show the descision
 library(rpart.plot)
@@ -113,7 +117,7 @@ checkPerformance(citree_pred, validation_df)
 ## Success percentage:  74.68455
 
 
-# 3. Random forests
+# 3. Random forests and final model
 # ---------------------------------------------------------------------------------
 library(randomForest)
 
@@ -132,5 +136,14 @@ checkPerformance(forest_pred, validation_df)
 
 ## Correct predictions:  12145
 ## Success percentage:  96.38124
+## (We are satisfied with this result for now)
 
 
+# 3. Support Vector Machine
+# ---------------------------------------------------------------------------------
+
+library(parallelSVM)
+
+svn_model <- parallelSVM(label ~., data = train_df, numberCores = detectCores(),
+            scale = TRUE)
+pred <- predict(svn_model, validation_df)
