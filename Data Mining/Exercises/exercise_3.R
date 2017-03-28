@@ -139,11 +139,3 @@ checkPerformance(forest_pred, validation_df)
 ## (We are satisfied with this result for now)
 
 
-# 3. Support Vector Machine
-# ---------------------------------------------------------------------------------
-
-library(parallelSVM)
-
-svn_model <- parallelSVM(label ~., data = train_df, numberCores = detectCores(),
-            scale = TRUE)
-pred <- predict(svn_model, validation_df)
