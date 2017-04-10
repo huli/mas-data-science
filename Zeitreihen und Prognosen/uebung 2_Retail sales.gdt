@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE gretldata SYSTEM "gretldata.dtd">
+
+<gretldata version="1.3" name="unknown" frequency="4" startobs="1996:1" endobs="2008:1" type="time-series">
+<description>Importierte Daten von Excel, 2016-03-26 21:54
+</description>
+<variables count="6">
+<variable name="Sales"
+/>
+<variable name="time"
+ label="Zeittrendvariable"
+/>
+<variable name="dq1"
+ label="= 1 wenn Quartal = 1, 0 sonst"
+/>
+<variable name="dq2"
+ label="= 1 wenn Quartal = 2, 0 sonst"
+/>
+<variable name="dq3"
+ label="= 1 wenn Quartal = 3, 0 sonst"
+/>
+<variable name="dq4"
+ label="= 1 wenn Quartal = 4, 0 sonst"
+/>
+</variables>
+<observations count="49" labels="false">
+<obs>212612 1 1 0 0 0 </obs>
+<obs>218015 2 0 1 0 0 </obs>
+<obs>209687 3 0 0 1 0 </obs>
+<obs>258604 4 0 0 0 1 </obs>
+<obs>225488 5 1 0 0 0 </obs>
+<obs>227785 6 0 1 0 0 </obs>
+<obs>223340 7 0 0 1 0 </obs>
+<obs>271933 8 0 0 0 1 </obs>
+<obs>230913 9 1 0 0 0 </obs>
+<obs>244607 10 0 1 0 0 </obs>
+<obs>231686 11 0 0 1 0 </obs>
+<obs>289520 12 0 0 0 1 </obs>
+<obs>254059 13 1 0 0 0 </obs>
+<obs>261477 14 0 1 0 0 </obs>
+<obs>254467 15 0 0 1 0 </obs>
+<obs>318411 16 0 0 0 1 </obs>
+<obs>280154 17 1 0 0 0 </obs>
+<obs>281888 18 0 1 0 0 </obs>
+<obs>269667 19 0 0 1 0 </obs>
+<obs>320481 20 0 0 0 1 </obs>
+<obs>280749 21 1 0 0 0 </obs>
+<obs>288475 22 0 1 0 0 </obs>
+<obs>262645 23 0 0 1 0 </obs>
+<obs>326934 24 0 0 0 1 </obs>
+<obs>285773 25 1 0 0 0 </obs>
+<obs>289456 26 0 1 0 0 </obs>
+<obs>273837 27 0 0 1 0 </obs>
+<obs>337470 28 0 0 0 1 </obs>
+<obs>293827 29 1 0 0 0 </obs>
+<obs>301279 30 0 1 0 0 </obs>
+<obs>294054 31 0 0 1 0 </obs>
+<obs>357704 32 0 0 0 1 </obs>
+<obs>319107 33 1 0 0 0 </obs>
+<obs>321151 34 0 1 0 0 </obs>
+<obs>313444 35 0 0 1 0 </obs>
+<obs>386918 36 0 0 0 1 </obs>
+<obs>338759 37 1 0 0 0 </obs>
+<obs>350614 38 0 1 0 0 </obs>
+<obs>332944 39 0 0 1 0 </obs>
+<obs>405326 40 0 0 0 1 </obs>
+<obs>362536 41 1 0 0 0 </obs>
+<obs>367919 42 0 1 0 0 </obs>
+<obs>347750 43 0 0 1 0 </obs>
+<obs>419493 44 0 0 0 1 </obs>
+<obs>377547 45 1 0 0 0 </obs>
+<obs>380587 46 0 1 0 0 </obs>
+<obs>357452 47 0 0 1 0 </obs>
+<obs>429953 48 0 0 0 1 </obs>
+<obs>378755 49 1 0 0 0 </obs>
+</observations>
+</gretldata>
