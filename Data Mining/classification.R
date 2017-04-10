@@ -147,6 +147,7 @@ svm_prediction <- predict(svm_model, na.omit(validation_df))
 # confusion matrix
 confusion_matrix <- table(na.omit(validation_df)$class, svm_prediction,
       dnn = c("Actual","Predicted"))
+
 fourfoldplot(confusion_matrix, color = c("#CC6666", "#99CC99"),
              conf.level = 0, margin = 1, main = "Confusion Matrix")
 

@@ -37,3 +37,4 @@ plot(rules, method="graph", control=list(type="items"))
 plot(rules, method="paracoord", control=list(reorder=TRUE))
 
 
+
