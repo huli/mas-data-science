@@ -13,14 +13,17 @@ persons_and_nationalitaet <- sqlQuery(connection,
                                         nationalitaet from person p group by NationalitaetCD")
                       
 
+# Anzahl Personen nach Land
 persons_and_nationalitaet %>% 
   arrange(desc(count)) %>% 
   top_n(50) %>% 
   ggplot() +
   geom_bar(aes(nationalitaet, count),
            stat = "identity") 
+
   
 
+# Mahnungen pro Person nach Land
 mahnungen_pro_nationalitaeten <- sqlQuery(connection,
                           "select count(p.OID) as [count_mahnungen], p.NationalitaetCD as nationalitaet 
                                 from Mahnung m join Person p
@@ -34,12 +37,46 @@ mahnungen_pro_nationalitaeten %>%
   geom_point(aes(nationalitaet, count_mahnungen))
 
 
-# Mahnungen pro Person
+# Laendercodes lesen
+laender <- read.csv2("Data Visualization/countries.csv",
+                     encoding = "UTF-8")
+laendercodes <- laender[, c(2,4)]
+names(laendercodes) <- c("bezeichnung", "nationalitaet")
+
+library(RColorBrewer)
+getPalette = colorRampPalette(brewer.pal(9, "YlOrRd"))
+
+
 persons_and_nationalitaet %>% 
   left_join(mahnungen_pro_nationalitaeten) %>% 
+  left_join(laendercodes) %>% 
   mutate(mahnungen_pro_person = count_mahnungen/count) %>% 
   arrange(desc(mahnungen_pro_person)) %>% 
-  top_n(20)
+  top_n(10) %>% 
+  ggplot() + 
+  scale_fill_manual(values=c("foo")) +
+  geom_bar(aes(reorder(nationalitaet, mahnungen_pro_person), mahnungen_pro_person, 
+               fill = nationalitaet), 
+              fill = getPalette(10),
+           stat = "identity")
+
+# Anzahl Personen und Mahnungen als Scatterplot
+persons_and_nationalitaet %>% 
+  left_join(mahnungen_pro_nationalitaeten) %>% 
+  ggplot() + 
+  geom_point(aes(count, count_mahnungen))
+
+# Ohne Schweiz
+persons_and_nationalitaet %>% 
+  left_join(mahnungen_pro_nationalitaeten) %>% 
+  filter(nationalitaet != "CH") %>% 
+  top_n(15) %>% 
+  ggplot() + 
+  scale_fill_brewer() + 
+  geom_point(aes(count, count_mahnungen, 
+                 color = nationalitaet))
+
+# Mietdauer 
   
 
 
