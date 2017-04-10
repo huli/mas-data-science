@@ -54,9 +54,9 @@ persons_and_nationalitaet %>%
   arrange(desc(mahnungen_pro_person)) %>% 
   top_n(10) %>% 
   ggplot() + 
-  scale_fill_manual(values=c("foo")) +
   geom_bar(aes(reorder(nationalitaet, mahnungen_pro_person), mahnungen_pro_person, 
-               fill = nationalitaet), 
+               fill = nationalitaet,
+               color = reorder(bezeichnung, mahnungen_pro_person)), 
               fill = getPalette(10),
            stat = "identity")
 
@@ -76,8 +76,16 @@ persons_and_nationalitaet %>%
   geom_point(aes(count, count_mahnungen, 
                  color = nationalitaet))
 
-# Mietdauer 
-  
+# Weitere Kennzahlen:
+# - durchschnittliche Mietdauer 
+# - offene Posten
+# - Zahlungssperre pro Mieter
+# (pro Land, Altersgruppe (Oft nicht geführt), Heimatort?)
+# - Begehren
+# - Fehlbuchungen (falsch ausgefüllte ESR)
+# (wahrscheinlichkeit von Insistierung Sekung nach Index)
+# PersDebiKrediStatistik
+
 
 
 
