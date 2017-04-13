@@ -85,7 +85,9 @@ persons_and_nationalitaet %>%
 # - Fehlbuchungen (falsch ausgefüllte ESR)
 # (wahrscheinlichkeit von Insistierung Sekung nach Index)
 # PersDebiKrediStatistik
-
+# Anzahl Emails
+# Dauer/Anzahl Telefongespräche
+# Anzahl Briefe
 
 
 
