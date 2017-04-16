@@ -37,12 +37,55 @@ f_gdp %>%
   geom_histogram(aes(breaks), stat = "count")
 
 
-# Scatterplot
+# Scatterplot of current situation
 f_gdp %>% 
   ggplot() +
-  geom_point(aes(GDP2013, EF2013)) +
+  geom_point(aes(GDP2013, EF2013, colour=GDP2013, size=EF2013)) +
   geom_text(aes(GDP2013, EF2013, 
-                label=ifelse(EF2013>2e9,as.character(Country),'')),hjust=0, vjust=0)
+                label=ifelse(EF2013>1e9,as.character(Country),'')),hjust=1, vjust=1)
+
+
+# Calculate some additional numbers
+f_gdp %>% 
+  mutate(
+    gdp_growth_in_percent = (GDPDelta/GDP2009),
+    ef_growth_in_percent = (EFDelta/EF2009)) -> 
+  global_foodprint
+
+
+global_foodprint %>% 
+  ggplot() +
+  geom_point(aes(gdp_growth_in_percent, ef_growth_in_percent,
+                 size=GDP2013, colour = EF2013)) +
+  scale_colour_gradient(low = "yellow", high = "darkred") +
+  scale_size_continuous(range = c(1,10))  + 
+  theme(panel.background = element_blank(),
+        panel.grid.minor = element_line(colour = "#FFFEBA"),
+        panel.grid.major = element_line(colour = "#E5E4A7"))
+  
+
+
+
+printCountry(global_foodprint, "Switzerland")
+
+printCountry <- function(df, name){
+  values <- df[df$Country == name,
+     c("Country",
+       "EF2009","EF2013",
+       "ef_growth_in_percent",
+       "GDP2009", "GDP2013", 
+       "gdp_growth_in_percent")]
+  
+  print(paste("Country: " , values[1]))
+  print(paste("EF2009: " , round(values[2], 2)))
+  print(paste("EF2013: " , round(values[3], 2)))
+  print(paste("Growth: " , 100*round(values[4], 5), "%"))
+  print(paste("GDP2009: " , round(values[5], 2)))
+  print(paste("GDP2013: " , round(values[6], 2)))
+  print(paste("Growth: " , 100*round(values[7], 5), "%"))
+}
+
+
 
 
 
