@@ -56,13 +56,37 @@ f_gdp %>%
 global_foodprint %>% 
   ggplot() +
   geom_point(aes(gdp_growth_in_percent, ef_growth_in_percent,
-                 size=GDP2013, colour = EF2013)) +
+                 size=GDP2013, colour = EF2013,
+                 shape=EFDelta< 0)) +
   scale_colour_gradient(low = "yellow", high = "darkred") +
   scale_size_continuous(range = c(1,10))  + 
   theme(panel.background = element_blank(),
         panel.grid.minor = element_line(colour = "#FFFEBA"),
-        panel.grid.major = element_line(colour = "#E5E4A7"))
+        panel.grid.major = element_line(colour = "#E5E4A7")) +
+  geom_text(aes(gdp_growth_in_percent, ef_growth_in_percent, 
+                label=ifelse(EF2013>1e9 | Country == "Switzerland",
+                             as.character(Country),'')),hjust=1.1, vjust=1.1)
   
+  
+# Printing some time series
+nfa_2017_edition <- read_csv(
+  paste0("C:/Source/mas-data-science/CAS Data Visualization/",
+         "Project/footprint-nfa-2017-edition/NFA 2017 Edition.csv"))
+
+
+# total capacity versus foodprint
+nfa_2017_edition %>% 
+  filter(country == "Switzerland" &
+           (record == "BiocapTotGHA" | record == "EFConsTotGHA")) %>% 
+  ggplot() +
+  geom_contour(aes(year, total/1000000, colour = (record != "EFConsTotGHA")),
+           stat = "identity") +
+  ylab("hectares (millions)") +
+  scale_colour_manual("",
+                      labels=c("foodprint","biocapacity"), 
+                      values = c("red", "darkgreen")) +
+  ggtitle("Switzerlands Foodprint vs. Biocapacity")
+
 
 
 
