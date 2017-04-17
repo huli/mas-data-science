@@ -74,7 +74,7 @@ nfa_2017_edition <- read_csv(
          "Project/footprint-nfa-2017-edition/NFA 2017 Edition.csv"))
 
 
-# total capacity versus foodprint
+# Switzerland:  total capacity versus foodprint
 nfa_2017_edition %>% 
   filter(country == "Switzerland" &
            (record == "BiocapTotGHA" | record == "EFConsTotGHA")) %>% 
@@ -86,6 +86,19 @@ nfa_2017_edition %>%
                       labels=c("foodprint","biocapacity"), 
                       values = c("red", "darkgreen")) +
   ggtitle("Switzerlands Foodprint vs. Biocapacity")
+
+# World:  total capacity versus foodprint
+nfa_2017_edition %>% 
+  filter(country == "World" &
+           (record == "BiocapTotGHA" | record == "EFConsTotGHA")) %>% 
+  ggplot() +
+  geom_contour(aes(year, total/1000000000, colour = (record != "EFConsTotGHA")),
+               stat = "identity") +
+  ylab("hectares (billions)") +
+  scale_colour_manual("",
+                      labels=c("foodprint","biocapacity"), 
+                      values = c("red", "darkgreen")) +
+  ggtitle("World Foodprint vs. Biocapacity")
 
 
 
