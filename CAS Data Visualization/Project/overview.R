@@ -100,9 +100,94 @@ nfa_2017_edition %>%
                       values = c("red", "darkgreen")) +
   ggtitle("World Foodprint vs. Biocapacity")
 
+# World:  Foodprint by landtype
+nfa_2017_edition %>% 
+  filter(country == "World" &
+           (record == "BiocapTotGHA" | record == "EFConsTotGHA")) %>% 
+  ggplot() +
+  geom_contour(aes(year, total/1000000000, colour = (record != "EFConsTotGHA")),
+               stat = "identity") +
+  ylab("hectares (billions)") +
+  scale_colour_manual("",
+                      labels=c("foodprint","biocapacity"), 
+                      values = c("red", "darkgreen")) +
+  ggtitle("World Foodprint vs. Biocapacity")
+
+
+library(reshape2)
+
+nfa_2017_edition %>% 
+  filter(country == "World" &
+           (record == "EFConsTotGHA")) %>% 
+  select(1, 2, 5,6,7,8,9,10) %>% 
+  melt(c("country", "year")) %>% 
+  ggplot(aes(year, value/1000000000, fill = variable)) +
+  geom_area(colour="black", size=.2, alpha=.5) +
+  ylab("hectares (billions)")+
+  ggtitle("World Foodprint by Land Type")
+
+
+nfa_2017_edition %>% 
+  filter(country == "Switzerland") %>% 
+  select(record) %>% 
+  distinct()
+# 1       AreaPerCap
+# 2        AreaTotHA
+# 3     BiocapPerCap
+# 4     BiocapTotGHA
+# 5     EFConsPerCap
+# 6     EFConsTotGHA
+# 7  EFExportsPerCap
+# 8  EFExportsTotGHA
+# 9  EFImportsPerCap
+# 10 EFImportsTotGHA
+# 11    EFProdPerCap
+# 12    EFProdTotGHA
+
+
+# Now some graphics per person
+nfa_2017_edition %>% 
+  filter(country == "Switzerland" &
+           (record == "EFConsPerCap")) %>% 
+  ggplot() +
+  geom_line(aes(year, total)) +
+  geom_hline(aes(yintercept=1.74), 
+             linetype = 3) +
+  geom_text(aes(y=1.74, x=1970, label="Word Biocapacity per Person (1.74)"),
+            vjust=1.2)+
+  ylab("hectares per person")+
+  ggtitle("World Foodprint by Land Type")
+
+# Human development index
+country_metrics <- 
+  read_csv("C:/Source/mas-data-science/CAS Data Visualization/Project/country_metrics.csv")
+
+country_metrics %>% 
+  ggplot() + 
+  scale_size(range = c(1, 20)) +
+  geom_point(aes(HDI, EFConsPerCap, size = Population, colour = EFConsPerCap)) +
+  geom_hline(aes(yintercept=1.74), 
+             linetype = 3) +
+  geom_text(aes(y=1.74, x=.45, label="Word Biocapacity per Person (1.74)"),
+            vjust=-1.2) +
+  geom_vline(aes(xintercept = .7), linetype = 4) +
+  geom_text(aes(x=.7, y=10, label = "High human development"),
+            hjust = -.1)
+
+             
+             
+             
+
+
+# Socioeconomic Relationships
+
+
+  
 
 
 
+# --------------------------------------------------------------------------------------------------
+# Helper functions
 printCountry(global_foodprint, "Switzerland")
 
 printCountry <- function(df, name){
