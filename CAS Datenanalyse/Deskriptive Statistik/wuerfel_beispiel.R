@@ -46,8 +46,9 @@ ggplot(data.frame(zahlen)) +
   geom_histogram(aes(x=zahlen))
 
 
-
-# mit direkt 1000 zahlen geht es nicht
+# mit direkt 1000 zahlen geht es nicht,
+# da der entscheidende faktor die kombination des
+# wurfes ist
 zahlen <- runif(1000, min = -1, max = 1)
 ggplot(data.frame(zahlen)) +
   geom_histogram(aes(x=zahlen))
