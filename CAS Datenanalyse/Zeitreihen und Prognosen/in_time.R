@@ -11,7 +11,8 @@ library(dplyr)
 
 
 
-# timeline
+# timeline 
+# ----------------------------------------------------------------------------------
 
 data <- read.xlsx("C:/Users/ch0125/Dropbox/Admin/events.xlsx")
 
@@ -42,6 +43,7 @@ ggplot(arrange(df, sector), aes(x=year, y=value, fill=sector)) +
 
 
 # radar chart (not finished)
+# ----------------------------------------------------------------------------------
 library(ggradar)
 library(scales)
 
@@ -82,3 +84,36 @@ df_tech <- data.frame(
                  "Architecture"=6)
 ggradar(df_tech, grid.min = 1, grid.max = 10,
         plot.legend = F)
+
+# bar charts
+# ----------------------------------------------------------------------------------
+
+data.frame("language"=
+  c("DotNet",
+  "Javascript",
+  "R",
+  "FSharp",
+  "Ruby"),
+  "skill"= c(9,3,6,3,3)) %>% 
+  ggplot(aes(x=language, y=skill, fill=language)) +
+  geom_bar(stat = "identity",
+           size =.2) +
+  scale_fill_brewer(palette ="Greens") +
+  coord_flip()
+
+
+# tree map
+# ----------------------------------------------------------------------------------
+
+library("portfolio")
+
+data <- read.xlsx("C:/Users/ch0125/Dropbox/Admin/typical_day.xlsx")
+
+map.market(id = data$action, area = data$time, group = data$category,
+           scale = 600,
+           lab   = c("group"=T, "id"=T),
+           color = max(data$time)-data$time)
+
+
+
+
