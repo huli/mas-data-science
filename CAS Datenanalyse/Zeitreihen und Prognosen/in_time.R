@@ -10,6 +10,9 @@ library(zoo)
 library(dplyr)
 
 
+
+# timeline
+
 data <- read.xlsx("C:/Users/ch0125/Dropbox/Admin/events.xlsx")
 
 columns <- colnames(data)
@@ -34,6 +37,48 @@ ggplot(arrange(df, sector), aes(x=year, y=value, fill=sector)) +
   geom_area(colour="black", size=.2, alpha=.4) +
   scale_fill_brewer(direction = -1,
     palette="RdBu", 
-    breaks=rev(levels(df$sector)))
+    breaks=rev(levels(df$sector))) +
+    geom_vline(aes(xintercept=2017),linetype="dashed")
 
 
+# radar chart (not finished)
+library(ggradar)
+library(scales)
+
+languages <- c(
+           
+df_languages <- data.frame(
+  "year"=2017,
+  "DotNet"=9,
+  "Javascript"=3,
+  "R"=6,
+  "FSharp"=3,
+  "Ruby"=3
+))
+
+
+df_languages[2,] <- c(2020, 8, 5, 9, 4, 3)
+ggradar(df_languages, grid.min = 1, grid.max = 10)
+
+
+
+melted_languages <- melt(df_languages, id.vars = c("year"))
+
+ggplot(arrange(melted_languages, year))+
+  aes(x=variable, y=value,color=year, group=year) +
+  geom_polygon(fill=NA) + 
+  coord_polar() + 
+  theme(axis.text.x = element_text(size = 5))+
+  theme(legend.position = "none")
+
+
+
+df_tech <- data.frame(
+                  "group"=2017,
+                  "Programming"=8,
+                  "DDD"=7, 
+                 "TDD"=8, 
+                 "Design Patterns"=7, 
+                 "Architecture"=6)
+ggradar(df_tech, grid.min = 1, grid.max = 10,
+        plot.legend = F)
