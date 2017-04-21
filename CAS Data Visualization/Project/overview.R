@@ -172,7 +172,9 @@ country_metrics %>%
             vjust=-1.2) +
   geom_vline(aes(xintercept = .7), linetype = 4) +
   geom_text(aes(x=.7, y=10, label = "High human development"),
-            hjust = -.1)
+            hjust = -.1)+
+  ylab("Ecological foodprint per person")+
+  ggtitle("World Foodprints and human developments")
 
              
              
