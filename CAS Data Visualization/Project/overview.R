@@ -199,15 +199,30 @@ country_metrics %>%
 # Worldmap with Foodprint
 # --------------------------------------------------------------------------------------------------
 library(rworldmap)
-
+install.packages("classInt")
+library(classInt)
+library(RColorBrewer)
 
 nfa_2017_edition %>% 
   filter(record == "EFConsPerCap" & year == 2013) %>% 
   joinCountryData2Map(nameJoinColumn = "country",
                       joinCode="NAME",
                       verbose = T) -> cd 
-  
+
+# default
 m <- mapCountryData(cd, nameColumnToPlot = "total")
+         
+# some more advanced stuff
+# class intervals
+classInt <- classIntervals( cd$total
+                            ,n=8, style = "jenks")
+classBreaks = classInt[["brks"]]
+
+pal <- rev(brewer.pal(8, "RdYlGn"))
+m <- mapCountryData(cd, nameColumnToPlot = "total",
+                    catMethod = classBreaks,
+                    colourPalette = pal)
+
 
 # getMap(m)[["NAME"]]
 # all_countries <- unique(nfa_2017_edition$country)
