@@ -9,7 +9,6 @@ f_gdp <- read_csv(
 # Offene Punkte
 # Daten joinen, so dass auf Plot statt die Popluation der Effekt 
 #   mittels grösse angezeigt werden kann. (World Foodprints and Human Development)
-# Shape Foodprint herausfinden  
 
 
 # View some data
@@ -69,6 +68,7 @@ f_gdp %>%
   global_foodprint
 
 
+# EF/p vs GDP
 global_foodprint %>% 
   ggplot() +
   geom_point(aes(gdp_growth_in_percent, ef_growth_in_percent,
@@ -178,12 +178,33 @@ nfa_2017_edition %>%
 country_metrics <- 
   read_csv("C:/Source/mas-data-science/CAS Data Visualization/Project/country_metrics.csv")
 
+
+# --------------------------------------------------------------------------------------------------
 # World Foodprints and Human Development
 # --------------------------------------------------------------------------------------------------
-country_metrics %>% 
+# country_metrics %>% 
+#   ggplot() + 
+#   scale_size(range = c(1, 20)) +
+#   geom_point(aes(HDI, EFConsPerCap, size = Population, colour = EFConsPerCap)) +
+#   geom_hline(aes(yintercept=1.74), 
+#              linetype = 3) +
+#   geom_text(aes(y=1.74, x=.45, label="Word Biocapacity per Person (1.74)"),
+#             vjust=-1.2) +
+#   geom_vline(aes(xintercept = .7), linetype = 4) +
+#   geom_text(aes(x=.7, y=10, label = "High human development"),
+#             hjust = -.1)+
+#   ylab("Ecological foodprint per person")+
+#   ggtitle("World Foodprints and human developments")
+
+
+left_join(global_foodprint, country_metrics, 
+          by = c("Country" = "Country Name")) -> country_metrics_with_impact  
+  
+country_metrics_with_impact %>% 
   ggplot() + 
   scale_size(range = c(1, 20)) +
-  geom_point(aes(HDI, EFConsPerCap, size = Population, colour = EFConsPerCap)) +
+  geom_point(aes(HDI, EFConsPerCap, size = EF2013, colour = EFDelta_P)) +
+  scale_colour_gradient(low = "white", high = "blue") +
   geom_hline(aes(yintercept=1.74), 
              linetype = 3) +
   geom_text(aes(y=1.74, x=.45, label="Word Biocapacity per Person (1.74)"),
@@ -193,8 +214,9 @@ country_metrics %>%
             hjust = -.1)+
   ylab("Ecological foodprint per person")+
   ggtitle("World Foodprints and human developments")
-
              
+
+# --------------------------------------------------------------------------------------------------
 
 # Worldmap with Foodprint
 # --------------------------------------------------------------------------------------------------
@@ -223,6 +245,13 @@ m <- mapCountryData(cd, nameColumnToPlot = "total",
                     catMethod = classBreaks,
                     colourPalette = pal)
 
+# real breaks according to global food network
+breaks <- c(0, 1.7, 3.4, 5.1, 6.7, 15)
+
+pal <- brewer.pal(5, "YlOrBr")
+m <- mapCountryData(cd, nameColumnToPlot = "total",
+                    catMethod = breaks,
+                    colourPalette = pal)
 
 # getMap(m)[["NAME"]]
 # all_countries <- unique(nfa_2017_edition$country)
