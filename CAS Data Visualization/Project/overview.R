@@ -6,9 +6,15 @@ library(dplyr)
 f_gdp <- read_csv(
                 paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
                     "footprint-nfa-2017-edition/EF_GDP(constant2010USD).csv"))
+# Offene Punkte
+# Daten joinen, so dass auf Plot statt die Popluation der Effekt 
+#   mittels grösse angezeigt werden kann. (World Foodprints and Human Development)
+# Shape Foodprint herausfinden  
+
 
 # View some data
 summary(f_gdp)
+#View(f_gdp)
 f_gdp[1,]
 # Country   EF2013   EF2009     GDP2013     GDP2009 EFDelta   GDPDelta     
 # DDelta EFDelta_P GDPDelta_P DDelta_P DDelta_Rank EFDelta_Rank GDPDelta_Rank Dec_Flag GDP_std
@@ -43,6 +49,16 @@ f_gdp %>%
   geom_point(aes(GDP2013, EF2013, colour=GDP2013, size=EF2013)) +
   geom_text(aes(GDP2013, EF2013, 
                 label=ifelse(EF2013>1e9,as.character(Country),'')),hjust=1, vjust=1)
+
+
+# Experiment with foodprint
+# --------------------------------------------------------------------------------
+f_gdp %>% 
+  filter(Country %in% c('Germany', 'Angola', 'Germany', 'French', 'Italy')) %>% 
+  ggplot(aes(GDP2013, EF2013, size=4*EF2013)) +
+  geom_point(shape=3)
+
+# --------------------------------------------------------------------------------
 
 
 # Calculate some additional numbers
@@ -162,6 +178,8 @@ nfa_2017_edition %>%
 country_metrics <- 
   read_csv("C:/Source/mas-data-science/CAS Data Visualization/Project/country_metrics.csv")
 
+# World Foodprints and Human Development
+# --------------------------------------------------------------------------------------------------
 country_metrics %>% 
   ggplot() + 
   scale_size(range = c(1, 20)) +
@@ -177,19 +195,35 @@ country_metrics %>%
   ggtitle("World Foodprints and human developments")
 
              
-             
-             
 
-
-# Socioeconomic Relationships
-
-
-  
-
-
-
+# Worldmap with Foodprint
 # --------------------------------------------------------------------------------------------------
+library(rworldmap)
+
+
+nfa_2017_edition %>% 
+  filter(record == "EFConsPerCap" & year == 2013) %>% 
+  joinCountryData2Map(nameJoinColumn = "country",
+                      joinCode="NAME",
+                      verbose = T) -> cd 
+  
+m <- mapCountryData(cd, nameColumnToPlot = "total")
+
+# getMap(m)[["NAME"]]
+# all_countries <- unique(nfa_2017_edition$country)
+# found <-   getMap(m)[["NAME"]] %in% all_countries 
+# getMap(m)[["NAME"]][!found]
+
+             
+# Socioeconomic Relationships
+# --------------------------------------------------------------------------------------------------
+
+# todo
+
+
+
 # Helper functions
+# --------------------------------------------------------------------------------------------------
 printCountry(global_foodprint, "Switzerland")
 
 printCountry <- function(df, name){
