@@ -18,6 +18,11 @@ f_gdp[1,]
 # Country   EF2013   EF2009     GDP2013     GDP2009 EFDelta   GDPDelta     
 # DDelta EFDelta_P GDPDelta_P DDelta_P DDelta_Rank EFDelta_Rank GDPDelta_Rank Dec_Flag GDP_std
 
+# Number of Countries
+nrow(f_gdp)
+# 153
+
+
 # sort by name
 f_gdp %>% 
   ggplot() +
@@ -204,7 +209,7 @@ country_metrics_with_impact %>%
   ggplot() + 
   scale_size(range = c(1, 20)) +
   geom_point(aes(HDI, EFConsPerCap, size = EF2013, colour = EFDelta_P)) +
-  scale_colour_gradient(low = "white", high = "blue") +
+  scale_colour_gradient(low = "white", high = "black") +
   geom_hline(aes(yintercept=1.74), 
              linetype = 3) +
   geom_text(aes(y=1.74, x=.45, label="Word Biocapacity per Person (1.74)"),
