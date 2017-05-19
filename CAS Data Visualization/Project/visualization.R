@@ -45,17 +45,41 @@ country_metrics_with_impact %>%
 limit <- 10
 
 # Countries with highest EF
-# (Mongolia is interesting - what does it miss?)
+# (Mongolia is interesting - why?)
 country_metrics_with_impact %>% 
   select(Country, EFConsPerCap) %>% 
   arrange(desc(EFConsPerCap)) %>% 
-  head(10)
+  head(10) %>% 
+  ggplot() +
+  geom_bar(aes(reorder(Country, -EFConsPerCap), EFConsPerCap),
+           stat = "identity")
 
 # Countries with lowest EF
 # (Mongolia is interesting - what does it miss?)
 country_metrics_with_impact %>% 
   select(Country, EFConsPerCap) %>% 
   arrange(EFConsPerCap) %>% 
-  head(10)
+  head(10)%>% 
+  ggplot() +
+  geom_bar(aes(reorder(Country, EFConsPerCap), EFConsPerCap),
+           stat = "identity")
+
+# Countries with best tendency
+country_metrics_with_impact %>% 
+  select(Country, EFDelta, EF2009, EF2013) %>% 
+  arrange(EFDelta) %>% 
+  head(10)%>% 
+  ggplot() +
+  geom_bar(aes(reorder(Country, EFDelta), EFDelta),
+           stat = "identity")
+
+# Countries with worst tendency
+country_metrics_with_impact %>% 
+  select(Country, EFDelta, EF2009, EF2013) %>% 
+  arrange(desc(EFDelta)) %>% 
+  head(10) %>% 
+  ggplot() +
+  geom_bar(aes(reorder(Country, -EFDelta), EFDelta),
+           stat = "identity")
 
 
