@@ -83,3 +83,29 @@ country_metrics_with_impact %>%
            stat = "identity")
 
 
+# Plot some history (better search for interessting patterns)
+country_history <- read_csv(
+   paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
+          "NFA 2017 Edition.csv"))
+
+country_history %>% 
+  filter(record == "EFConsPerCap") %>%
+  arrange(desc(total)) %>% 
+  select(country) %>% 
+  unique() -> sorted_countries
+
+sample_countries <- sorted_countries[c(1,20, 50, 100, 150, 180), ]
+
+country_history %>% 
+  filter(country %in% sample_countries$country) %>% 
+  select(country, total, record, year) %>% 
+  arrange(desc(total)) %>% 
+  filter(record == "EFConsPerCap") %>%
+  ggplot() +
+  geom_line(aes(year, total)) +
+  facet_grid(country ~ .)
+
+
+
+
+
