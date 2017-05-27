@@ -3,6 +3,10 @@ library(readr)
 library(ggplot2)
 library(dplyr)
 
+# TODO; 
+# - Identify stories
+# - Worst Tendency has to be done with per capita or in percent
+# - Quiz
 
 # Bubble Chart with HDI vs EF per Capita
 country_metrics <- read_csv(
@@ -55,7 +59,6 @@ country_metrics_with_impact %>%
            stat = "identity")
 
 # Countries with lowest EF
-# (Mongolia is interesting - what does it miss?)
 country_metrics_with_impact %>% 
   select(Country, EFConsPerCap) %>% 
   arrange(EFConsPerCap) %>% 
@@ -73,7 +76,7 @@ country_metrics_with_impact %>%
   geom_bar(aes(reorder(Country, EFDelta), EFDelta),
            stat = "identity")
 
-# Countries with worst tendency
+# Countries with worst tendency 
 country_metrics_with_impact %>% 
   select(Country, EFDelta, EF2009, EF2013) %>% 
   arrange(desc(EFDelta)) %>% 
