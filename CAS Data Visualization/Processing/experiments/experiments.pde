@@ -26,12 +26,24 @@ void setup()
 
 void printCountry(String nameofCountry)
 {
-    for(TableRow row : table.rows())
+    //for(TableRow row : table.rows())
+    //{
+    //  String country = row.getString("country");
+    //  if(country.equals(nameofCountry)) //<>//
+    //  {
+    //    println(row.getString("total"));
+    //  } //<>//
+    //}
+    
+    ArrayList<Float> years = new ArrayList<Float>();
+    
+    for (TableRow row : table.findRows(nameofCountry, "country")) {
+      println(row.getString("country") + ": " + row.getString("total"));
+      years.add(row.getFloat("total"));
+    }
+    
+    for( v : years)
     {
-      String country = row.getString("country");
-      if(country.equals(nameofCountry)) //<>//
-      {
-        println(row.getString("total"));
-      } //<>//
+       println(v);
     }
 }

@@ -19,7 +19,7 @@ void setup()
   for(TableRow row : table.rows())
   {
       String country = row.getString("country");
-      if(allCountries.containsValue(country))
+      if(!allCountries.containsValue(country))
       {
         allCountries.put(indexOfCountry, country);
         indexOfCountry++;
@@ -43,17 +43,40 @@ void mouseClicked()
   drawCountry();
 }
 
-int currentCountryIndex = 0;
+int currentCountryIndex = 1;
 
 void drawCountry()
 {
-  String currentCountry = allCountries.getItem(;
+  
+  String currentCountry = allCountries.get(currentCountryIndex);
+  
+  
+  ArrayList<Float> totalsPerYear = new ArrayList<Float>();
+  ArrayList<Float> years = new ArrayList<Float>();
+  
+  for (TableRow row : table.findRows(currentCountry, "country"))  //<>//
+    {
+        totalsPerYear.add(row.getFloat("total"));
+        years.add(row.getFloat("year"));
+    }
+  
+  float [] arrTotals = new float[totalsPerYear.size()];
+  float [] arrYears = new float[years.size()];
+  
+  int i = 0;
+  for (Float f : totalsPerYear) {
+    arrTotals[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+  }
+  
+  i = 0;
+  for (Float f : years) {
+      arrYears[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+  }
+  
   // Both x and y data set here.  
   lineChart = new XYChart(this);
-  lineChart.setData(new float[] {1900, 1910, 1920, 1930, 1940, 1950,
-                                  1960, 1970, 1980, 1990, 2000},
-                    new float[] { 6322,  6489,  6401, 7657, 9649, 9767,
-                                  12167, 15154, 18200, 23124, 28645});
+  
+  lineChart.setData(arrYears, arrTotals);
    
   // Axis formatting and labels.
   lineChart.showXAxis(true); 
