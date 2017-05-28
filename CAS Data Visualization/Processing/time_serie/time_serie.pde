@@ -1,24 +1,53 @@
-import org.gicentre.utils.stat.*;    
+import org.gicentre.utils.stat.*;   
+import java.util.*; 
+ 
  
 XYChart lineChart;
+HashMap<Integer, String> allCountries;
 
-
+Table table;
  
-// Loads data into the chart and customises its appearance.
 void setup()
 {
+ 
+  // Load the data
+  table = loadTable("ef_per_capita.csv", "header");
   
-  //Table table = loadTable("ef_per_capita.csv", "header");
-  
-  //for(TableRow row : table.rows())
-  //{
-  //  println(row.getString("country"));
-  //}
-  
-  
+  // Make distinct list of all countries
+  allCountries = new HashMap<Integer, String>();
+  int indexOfCountry = 1;
+  for(TableRow row : table.rows())
+  {
+      String country = row.getString("country");
+      if(allCountries.containsValue(country))
+      {
+        allCountries.put(indexOfCountry, country);
+        indexOfCountry++;
+      }
+  }
+
   size(1800,1000);
   textFont(createFont("Arial",16),16);
+  background(255);
+  textSize(14);
+}
  
+// Draws the chart and a title.
+void draw()
+{
+  
+}
+
+void mouseClicked()
+{
+  drawCountry();
+}
+
+int currentCountryIndex = 0;
+
+void drawCountry()
+{
+  String currentCountry = allCountries.getItem(;
   // Both x and y data set here.  
   lineChart = new XYChart(this);
   lineChart.setData(new float[] {1900, 1910, 1920, 1930, 1940, 1950,
@@ -31,32 +60,20 @@ void setup()
   lineChart.showYAxis(true); 
   lineChart.setMinY(0);
      
-  lineChart.setYFormat("###,###");  // Monetary value in $US
+  lineChart.setYFormat("###,###");  // Hectares
   lineChart.setXFormat("0000");      // Year
    
   // Symbol colours
   lineChart.setPointColour(color(180,50,50,100));
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
-}
- 
-// Draws the chart and a title.
-void draw()
-{
-  background(255);
-  textSize(14);
-  
-  drawCountry();
-}
-
-void drawCountry(){
   
   lineChart.draw(15,15,width-30,height-30);
    
   // Draw a title over the top of the chart.
   fill(120);
   textSize(40);
-  text("EF per Capita, United Kingdom", 70,30);
+  text("EF per Capita", 70,30);
   textSize(18);
   text("Ecological Footprint per Capita measured in hectares", 
         70, 60);
