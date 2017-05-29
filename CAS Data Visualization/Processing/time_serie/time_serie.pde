@@ -30,6 +30,15 @@ void setup()
   textFont(createFont("Arial",16),16);
   background(255);
   textSize(14);
+  
+  
+  // Draw a title over the top of the chart.
+  fill(120);
+  textSize(40);
+  text("EF per Capita", 70,30);
+  textSize(18);
+  text("Ecological Footprint per Capita measured in hectares", 
+        70, 60);
 }
  
 // Draws the chart and a title.
@@ -40,21 +49,22 @@ void draw()
 
 void mouseClicked()
 {
-  drawCountry();
+  // Draw a title over the top of the chart.
+  drawNextCountry();
 }
 
 int currentCountryIndex = 1;
 
-void drawCountry()
+
+void drawCountry(Integer countryIndex)
 {
-  
   String currentCountry = allCountries.get(currentCountryIndex);
   
   
   ArrayList<Float> totalsPerYear = new ArrayList<Float>();
   ArrayList<Float> years = new ArrayList<Float>();
   
-  for (TableRow row : table.findRows(currentCountry, "country"))  //<>//
+  for (TableRow row : table.findRows(currentCountry, "country")) 
     {
         totalsPerYear.add(row.getFloat("total"));
         years.add(row.getFloat("year"));
@@ -81,9 +91,11 @@ void drawCountry()
   // Axis formatting and labels.
   lineChart.showXAxis(true); 
   lineChart.showYAxis(true); 
+  lineChart.setAxisLabelColour(2);
+  lineChart.setXAxisLabel(currentCountry);
   lineChart.setMinY(0);
      
-  lineChart.setYFormat("###,###");  // Hectares
+  lineChart.setYFormat("#,###");  // Hectares
   lineChart.setXFormat("0000");      // Year
    
   // Symbol colours
@@ -91,13 +103,17 @@ void drawCountry()
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
   
-  lineChart.draw(15,15,width-30,height-30);
-   
-  // Draw a title over the top of the chart.
-  fill(120);
-  textSize(40);
-  text("EF per Capita", 70,30);
-  textSize(18);
-  text("Ecological Footprint per Capita measured in hectares", 
-        70, 60);
+  lineChart.draw(0, 0,1200,height-50);
+}
+
+void drawNextCountry()
+{
+  
+  drawCountry(currentCountryIndex);
+  
+  currentCountryIndex++;
+  if(currentCountryIndex > allCountries.size())
+  {
+      currentCountryIndex = 1;
+  }         //<>//
 }
