@@ -9,7 +9,6 @@ Table table;
  
 void setup()
 {
- 
   // Load the data
   table = loadTable("ef_per_capita.csv", "header");
   
@@ -26,7 +25,9 @@ void setup()
       }
   }
 
-  size(1800,1000);
+  //size(1800,1000);
+  
+   fullScreen();
   textFont(createFont("Lucida Console", 16), 16);
   
   background(backgroundColor);
@@ -47,18 +48,21 @@ void drawAxisLabels()
 // Draws the chart and a title.
 void draw()
 {
-  
+    drawCountry();
+    
+    currentCountryIndex++;
+    if(currentCountryIndex > allCountries.size())
+    {
+        currentCountryIndex = 1;
+    }  
+    delay(1000); 
 }
 
 
 int backgroundColor = 30;
 
 
-void mouseClicked()
-{
-  // Draw a title over the top of the chart.
-  drawNextCountry();
-}
+
 
 int currentCountryIndex = 1;
 
@@ -66,7 +70,7 @@ int foregroundColor = 240;
 
 void drawTransparent()
 {;
-    fill(backgroundColor, 100);
+    fill(backgroundColor, 80);
     rect(0,0, width, height);
 }
 
@@ -78,16 +82,16 @@ void resetCanvas()
   // Draw a title over the top of the chart.
   fill(255);
   textSize(40);
-  text("the ecological footprint", 80, 80);
+  text("the ecological footprint", 120, 80);
   textSize(18);
-  text("the footprint of countries measured in hectares per person", 
-        80, 120); 
+  text("the footprints of countries between 1961 and 2013, measured in hectares per capita", 
+        120, 120); 
         
   fill(backgroundColor);
   rect(width - 600, 40, 600, 200);
   fill(foregroundColor);
 }
-void drawCountry(Integer countryIndex)
+void drawCountry()
 {
   
   resetCanvas();
@@ -97,7 +101,7 @@ void drawCountry(Integer countryIndex)
   if(currentCountry.equals("Congo"))
   {
     currentCountryIndex = currentCountryIndex + 1;
-    drawCountry(currentCountryIndex);
+    drawCountry();
     return;
   }
   
@@ -140,29 +144,19 @@ void drawCountry(Integer countryIndex)
   println(currentCountry);
      
   lineChart.setYFormat("#,###");  // Hectares
-  lineChart.setXFormat("0000");      // Year
+  lineChart.setXFormat("0000");   // Year
    
   // Symbol colours
   // lineChart.setPointColour(color(255,50,50,100));
-  lineChart.setPointSize(5);
+  lineChart.setPointSize(4);
   lineChart.setLineWidth(2);
+  lineChart.setLineColour(255);
   
+  lineChart.setPointColour(255);
+
   lineChart.draw(15, 0, width - 20, height - 20);
   
   
   textSize(22);
-  text(currentCountry, width - 400, 80);
-
-}
-
-void drawNextCountry()
-{
-  
-  drawCountry(currentCountryIndex);
-  
-  currentCountryIndex++;
-  if(currentCountryIndex > allCountries.size())
-  {
-      currentCountryIndex = 1;
-  }         //<>//
+  text(currentCountry, width - 600, 80);
 }
