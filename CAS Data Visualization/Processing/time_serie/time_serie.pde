@@ -29,7 +29,7 @@ void setup()
   size(1800,1000);
   textFont(createFont("Lucida Console", 16), 16);
   
-  background(0);
+  resetCanvas();
 }
  
 // Draws the chart and a title.
@@ -49,22 +49,23 @@ int currentCountryIndex = 1;
 void resetCanvas()
 {  
   
-  background(0);
+  background(50);
   
-    // Draw a title over the top of the chart.
+   // Draw a title over the top of the chart.
   fill(255);
   textSize(40);
   text("the ecological footprint", 70, 80);
   textSize(18);
   text("the footprint of countries measured in hectares per person", 
         70, 120); 
-  textSize(20);
 }
 void drawCountry(Integer countryIndex)
 {
   
   resetCanvas();
   
+ 
+  textSize(20);
   String currentCountry = allCountries.get(currentCountryIndex);
   if(currentCountry.equals("Congo"))
   {
@@ -104,7 +105,7 @@ void drawCountry(Integer countryIndex)
   lineChart.showXAxis(true); 
   lineChart.showYAxis(true); 
   lineChart.setAxisLabelColour(2);
-  lineChart.setXAxisLabel(currentCountry);
+  //lineChart.setXAxisLabel(currentCountry);
   lineChart.setMinY(0);
   lineChart.setMaxY(17);
   lineChart.setMinX(1961);
@@ -120,9 +121,11 @@ void drawCountry(Integer countryIndex)
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
   
-  lineChart.draw(20, 0, width - 20, height);
+  lineChart.draw(20, 0, width - 20, height - 20);
   
-  text(currentCountry, width - 280, 80);
+  
+  textSize(22);
+  text(currentCountry, width - 320, 80);
 }
 
 void drawNextCountry()
