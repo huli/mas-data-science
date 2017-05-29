@@ -27,18 +27,18 @@ void setup()
   }
 
   size(1800,1000);
-  textFont(createFont("Arial",16),16);
-  background(255);
+  textFont(createFont("Lucida Console", 16), 16);
+  background(0);
   textSize(14);
   
   
   // Draw a title over the top of the chart.
-  fill(120);
+  fill(255);
   textSize(40);
-  text("EF per Capita", 70,30);
+  text("the ecological footprint", 70, 80);
   textSize(18);
-  text("Ecological Footprint per Capita measured in hectares", 
-        70, 60);
+  text("the footprint of countries measured in hectares per person", 
+        70, 120);
 }
  
 // Draws the chart and a title.
@@ -94,6 +94,7 @@ void drawCountry(Integer countryIndex)
   lineChart.setAxisLabelColour(2);
   lineChart.setXAxisLabel(currentCountry);
   lineChart.setMinY(0);
+  lineChart.setMaxY(17);
      
   lineChart.setYFormat("#,###");  // Hectares
   lineChart.setXFormat("0000");      // Year
@@ -103,7 +104,7 @@ void drawCountry(Integer countryIndex)
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
   
-  lineChart.draw(0, 0,1200,height-50);
+  lineChart.draw(0, 0, width - 50, height - 50);
 }
 
 void drawNextCountry()
