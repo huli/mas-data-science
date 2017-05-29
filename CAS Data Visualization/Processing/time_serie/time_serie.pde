@@ -28,17 +28,8 @@ void setup()
 
   size(1800,1000);
   textFont(createFont("Lucida Console", 16), 16);
+  
   background(0);
-  textSize(14);
-  
-  
-  // Draw a title over the top of the chart.
-  fill(255);
-  textSize(40);
-  text("the ecological footprint", 70, 80);
-  textSize(18);
-  text("the footprint of countries measured in hectares per person", 
-        70, 120);
 }
  
 // Draws the chart and a title.
@@ -55,11 +46,32 @@ void mouseClicked()
 
 int currentCountryIndex = 1;
 
-
+void resetCanvas()
+{  
+  
+  background(0);
+  
+    // Draw a title over the top of the chart.
+  fill(255);
+  textSize(40);
+  text("the ecological footprint", 70, 80);
+  textSize(18);
+  text("the footprint of countries measured in hectares per person", 
+        70, 120); 
+  textSize(20);
+}
 void drawCountry(Integer countryIndex)
 {
-  String currentCountry = allCountries.get(currentCountryIndex);
   
+  resetCanvas();
+  
+  String currentCountry = allCountries.get(currentCountryIndex);
+  if(currentCountry.equals("Congo"))
+  {
+    currentCountryIndex = currentCountryIndex + 1;
+    drawCountry(currentCountryIndex);
+    return;
+  }
   
   ArrayList<Float> totalsPerYear = new ArrayList<Float>();
   ArrayList<Float> years = new ArrayList<Float>();
@@ -95,6 +107,10 @@ void drawCountry(Integer countryIndex)
   lineChart.setXAxisLabel(currentCountry);
   lineChart.setMinY(0);
   lineChart.setMaxY(17);
+  lineChart.setMinX(1961);
+  lineChart.setMaxX(2013);
+  
+  println(currentCountry);
      
   lineChart.setYFormat("#,###");  // Hectares
   lineChart.setXFormat("0000");      // Year
@@ -104,7 +120,9 @@ void drawCountry(Integer countryIndex)
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
   
-  lineChart.draw(0, 0, width - 50, height - 50);
+  lineChart.draw(20, 0, width - 20, height);
+  
+  text(currentCountry, width - 280, 80);
 }
 
 void drawNextCountry()
