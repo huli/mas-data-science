@@ -29,7 +29,19 @@ void setup()
   size(1800,1000);
   textFont(createFont("Lucida Console", 16), 16);
   
+  background(backgroundColor);
+  
   resetCanvas();
+  
+}
+
+void drawAxisLabels()
+{
+  fill(foregroundColor);
+  textSize(20);
+  text("0", 20, height - 25);
+  text("15", 20, 130);
+  text("2010", width - 140, height - 25);
 }
  
 // Draws the chart and a title.
@@ -37,6 +49,10 @@ void draw()
 {
   
 }
+
+
+int backgroundColor = 30;
+
 
 void mouseClicked()
 {
@@ -46,25 +62,36 @@ void mouseClicked()
 
 int currentCountryIndex = 1;
 
+int foregroundColor = 240;
+
+void drawTransparent()
+{;
+    fill(backgroundColor, 100);
+    rect(0,0, width, height);
+}
+
 void resetCanvas()
 {  
+  drawTransparent();
+  drawAxisLabels();
   
-  background(50);
-  
-   // Draw a title over the top of the chart.
+  // Draw a title over the top of the chart.
   fill(255);
   textSize(40);
-  text("the ecological footprint", 70, 80);
+  text("the ecological footprint", 80, 80);
   textSize(18);
   text("the footprint of countries measured in hectares per person", 
-        70, 120); 
+        80, 120); 
+        
+  fill(backgroundColor);
+  rect(width - 600, 40, 600, 200);
+  fill(foregroundColor);
 }
 void drawCountry(Integer countryIndex)
 {
   
   resetCanvas();
   
- 
   textSize(20);
   String currentCountry = allCountries.get(currentCountryIndex);
   if(currentCountry.equals("Congo"))
@@ -102,10 +129,9 @@ void drawCountry(Integer countryIndex)
   lineChart.setData(arrYears, arrTotals);
    
   // Axis formatting and labels.
-  lineChart.showXAxis(true); 
-  lineChart.showYAxis(true); 
+  //lineChart.showXAxis(true); 
+  //lineChart.showYAxis(true); 
   lineChart.setAxisLabelColour(2);
-  //lineChart.setXAxisLabel(currentCountry);
   lineChart.setMinY(0);
   lineChart.setMaxY(17);
   lineChart.setMinX(1961);
@@ -117,15 +143,16 @@ void drawCountry(Integer countryIndex)
   lineChart.setXFormat("0000");      // Year
    
   // Symbol colours
-  lineChart.setPointColour(color(180,50,50,100));
+  // lineChart.setPointColour(color(255,50,50,100));
   lineChart.setPointSize(5);
   lineChart.setLineWidth(2);
   
-  lineChart.draw(20, 0, width - 20, height - 20);
+  lineChart.draw(15, 0, width - 20, height - 20);
   
   
   textSize(22);
-  text(currentCountry, width - 320, 80);
+  text(currentCountry, width - 400, 80);
+
 }
 
 void drawNextCountry()
