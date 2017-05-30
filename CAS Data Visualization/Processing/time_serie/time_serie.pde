@@ -25,8 +25,8 @@ void setup()
     }
   }
 
-  size(1800, 1000);
-  //fullScreen();
+  //size(1800, 1000);
+  fullScreen();
 
   textFont(createFont("Lucida Console", 16), 16);
 
@@ -49,7 +49,7 @@ void mouseWheel(MouseEvent event) {
     speed = 50;
   if (speed < -50)
     speed = -50;
-  println(speed);
+  //println(speed);
 }
 
 void drawAxisLabels()
@@ -65,8 +65,20 @@ void drawAxisLabels()
 void draw()
 {
   drawCountry();
+  incrementCountry();
 
-  if(speed > 0)
+
+  int waitTime;
+  if (speed == 0)
+    waitTime = 5000;
+  else
+    waitTime = 1000 / abs(speed);
+  delay(waitTime);
+}
+
+void incrementCountry()
+{
+    if(speed > 0)
     currentCountryIndex++;
   else
     currentCountryIndex--;
@@ -81,13 +93,6 @@ void draw()
     currentCountryIndex = allCountries.size();
   }  
 
-  int waitTime;
-  if (speed == 0)
-    waitTime = 5000;
-  else
-    waitTime = 1000 / abs(speed);
-
-  delay(waitTime);
 }
 
 
@@ -132,11 +137,11 @@ void drawCountry()
 
   textSize(20);
   String currentCountry = allCountries.get(currentCountryIndex);
-  println(currentCountryIndex);
+  //println(currentCountryIndex);
   if (currentCountry.equals("Congo"))
   {
-    //currentCountryIndex = currentCountryIndex + 1;
-    //drawCountry();
+    incrementCountry();
+    drawCountry();
     return;
   }
 
@@ -176,7 +181,7 @@ void drawCountry()
   lineChart.setMinX(1961);
   lineChart.setMaxX(2013);
 
-  println(currentCountry);
+  //println(currentCountry);
 
   lineChart.setYFormat("#,###");  // Hectares
   lineChart.setXFormat("0000");   // Year
