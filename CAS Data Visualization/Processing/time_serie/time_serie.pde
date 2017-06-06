@@ -45,18 +45,21 @@ void mouseWheel(MouseEvent event) {
   else
     speed = speed + 2;
 
-  if (speed > 50)
-    speed = 50;
-  if (speed < -50)
-    speed = -50;
-  //println(speed);
+  if (speed > 100)
+    speed = 100;
+  if (speed < -100)
+    speed = -100;
 }
 
 void drawAxisLabels()
 {
   fill(foregroundColor);
   textSize(20);
+  
+  float yheight = (height - 25 - 130) / 3;
   text("0", 20, height - 25);
+  text("10", 20, yheight + 130);
+  text("5", 20, yheight*2 + 130);
   text("15", 20, 130);
   text("2013", width - 80, height - 25);
 }
