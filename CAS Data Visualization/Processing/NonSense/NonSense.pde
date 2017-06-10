@@ -1,14 +1,20 @@
 import processing.pdf.*;
 
-int rectsize = 40;
+int rectsize = 10;
+int speed = 10;
 int posX;
 int posY;
 
 
 void setup()
 {
-  size(600,600);
+  //size(600,600);
+  
+  fullScreen();
   //frameRate(10);
+  
+  
+  background(0);
 }
 
 
@@ -24,7 +30,6 @@ void keyPressed()
 }
 
 
-int speed = 1;
 
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
@@ -47,11 +52,11 @@ void draw()
   {
     beginRecord(PDF, "frame-###.pdf");
   }
-  background(255);
   posX = 0;
   posY = 0;
-  for(int i=0; i<255; i++){
-    fill(random(0, 255), random(0, 255), random(50, 120));
+  for(int i=0; i<57600; i++){
+    
+    fill(random(0, 255), random(0, 255), random(speed*3, 120));
     
     rect(posX, posY, rectsize, rectsize);
     posX += rectsize;

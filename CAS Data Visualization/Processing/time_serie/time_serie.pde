@@ -65,23 +65,19 @@ void drawAxisLabels()
   textSize(20);
   
   float yheight = (height - 25 - 130) / 3;
-  text("0", 20, height - 25);
+  text("0", 20, height - 45);
   text("10", 20, yheight + 130);
   text("5", 20, yheight*2 + 130);
   text("15", 20, 130);
   text("2013", width - 80, height - 25);
+  text("1961", 40, height - 25);
 }
 
 // Draws the chart and a title.
 void draw()
 {
-  if (record) {
-    beginRecord(PDF, "frame-####.pdf"); 
-  }
-  
   drawCountry();
   incrementCountry();
-
 
   int waitTime;
   if (speed == 0)
@@ -108,7 +104,6 @@ void incrementCountry()
   {
     currentCountryIndex = allCountries.size();
   }  
-
 }
 
 
@@ -136,6 +131,11 @@ void resetCanvas()
   fill(backgroundColor);
   rect(width - 900, 55, 700, 50);
   fill(foregroundColor);
+}
+
+void mousePressed()
+{
+  speed = 0;
 }
 
 void drawCountry()
