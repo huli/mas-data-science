@@ -4,8 +4,12 @@ import java.util.*;
 
 XYChart lineChart;
 HashMap<Integer, String> allCountries;
-
 Table table;
+int speed = 1;
+boolean record = false;
+int backgroundColor = 30;
+int currentCountryIndex = 1;
+int foregroundColor = 240;
 
 void setup()
 {
@@ -25,17 +29,19 @@ void setup()
     }
   }
 
-  //size(1800, 1000);
-  fullScreen();
-
+  fullScreen(); // size(1800, 1000);
+  
   textFont(createFont("Lucida Console", 16), 16);
-
   background(backgroundColor);
 
   resetCanvas();
 }
 
-int speed = 1;
+void keyPressed() {
+  if (key == 'q') {
+    exit();
+  }
+}
 
 void mouseWheel(MouseEvent event) {
   float e = event.getCount();
@@ -50,6 +56,8 @@ void mouseWheel(MouseEvent event) {
   if (speed < -100)
     speed = -100;
 }
+
+
 
 void drawAxisLabels()
 {
@@ -67,6 +75,10 @@ void drawAxisLabels()
 // Draws the chart and a title.
 void draw()
 {
+  if (record) {
+    beginRecord(PDF, "frame-####.pdf"); 
+  }
+  
   drawCountry();
   incrementCountry();
 
@@ -76,6 +88,7 @@ void draw()
     waitTime = 5000;
   else
     waitTime = 1000 / abs(speed);
+    
   delay(waitTime);
 }
 
@@ -99,14 +112,6 @@ void incrementCountry()
 }
 
 
-int backgroundColor = 30;
-
-
-
-
-int currentCountryIndex = 1;
-
-int foregroundColor = 240;
 
 void drawTransparent()
 {
@@ -127,12 +132,12 @@ void resetCanvas()
   text("the footprints of countries between 1961 and 2013, measured in hectares per capita", 
     140, 120); 
 
-
   noStroke();
   fill(backgroundColor);
   rect(width - 900, 55, 700, 50);
   fill(foregroundColor);
 }
+
 void drawCountry()
 {
 
@@ -140,7 +145,7 @@ void drawCountry()
 
   textSize(20);
   String currentCountry = allCountries.get(currentCountryIndex);
-  //println(currentCountryIndex);
+
   if (currentCountry.equals("Congo"))
   {
     incrementCountry();
@@ -170,35 +175,23 @@ void drawCountry()
     arrYears[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
   }
 
-  // Both x and y data set here.  
   lineChart = new XYChart(this);
-
   lineChart.setData(arrYears, arrTotals);
-
-  // Axis formatting and labels.
-  //lineChart.showXAxis(true); 
-  //lineChart.showYAxis(true); 
   lineChart.setAxisLabelColour(2);
   lineChart.setMinY(0);
   lineChart.setMaxY(17);
   lineChart.setMinX(1961);
   lineChart.setMaxX(2013);
-
-  //println(currentCountry);
-
   lineChart.setYFormat("#,###");  // Hectares
   lineChart.setXFormat("0000");   // Year
 
   // Symbol colours
-  // lineChart.setPointColour(color(255,50,50,100));
   lineChart.setPointSize(6);
   lineChart.setLineWidth(2);
   lineChart.setLineColour(255);
-
   lineChart.setPointColour(255);
 
   lineChart.draw(15, 0, width - 20, height - 20);
-
 
   textSize(24);
   textAlign(RIGHT);
