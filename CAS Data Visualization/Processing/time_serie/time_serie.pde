@@ -110,7 +110,7 @@ void incrementCountry()
 
 void drawTransparent()
 {
-  fill(backgroundColor, 80);
+  fill(backgroundColor, 60);
   rect(0, 0, width, height);
 }
 

@@ -50,7 +50,7 @@ void drawAllCountries()
   for(int i=1; i<150; i++)
   {
     drawCountries(i); //<>//
-      
+    drawCountry(i, i);
     String currentCountry = allCountries.get(i);
     text(currentCountry, posX+10, posY+10);
   
