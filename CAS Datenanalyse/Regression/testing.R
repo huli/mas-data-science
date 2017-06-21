@@ -1,6 +1,6 @@
 
 
-#install.packages("http://www.ovgu.de/vwl3/desk/desk_1.0.0.zip", repos = NULL, type = "binary")
+install.packages("http://www.ovgu.de/vwl3/desk/desk_1.0.1.zip", repos = NULL, type = "binary")
 
 rm(list = ls())
 
