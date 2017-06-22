@@ -5,7 +5,7 @@ library(dplyr)
 
 f_gdp <- read_csv(
                 paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
-                    "footprint-nfa-2017-edition/EF_GDP(constant2010USD).csv"))
+                    "EF_GDP(constant2010USD).csv"))
 # Offene Punkte
 # Daten joinen, so dass auf Plot statt die Popluation der Effekt 
 #   mittels grösse angezeigt werden kann. (World Foodprints and Human Development)
@@ -92,7 +92,7 @@ global_foodprint %>%
 # Printing some time series
 nfa_2017_edition <- read_csv(
   paste0("C:/Source/mas-data-science/CAS Data Visualization/",
-         "Project/footprint-nfa-2017-edition/NFA 2017 Edition.csv"))
+         "Project/NFA 2017 Edition.csv"))
 
 
 # Switzerland:  total capacity versus foodprint

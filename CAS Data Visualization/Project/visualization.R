@@ -8,26 +8,18 @@ library(dplyr)
 # - Worst Tendency has to be done with per capita or in percent
 # - Quiz
 
-# Bubble Chart with HDI vs EF per Capita
+
+
+# Laender mit HDI und Groesse der Population
 country_metrics <- read_csv(
   paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
          "country_metrics.csv"))
-
-# Trying to analyze Mongolia (why is the footprint that high)
-# country_extended_metrics <- read_csv(
-#   paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
-#          "NFA 2017 Edition.csv"))
-# country_extended_metrics %>%
-#   filter(year == 2013) %>%
-#   filter(country == "Mongolia" | country == "Switzerland") %>%
-#   filter(record == "BiocapPerCap") %>%
-#   select(country, total)
 
 country_deltas <- read_csv(
   paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
          "EF_GDP(constant2010USD).csv"))
 
-left_join(global_foodprint, country_metrics, 
+left_join(country_deltas, country_metrics, 
           by = c("Country" = "Country Name")) -> country_metrics_with_impact  
 
 country_metrics_with_impact %>% 
@@ -86,7 +78,8 @@ country_metrics_with_impact %>%
            stat = "identity")
 
 
-# Plot some history (better search for interessting patterns)
+# Plot some history for specific Countries of interest
+# (better search for interessting patterns)
 country_history <- read_csv(
    paste0("C:/Source/mas-data-science/CAS Data Visualization/Project/",
           "NFA 2017 Edition.csv"))
@@ -97,10 +90,16 @@ country_history %>%
   select(country) %>% 
   unique() -> sorted_countries
 
-sample_countries <- sorted_countries[c(1,20, 50, 100, 150, 180), ]
+
+country_of_interest <- c(
+  "Luxembourg",       # highest EF per capita
+  "Haiti",            # lowest EF per capita
+  "United Kingdom",   # best tendency??
+  "China"             # worst tendency
+  )
 
 country_history %>% 
-  filter(country %in% sample_countries$country) %>% 
+  filter(country %in% country_of_interest) %>% 
   select(country, total, record, year) %>% 
   arrange(desc(total)) %>% 
   filter(record == "EFConsPerCap") %>%
