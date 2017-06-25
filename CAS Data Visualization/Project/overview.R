@@ -225,8 +225,9 @@ country_metrics_with_impact %>%
 
 # Worldmap with Foodprint
 # --------------------------------------------------------------------------------------------------
+#install.packages("rworldmap")
 library(rworldmap)
-install.packages("classInt")
+#install.packages("classInt")
 library(classInt)
 library(RColorBrewer)
 
@@ -237,7 +238,8 @@ nfa_2017_edition %>%
                       verbose = T) -> cd 
 
 # default
-m <- mapCountryData(cd, nameColumnToPlot = "total")
+m <- mapCountryData(cd, nameColumnToPlot = "total",
+                    mapTitle = "total ecological footprint")
          
 # some more advanced stuff
 # class intervals
@@ -248,7 +250,8 @@ classBreaks = classInt[["brks"]]
 pal <- rev(brewer.pal(8, "RdYlGn"))
 m <- mapCountryData(cd, nameColumnToPlot = "total",
                     catMethod = classBreaks,
-                    colourPalette = pal)
+                    colourPalette = pal,
+                    mapTitle = "total ecological footprint")
 
 # real breaks according to global food network
 breaks <- c(0, 1.7, 3.4, 5.1, 6.7, 15)
