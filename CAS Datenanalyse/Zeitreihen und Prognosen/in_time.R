@@ -17,25 +17,28 @@ library(dplyr)
 data <- read.xlsx("C:/Users/ch0125/Dropbox/Admin/events.xlsx")
 
 columns <- colnames(data)
-sectors <- factor(columns[3:8], levels=rev(columns[3:8]), ordered = T)
+sectors <- factor(columns[3:7], levels=rev(columns[3:7]), ordered = T)
 years <- na.omit(data[, "jahr"])
 
 sector <- rep(sectors, each = length(years))
 year <-  as.numeric(rep(years, length(sectors)))
 
 value <- c(
-  na.approx(data[,sectors[1]]),
-  na.approx(data[,sectors[2]]),
-  na.approx(data[,sectors[3]]),
-  na.approx(data[,sectors[4]]),
-  na.approx(data[,sectors[5]]),
-  na.approx(data[,sectors[6]])
+  na.approx(data[, 'reife']),
+  na.approx(data[, 'schule']),
+  na.approx(data[, 'ausbildung']),
+  na.approx(data[, 'arbeit']),
+  na.approx(data[, 'weiterbildung'])
 )
 
-df <- data.frame(sector,year,value)
+
+
+
+
+df <- data.frame(sector,year, value)
 
 ggplot(arrange(df, sector), aes(x=year, y=value, fill=sector)) + 
-  geom_area(colour="black", size=.2, alpha=.4) +
+  geom_area(colour="black", size=.1, alpha=.4) +
   scale_fill_brewer(direction = -1,
     palette="RdBu", 
     breaks=rev(levels(df$sector))) +
@@ -44,6 +47,8 @@ ggplot(arrange(df, sector), aes(x=year, y=value, fill=sector)) +
 
 # radar chart (not finished)
 # ----------------------------------------------------------------------------------
+
+#install.packages("ggradar")
 library(ggradar)
 library(scales)
 
