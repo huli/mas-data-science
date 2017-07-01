@@ -49,46 +49,58 @@ ggplot(arrange(df, sector), aes(x=year, y=value, fill=sector)) +
 # ----------------------------------------------------------------------------------
 
 #install.packages("ggradar")
+library(devtools)
+install_github("ricardo-bion/ggradar")
 library(ggradar)
 library(scales)
+library(reshape2)
 
 languages <- c(
-           
 df_languages <- data.frame(
   "year"=2017,
-  "DotNet"=9,
+  "Csharp"=9,
   "Javascript"=3,
   "R"=6,
-  "FSharp"=3,
-  "Ruby"=3
+  "Python"=3,
+  "Ruby"=3,
+  "Fsharp" = 3
 ))
 
 
-df_languages[2,] <- c(2020, 8, 5, 9, 4, 3)
-ggradar(df_languages, grid.min = 1, grid.max = 10)
+df_languages[2,] <- c(2020, 8, 5, 9, 4, 3, 5)
+ggradar(df_languages, grid.min = 1, grid.max = 10,
+        legend.text.size = 10)
 
 
-
-melted_languages <- melt(df_languages, id.vars = c("year"))
-
-ggplot(arrange(melted_languages, year))+
-  aes(x=variable, y=value,color=year, group=year) +
-  geom_polygon(fill=NA) + 
-  coord_polar() + 
-  theme(axis.text.x = element_text(size = 5))+
-  theme(legend.position = "none")
+technologies <- c(
+  df_technologies <- data.frame(
+    "year"=2017,
+    ".NET"=9,
+    "Rails"=3,
+    ".NET Core"=6
+  ))
 
 
+df_technologies[2,] <- c(2020, 8, 5, 9)
+ggradar(df_technologies, grid.min = 1, grid.max = 10,
+        legend.text.size = 10)
 
-df_tech <- data.frame(
-                  "group"=2017,
-                  "Programming"=8,
-                  "DDD"=7, 
-                 "TDD"=8, 
-                 "Design Patterns"=7, 
-                 "Architecture"=6)
-ggradar(df_tech, grid.min = 1, grid.max = 10,
-        plot.legend = F)
+
+concepts <- c(
+  df_concepts <- data.frame(
+    "year"=2017,
+    "DDD"=9,
+    "TDD"=3,
+    "OOD"=6,
+    "FP"=6
+  ))
+
+
+df_concepts[2,] <- c(2020, 8, 5, 9, 10)
+ggradar(df_concepts, grid.min = 1, grid.max = 10,
+        legend.text.size = 10)
+
+
 
 # bar charts
 # ----------------------------------------------------------------------------------
@@ -110,6 +122,7 @@ data.frame("language"=
 # tree map
 # ----------------------------------------------------------------------------------
 
+#install.packages("portfolio")
 library("portfolio")
 
 data <- read.xlsx("C:/Users/ch0125/Dropbox/Admin/typical_day.xlsx")
